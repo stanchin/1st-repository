@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="MySQL - mobile_operator@localhost" uuid="ed4aabee-7512-4ce3-a388-0356ed0b8134">
+      <secret-storage>master_key</secret-storage>
+      <user-name>root</user-name>
+      <schema-pattern>mobile_operator.*</schema-pattern>
+      <default-schemas>mobile_operator.*</default-schemas>
+    </data-source>
+  </component>
+</project>
