@@ -2,7 +2,7 @@ package com.tsystems.javaschool.entities;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "clients")
@@ -10,6 +10,7 @@ public class Client {
 
     @Id
     @Column(name = "client_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     private String name;
@@ -19,7 +20,7 @@ public class Client {
     private String email;
     private String password;
     @OneToMany(mappedBy = "client")
-    private Set<Contract> numbers;
+    private List<Contract> numbers;
 
     public Integer getId() {
         return id;
@@ -77,11 +78,11 @@ public class Client {
         this.password = password;
     }
 
-    public Set<Contract> getNumbers() {
+    public List<Contract> getNumbers() {
         return numbers;
     }
 
-    public void setNumbers(Set<Contract> numbers) {
+    public void setNumbers(List<Contract> numbers) {
         this.numbers = numbers;
     }
 }

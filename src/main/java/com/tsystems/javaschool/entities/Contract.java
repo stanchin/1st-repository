@@ -1,7 +1,7 @@
 package com.tsystems.javaschool.entities;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "contracts")
@@ -9,6 +9,7 @@ public class Contract {
 
     @Id
     @Column(name = "contract_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer contractId;
     @Column(name = "number")
     private Integer number;
@@ -20,7 +21,7 @@ public class Contract {
     @JoinColumn(name = "tariff_id")
     private Tariff tariff;
 
-    private Set<Option> options;
+    private List<Option> options;
 
     public Integer getNumber() {
         return number;
@@ -54,11 +55,11 @@ public class Contract {
         this.tariff = tariff;
     }
 
-    public Set<Option> getOptions() {
+    public List<Option> getOptions() {
         return options;
     }
 
-    public void setOptions(Set<Option> options) {
+    public void setOptions(List<Option> options) {
         this.options = options;
     }
 }

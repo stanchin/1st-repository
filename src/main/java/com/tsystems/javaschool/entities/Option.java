@@ -9,6 +9,7 @@ public class Option {
 
     @Id
     @Column(name = "option_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer optionId;
     @Column(name = "option_name")
     private String name;

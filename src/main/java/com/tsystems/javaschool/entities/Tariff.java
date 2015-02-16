@@ -2,13 +2,14 @@ package com.tsystems.javaschool.entities;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "tariffs")
 public class Tariff {
     @Id
     @Column(name = "tariff_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer tariffId;
     @Column(name = "tariff_name")
     private String name;
@@ -18,7 +19,7 @@ public class Tariff {
     @JoinTable(name = "tariffs_options",
                 joinColumns = @JoinColumn(name = "option_id"),
                 inverseJoinColumns = @JoinColumn(name = "tariff_id"))
-    private Set<Option> options;
+    private List<Option> options;
 
     public Integer getTariffId() {
         return tariffId;
@@ -44,11 +45,11 @@ public class Tariff {
         this.price = price;
     }
 
-    public Set<Option> getOptions() {
+    public List<Option> getOptions() {
         return options;
     }
 
-    public void setOptions(Set<Option> options) {
+    public void setOptions(List<Option> options) {
         this.options = options;
     }
 }

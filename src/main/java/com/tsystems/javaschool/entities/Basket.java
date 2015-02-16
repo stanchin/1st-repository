@@ -1,14 +1,15 @@
 package com.tsystems.javaschool.entities;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 public class Basket {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer basketId;
     private Tariff tariff;
-    private Set<Option> options;
+    private List<Option> options;
     private Boolean block;
 }

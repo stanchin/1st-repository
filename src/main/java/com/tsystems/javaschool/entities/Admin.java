@@ -8,5 +8,4 @@ public class Admin {
     @Id
     private Integer adminId;
     private String adminPass;
-
 }
