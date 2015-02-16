@@ -15,21 +15,30 @@
       <column name="address" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
       <column name="email" sqlType="VARCHAR" precision="45" scale="0" nullable="true" jdbcType="12"/>
       <column name="password" sqlType="VARCHAR" precision="16" scale="0" nullable="false" jdbcType="12"/>
+      <column name="role_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="client_id"/>
+      <foreign-key name="clients_ibfk_1" columns="role_id" ref-table="roles" ref-schema="" ref-catalog="mobile_operator" ref-columns="role_id" update-rule="3" delete-rule="3" deferrability="2"/>
       <exported-key name="contracts_ibfk_1" table="contracts" schema="" catalog="mobile_operator" columns="client_id"/>
-      <exported-key name="tel_numbers_ibfk_1" table="tel_numbers" schema="" catalog="mobile_operator" columns="client_id"/>
       <index name="email_UNIQUE" unique="true" columns="email"/>
     </table>
+    <table name="contract_options" schema="" catalog="mobile_operator" type="TABLE">
+      <column name="contract_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="option_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <foreign-key name="contract_options_ibfk_1" columns="contract_id" ref-table="contracts" ref-schema="" ref-catalog="mobile_operator" ref-columns="contract_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="contract_options_ibfk_2" columns="option_id" ref-table="options" ref-schema="" ref-catalog="mobile_operator" ref-columns="option_id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
     <table name="contracts" schema="" catalog="mobile_operator" type="TABLE">
-      <column name="block" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
+      <column name="block_by_user" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
       <column name="tariff_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="number" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="client_id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="contract_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="block_by_operator" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
       <primary-key name="PRIMARY" columns="contract_id"/>
       <foreign-key name="contracts_ibfk_1" columns="client_id" ref-table="clients" ref-schema="" ref-catalog="mobile_operator" ref-columns="client_id" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="contracts_ibfk_3" columns="tariff_id" ref-table="tariffs" ref-schema="" ref-catalog="mobile_operator" ref-columns="tariff_id" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="contracts_ibfk_4" columns="number" ref-table="tel_numbers" ref-schema="" ref-catalog="mobile_operator" ref-columns="number" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="contract_options_ibfk_1" table="contract_options" schema="" catalog="mobile_operator" columns="contract_id"/>
     </table>
     <table name="options" schema="" catalog="mobile_operator" type="TABLE">
       <column name="option_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
@@ -37,17 +46,32 @@
       <column name="option_price" sqlType="DECIMAL" precision="10" scale="2" nullable="true" jdbcType="3"/>
       <column name="connection_price" sqlType="DECIMAL" precision="10" scale="2" nullable="true" jdbcType="3"/>
       <primary-key name="PRIMARY" columns="option_id"/>
-      <exported-key name="options_groups_ibfk_1" table="options_groups" schema="" catalog="mobile_operator" columns="option_id"/>
+      <exported-key name="contract_options_ibfk_2" table="contract_options" schema="" catalog="mobile_operator" columns="option_id"/>
+      <exported-key name="options_incompatible_ibfk_1" table="options_incompatible" schema="" catalog="mobile_operator" columns="base_option_id"/>
+      <exported-key name="options_incompatible_ibfk_2" table="options_incompatible" schema="" catalog="mobile_operator" columns="inc_option_id"/>
+      <exported-key name="options_required_ibfk_1" table="options_required" schema="" catalog="mobile_operator" columns="base_option_id"/>
+      <exported-key name="options_required_ibfk_2" table="options_required" schema="" catalog="mobile_operator" columns="req_option_id"/>
       <exported-key name="tariffs_options_ibfk_2" table="tariffs_options" schema="" catalog="mobile_operator" columns="option_id"/>
       <index name="unique_option_name" unique="true" columns="option_name"/>
     </table>
-    <table name="options_groups" schema="" catalog="mobile_operator" type="TABLE">
-      <column name="option_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="option_group" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="description" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
-      <primary-key name="PRIMARY" columns="option_group"/>
-      <foreign-key name="options_groups_ibfk_1" columns="option_id" ref-table="options" ref-schema="" ref-catalog="mobile_operator" ref-columns="option_id" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="unique_option_group" unique="true" columns="option_group"/>
+    <table name="options_incompatible" schema="" catalog="mobile_operator" type="TABLE">
+      <column name="base_option_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="inc_option_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <foreign-key name="options_incompatible_ibfk_1" columns="base_option_id" ref-table="options" ref-schema="" ref-catalog="mobile_operator" ref-columns="option_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="options_incompatible_ibfk_2" columns="inc_option_id" ref-table="options" ref-schema="" ref-catalog="mobile_operator" ref-columns="option_id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="options_required" schema="" catalog="mobile_operator" type="TABLE">
+      <column name="base_option_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="req_option_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <foreign-key name="options_required_ibfk_1" columns="base_option_id" ref-table="options" ref-schema="" ref-catalog="mobile_operator" ref-columns="option_id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="options_required_ibfk_2" columns="req_option_id" ref-table="options" ref-schema="" ref-catalog="mobile_operator" ref-columns="option_id" update-rule="3" delete-rule="3" deferrability="2"/>
+    </table>
+    <table name="roles" schema="" catalog="mobile_operator" type="TABLE">
+      <column name="role_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="role" sqlType="VARCHAR" precision="10" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="role_id"/>
+      <exported-key name="clients_ibfk_1" table="clients" schema="" catalog="mobile_operator" columns="role_id"/>
+      <index name="unique_role" unique="true" columns="role"/>
     </table>
     <table name="tariffs" schema="" catalog="mobile_operator" type="TABLE">
       <column name="tariff_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
@@ -67,9 +91,7 @@
     </table>
     <table name="tel_numbers" schema="" catalog="mobile_operator" type="TABLE">
       <column name="number" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="client_id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="number"/>
-      <foreign-key name="tel_numbers_ibfk_1" columns="client_id" ref-table="clients" ref-schema="" ref-catalog="mobile_operator" ref-columns="client_id" update-rule="3" delete-rule="3" deferrability="2"/>
       <exported-key name="contracts_ibfk_4" table="contracts" schema="" catalog="mobile_operator" columns="number"/>
       <index name="number_UNIQUE" unique="true" columns="number"/>
     </table>

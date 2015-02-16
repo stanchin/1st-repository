@@ -16,12 +16,34 @@ public class Contract {
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
-    private Boolean blocked;
+    @Column(name = "block_by_user")
+    private Boolean blockedByUser;
+    @Column(name = "block_by_operator")
+    private Boolean blockedByOperator;
     @OneToOne
     @JoinColumn(name = "tariff_id")
     private Tariff tariff;
-
+    @ManyToMany
+    @JoinTable(name = "contract_options",
+                joinColumns = @JoinColumn(name = "option_id"),
+                inverseJoinColumns = @JoinColumn(name = "contract_id"))
     private List<Option> options;
+
+    public Boolean getBlockedByOperator() {
+        return blockedByOperator;
+    }
+
+    public void setBlockedByOperator(Boolean blockedByOperator) {
+        this.blockedByOperator = blockedByOperator;
+    }
+
+    public Integer getContractId() {
+        return contractId;
+    }
+
+    public void setContractId(Integer contractId) {
+        this.contractId = contractId;
+    }
 
     public Integer getNumber() {
         return number;
@@ -39,12 +61,12 @@ public class Contract {
         this.client = client;
     }
 
-    public Boolean getBlocked() {
-        return blocked;
+    public Boolean getBlockedByUser() {
+        return blockedByUser;
     }
 
-    public void setBlocked(Boolean blocked) {
-        this.blocked = blocked;
+    public void setBlockedByUser(Boolean blocked) {
+        this.blockedByUser = blocked;
     }
 
     public Tariff getTariff() {

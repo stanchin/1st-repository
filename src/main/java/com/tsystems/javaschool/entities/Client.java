@@ -19,6 +19,7 @@ public class Client {
     private String address;
     private String email;
     private String password;
+
     @OneToMany(mappedBy = "client")
     private List<Contract> numbers;
 
