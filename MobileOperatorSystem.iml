@@ -16,6 +16,7 @@
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="" />
         <datasource-mapping>
+          <factory-entry name="MobileOperatorSystem" value="ed4aabee-7512-4ce3-a388-0356ed0b8134" />
           <factory-entry name="OperatorSystem" value="ed4aabee-7512-4ce3-a388-0356ed0b8134" />
           <factory-entry name="noname-persistence.xml@276" value="ed4aabee-7512-4ce3-a388-0356ed0b8134" />
         </datasource-mapping>

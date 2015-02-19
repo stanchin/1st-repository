@@ -17,9 +17,9 @@ public class Contract {
     @JoinColumn(name = "client_id")
     private Client client;
     @Column(name = "block_by_user")
-    private Boolean blockedByUser;
+    private boolean blockedByUser;
     @Column(name = "block_by_operator")
-    private Boolean blockedByOperator;
+    private boolean blockedByOperator;
     @OneToOne
     @JoinColumn(name = "tariff_id")
     private Tariff tariff;
@@ -29,11 +29,11 @@ public class Contract {
                 inverseJoinColumns = @JoinColumn(name = "contract_id"))
     private List<Option> options;
 
-    public Boolean getBlockedByOperator() {
+    public boolean getBlockedByOperator() {
         return blockedByOperator;
     }
 
-    public void setBlockedByOperator(Boolean blockedByOperator) {
+    public void setBlockedByOperator(boolean blockedByOperator) {
         this.blockedByOperator = blockedByOperator;
     }
 
@@ -61,11 +61,11 @@ public class Contract {
         this.client = client;
     }
 
-    public Boolean getBlockedByUser() {
+    public boolean getBlockedByUser() {
         return blockedByUser;
     }
 
-    public void setBlockedByUser(Boolean blocked) {
+    public void setBlockedByUser(boolean blocked) {
         this.blockedByUser = blocked;
     }
 

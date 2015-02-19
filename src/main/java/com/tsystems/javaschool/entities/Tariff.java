@@ -7,6 +7,7 @@ import java.util.List;
 @Entity
 @Table(name = "tariffs")
 public class Tariff {
+
     @Id
     @Column(name = "tariff_id")
     @GeneratedValue(strategy = GenerationType.AUTO)

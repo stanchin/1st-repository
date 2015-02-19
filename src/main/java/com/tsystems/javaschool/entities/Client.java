@@ -19,6 +19,9 @@ public class Client {
     private String address;
     private String email;
     private String password;
+    @OneToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
     @OneToMany(mappedBy = "client")
     private List<Contract> numbers;
@@ -85,5 +88,13 @@ public class Client {
 
     public void setNumbers(List<Contract> numbers) {
         this.numbers = numbers;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
