@@ -15,15 +15,20 @@ public class Client {
 
     private String name;
     private String surname;
+
+    @Temporal(TemporalType.DATE)
     private Date birthday;
+
+    private Integer passport;
     private String address;
     private String email;
     private String password;
+
     @OneToOne
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "client")
     private List<Contract> numbers;
 
     public Integer getId() {
@@ -56,6 +61,14 @@ public class Client {
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
+    }
+
+    public Integer getPassport() {
+        return passport;
+    }
+
+    public void setPassport(Integer passport) {
+        this.passport = passport;
     }
 
     public String getAddress() {

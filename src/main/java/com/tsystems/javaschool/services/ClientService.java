@@ -21,4 +21,8 @@ public interface ClientService {
 
     public void removeOptions(int contractId);
 
+    public void blockNumber();
+
+    public void deployNumber();
+
 }

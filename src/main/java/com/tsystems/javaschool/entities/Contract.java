@@ -11,8 +11,9 @@ public class Contract {
     @Column(name = "contract_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer contractId;
-    @Column(name = "number")
-    private Integer number;
+    @OneToOne
+    @JoinColumn(name = "number")
+    private Number number;
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
@@ -45,11 +46,11 @@ public class Contract {
         this.contractId = contractId;
     }
 
-    public Integer getNumber() {
+    public Number getNumber() {
         return number;
     }
 
-    public void setNumber(Integer number) {
+    public void setNumber(Number number) {
         this.number = number;
     }
 

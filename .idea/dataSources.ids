@@ -16,11 +16,13 @@
       <column name="email" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="password" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="role_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="passport" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="client_id"/>
       <foreign-key name="clients_ibfk_1" columns="role_id" ref-table="roles" ref-schema="" ref-catalog="mobile_operator" ref-columns="role_id" update-rule="3" delete-rule="3" deferrability="2"/>
       <exported-key name="contracts_ibfk_1" table="contracts" schema="" catalog="mobile_operator" columns="client_id"/>
       <exported-key name="tel_numbers_ibfk_1" table="tel_numbers" schema="" catalog="mobile_operator" columns="client_id"/>
       <index name="email_UNIQUE" unique="true" columns="email"/>
+      <index name="unique_passport" unique="true" columns="passport"/>
     </table>
     <table name="contract_options" schema="" catalog="mobile_operator" type="TABLE">
       <column name="contract_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
