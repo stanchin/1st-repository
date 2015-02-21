@@ -4,13 +4,17 @@ package com.tsystems.javaschool.services;
 import com.tsystems.javaschool.entities.*;
 import com.tsystems.javaschool.entities.Number;
 
+import java.util.Date;
 import java.util.List;
 
 public interface OperatorService {
 
-    public void addClient();
+    public void addClient(String name, String surname, Date birthday, String address, Long passport, String email,
+                          String password, int roleId);
 
-    public void concludeContract();
+    public void addRole(String desc);
+
+    public void concludeContract(Client client, Tariff tariff);
 
     public Number generateUniqueNumber();
 

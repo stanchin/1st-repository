@@ -19,7 +19,7 @@ public class Client {
     @Temporal(TemporalType.DATE)
     private Date birthday;
 
-    private Integer passport;
+    private Long passport;
     private String address;
     private String email;
     private String password;
@@ -63,11 +63,11 @@ public class Client {
         this.birthday = birthday;
     }
 
-    public Integer getPassport() {
+    public Long getPassport() {
         return passport;
     }
 
-    public void setPassport(Integer passport) {
+    public void setPassport(Long passport) {
         this.passport = passport;
     }
 

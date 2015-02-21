@@ -8,9 +8,8 @@ public class Number {
 
     @Id
     private Integer number;
-    @OneToOne
-    @JoinColumn(name = "client_id")
-    private Client client;
+    @OneToOne(mappedBy = "number")
+    private Contract contract;
 
     public Integer getNumber() {
         return number;
@@ -20,11 +19,11 @@ public class Number {
         this.number = number;
     }
 
-    public Client getClient() {
-        return client;
+    public Contract getClient() {
+        return contract;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setClient(Contract contract) {
+        this.contract = contract;
     }
 }

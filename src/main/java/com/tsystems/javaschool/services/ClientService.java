@@ -13,16 +13,16 @@ public interface ClientService {
 
     public List<Tariff> getTariffs();
 
-    public void changeTariff(int contractId);
+    public void changeTariff(int contractId, Tariff tariff);
 
     public List<Option> getCompatibleOptions(Tariff tariff);
 
-    public void setOptions(int contractId);
+    public void setOptions(int contractId, List<Option> options);
 
-    public void removeOptions(int contractId);
+    public void removeOptions(int contractId, List<Option> options);
 
-    public void blockNumber();
+    public void blockNumber(int contractId);
 
-    public void deployNumber();
+    public void deployNumber(int contractId);
 
 }
