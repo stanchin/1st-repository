@@ -28,7 +28,7 @@ public class Client {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "client")
+    @OneToMany(mappedBy = "client")
     private List<Contract> numbers;
 
     public Integer getId() {

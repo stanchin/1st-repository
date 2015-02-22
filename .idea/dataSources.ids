@@ -33,7 +33,7 @@
     <table name="contracts" schema="" catalog="mobile_operator" type="TABLE">
       <column name="block_by_user" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
       <column name="tariff_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="number" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="number" sqlType="BIGINT UNSIGNED" precision="20" scale="0" nullable="true" jdbcType="-5"/>
       <column name="client_id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="contract_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="block_by_operator" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
@@ -43,6 +43,7 @@
       <foreign-key name="contracts_ibfk_4" columns="number" ref-table="tel_numbers" ref-schema="" ref-catalog="mobile_operator" ref-columns="number" update-rule="3" delete-rule="3" deferrability="2"/>
       <exported-key name="contract_options_ibfk_1" table="contract_options" schema="" catalog="mobile_operator" columns="contract_id"/>
       <exported-key name="tel_numbers_ibfk_1" table="tel_numbers" schema="" catalog="mobile_operator" columns="contract_id"/>
+      <index name="unique_number" unique="true" columns="number"/>
     </table>
     <table name="options" schema="" catalog="mobile_operator" type="TABLE">
       <column name="option_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
@@ -94,8 +95,8 @@
       <foreign-key name="tariffs_options_ibfk_2" columns="option_id" ref-table="options" ref-schema="" ref-catalog="mobile_operator" ref-columns="option_id" update-rule="3" delete-rule="3" deferrability="2"/>
     </table>
     <table name="tel_numbers" schema="" catalog="mobile_operator" type="TABLE">
-      <column name="number" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <column name="contract_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="number" sqlType="BIGINT UNSIGNED" precision="20" scale="0" nullable="false" jdbcType="-5" def="MA=="/>
+      <column name="contract_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="number"/>
       <foreign-key name="tel_numbers_ibfk_1" columns="contract_id" ref-table="contracts" ref-schema="" ref-catalog="mobile_operator" ref-columns="contract_id" update-rule="3" delete-rule="3" deferrability="2"/>
       <exported-key name="contracts_ibfk_4" table="contracts" schema="" catalog="mobile_operator" columns="number"/>

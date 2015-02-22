@@ -4,6 +4,7 @@ package com.tsystems.javaschool.services;
 import com.tsystems.javaschool.entities.*;
 import com.tsystems.javaschool.entities.Number;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -14,13 +15,13 @@ public interface OperatorService {
 
     public void addRole(String desc);
 
-    public void concludeContract(Client client, Tariff tariff);
+    public void concludeContract(Client client, int tariffId, long number);
 
     public Number generateUniqueNumber();
 
-    public void setNumber(Number number, int contractId, int clientId);
+    public void setNumber(long num, Contract contract);
 
-    public void setTariff(int contractId, int tariffId);
+    public void setTariff(Contract contract, int tariffId);
 
     public void setOptions(int contractId, Integer...optionsId);
 
@@ -40,15 +41,15 @@ public interface OperatorService {
 
     public void changeTariff(int contractId, List<Tariff> tariffs);
 
-    public void addTariff();
+    public void addTariff(String name, Integer...optionsId);
 
     public void dropTariff(int tariffId);
 
-    public void addOption(int tariffId, int optionId);
+    public void addOption(String name, BigDecimal optionPrice, BigDecimal connectionPrice);
 
     public void dropOption(int tariffId, int optionId);
 
-    public void setIncompatibleOptions(int optionId, Integer...optionsId);
+    public List<Option> setIncompatibleOptions(int optionId, Integer...optionsId);
 
-    public void setRequiredOptions(int optionId, Integer...optionsId);
+    public List<Option> setRequiredOptions(int optionId, Integer...optionsId);
 }

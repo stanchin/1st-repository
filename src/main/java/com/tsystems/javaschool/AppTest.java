@@ -5,6 +5,7 @@ import com.tsystems.javaschool.services.OperatorServiceImpl;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.math.BigDecimal;
 
 public class AppTest {
 
@@ -14,7 +15,7 @@ public class AppTest {
         OperatorServiceImpl operatorService = new OperatorServiceImpl(em);
         try {
             em.getTransaction().begin();
-
+                operatorService.setRequiredOptions(1, 2);
             em.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();

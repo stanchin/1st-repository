@@ -7,23 +7,23 @@ import javax.persistence.*;
 public class Number {
 
     @Id
-    private Integer number;
+    private Long number;
     @OneToOne(mappedBy = "number")
     private Contract contract;
 
-    public Integer getNumber() {
+    public Long getNumber() {
         return number;
     }
 
-    public void setNumber(Integer number) {
+    public void setNumber(Long number) {
         this.number = number;
     }
 
-    public Contract getClient() {
+    public Contract getContract() {
         return contract;
     }
 
-    public void setClient(Contract contract) {
+    public void setContract(Contract contract) {
         this.contract = contract;
     }
 }
