@@ -100,6 +100,11 @@ public class OperatorServiceImpl implements OperatorService{
 
     @Override
     public void shutDownContractOption(int contractId, int optionId) {
+        LOGGER.info("Removing option");
+        Contract contract = em.find(Contract.class, contractId);
+        Option option = em.find(Option.class, optionId);
+        List<Option> options = contract.getOptions();
+        options.remove(option);
 
     }
 
