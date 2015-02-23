@@ -39,7 +39,7 @@ public interface OperatorService {
 
     public Client find(int number);
 
-    public void changeTariff(int contractId, List<Tariff> tariffs);
+    public void changeTariff(int contractId, int tariffId);
 
     public void addTariff(String name, Integer...optionsId);
 

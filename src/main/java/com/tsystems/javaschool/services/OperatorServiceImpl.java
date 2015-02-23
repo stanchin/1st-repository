@@ -6,6 +6,7 @@ import com.tsystems.javaschool.entities.Number;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,6 +41,7 @@ public class OperatorServiceImpl implements OperatorService{
 
     @Override
     public void addRole(String desc) {
+        LOGGER.info("Adding new role");
         Role role = new Role();
         role.setRole(desc);
         em.persist(role);
@@ -88,14 +90,36 @@ public class OperatorServiceImpl implements OperatorService{
 
     @Override
     public void setTariff(Contract contract, int tariffId) {
+        LOGGER.info("Setting tariff");
         Tariff tariff = em.find(Tariff.class, tariffId);
         contract.setTariff(tariff);
+        contract.setOptions(tariff.getOptions());
         em.merge(contract);
     }
 
     @Override
     public void setOptions(int contractId, Integer... optionsId) {
+        LOGGER.info("Setting options");
+        Contract contract = em.find(Contract.class, contractId);
+        List<Option> options = new ArrayList<Option>();
+        List<Option> contractOptions;
 
+        if (contract.getOptions() != null){
+            contractOptions = contract.getOptions();
+            for (int id : optionsId){
+                Option option = em.find(Option.class, id);
+
+                for (Option o : contractOptions){
+                    if (o.getIncOptions().contains(option)){
+                        LOGGER.error("Option can't be merged with incompatible option");
+                        return;
+                    } else
+                        options.add(option);
+                }
+            }
+        }
+        contract.setOptions(options);
+        em.merge(contract);
     }
 
     @Override
@@ -104,43 +128,73 @@ public class OperatorServiceImpl implements OperatorService{
         Contract contract = em.find(Contract.class, contractId);
         Option option = em.find(Option.class, optionId);
         List<Option> options = contract.getOptions();
+        for (Option opt : options){
+            if (opt.getReqOptions().contains(option)){
+                LOGGER.error("Can't drop required option");
+                break;
+            }
+        }
         options.remove(option);
-
+        contract.setOptions(options);
+        em.merge(contract);
     }
 
     @Override
     public List<Client> getClients() {
-        return null;
+        TypedQuery<Client> query = em.createQuery("SELECT c FROM Client c", Client.class);
+        return query.getResultList();
     }
 
     @Override
     public List<Contract> getContracts() {
-        return null;
+        TypedQuery<Contract> query = em.createQuery("SELECT c FROM Contract c", Contract.class);
+        return query.getResultList();
     }
 
     @Override
     public List<Tariff> getTariffs() {
-        return null;
+        TypedQuery<Tariff> query = em.createQuery("SELECT t FROM Tariff t", Tariff.class);
+        return query.getResultList();
     }
 
     @Override
     public void blockClient(int clientId) {
-
+        LOGGER.info("Blocking client");
+        Contract contract = em.createQuery(
+                "SELECT c FROM Client cl JOIN cl.numbers c" +
+                        " WHERE cl.id = :clientId", Contract.class).
+                setParameter("clientId", clientId).getSingleResult();
+        contract.setBlockedByOperator(true);
+        em.merge(contract);
     }
 
     @Override
     public void deployClient(int clientId) {
-
+        LOGGER.info("Deploying client");
+        Contract contract = em.createQuery(
+                "SELECT c FROM Client cl JOIN cl.numbers c" +
+                        " WHERE cl.id = :clientId", Contract.class).
+                setParameter("clientId", clientId).getSingleResult();
+        contract.setBlockedByOperator(false);
+        em.merge(contract);
     }
 
     @Override
     public Client find(int number) {
-        return null;
+        LOGGER.info("Searching client");
+        return em.createQuery("SELECT c.client FROM Contract c " +
+                " WHERE c.number = :number", Client.class).
+                setParameter("number", number).getSingleResult();
     }
 
     @Override
-    public void changeTariff(int contractId, List<Tariff> tariffs) {
-
+    public void changeTariff(int contractId, int tariffId) {
+        LOGGER.info("Changing tariff");
+        Contract contract = em.find(Contract.class, contractId);
+        Tariff tariff = em.find(Tariff.class, tariffId);
+        contract.setTariff(tariff);
+        contract.setOptions(tariff.getOptions());
+        em.merge(contract);
     }
 
     @Override
