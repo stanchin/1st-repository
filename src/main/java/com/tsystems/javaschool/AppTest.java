@@ -1,11 +1,10 @@
 package com.tsystems.javaschool;
 
-import com.tsystems.javaschool.services.OperatorServiceImpl;
+import com.tsystems.javaschool.services.impl.OperatorServiceImpl;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import java.math.BigDecimal;
 
 public class AppTest {
 

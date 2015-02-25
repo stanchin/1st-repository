@@ -9,15 +9,15 @@ public class Role {
     @Id
     @Column(name = "role_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer roleId;
+    private Long id;
     private String role;
 
-    public Integer getRoleId() {
-        return roleId;
+    public Long getId() {
+        return id;
     }
 
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
+    public void setId(Long roleId) {
+        this.id = roleId;
     }
 
     public String getRole() {

@@ -11,7 +11,7 @@ public class Tariff {
     @Id
     @Column(name = "tariff_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer tariffId;
+    private Long id;
     @Column(name = "tariff_name")
     private String name;
     @Column(name = "tariff_price")
@@ -22,12 +22,12 @@ public class Tariff {
                 inverseJoinColumns = @JoinColumn(name = "tariff_id"))
     private List<Option> options;
 
-    public Integer getTariffId() {
-        return tariffId;
+    public Long getId() {
+        return id;
     }
 
-    public void setTariffId(Integer tariffId) {
-        this.tariffId = tariffId;
+    public void setId(Long tariffId) {
+        this.id = tariffId;
     }
 
     public String getName() {

@@ -10,7 +10,7 @@ public class Contract {
     @Id
     @Column(name = "contract_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer contractId;
+    private Long id;
     @OneToOne
     @JoinColumn(name = "number")
     private Number number;
@@ -38,12 +38,12 @@ public class Contract {
         this.blockedByOperator = blockedByOperator;
     }
 
-    public Integer getContractId() {
-        return contractId;
+    public Long getId() {
+        return id;
     }
 
-    public void setContractId(Integer contractId) {
-        this.contractId = contractId;
+    public void setId(Long contractId) {
+        this.id = contractId;
     }
 
     public Number getNumber() {

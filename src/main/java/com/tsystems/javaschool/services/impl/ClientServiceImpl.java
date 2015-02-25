@@ -1,4 +1,4 @@
-package com.tsystems.javaschool.services;
+package com.tsystems.javaschool.services.impl;
 
 
 import com.tsystems.javaschool.entities.Client;
@@ -6,6 +6,7 @@ import com.tsystems.javaschool.entities.Contract;
 import com.tsystems.javaschool.entities.Option;
 import com.tsystems.javaschool.entities.Tariff;
 import com.tsystems.javaschool.persistence.HibernateUtil;
+import com.tsystems.javaschool.services.ClientService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;

@@ -1,8 +1,9 @@
-package com.tsystems.javaschool.services;
+package com.tsystems.javaschool.services.impl;
 
 
 import com.tsystems.javaschool.entities.*;
 import com.tsystems.javaschool.entities.Number;
+import com.tsystems.javaschool.services.OperatorService;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
@@ -13,19 +14,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-public class OperatorServiceImpl implements OperatorService{
+public class OperatorServiceImpl implements OperatorService {
     private static final Logger LOGGER = Logger.getLogger(OperatorServiceImpl.class);
     EntityManager em;
 
     public OperatorServiceImpl(EntityManager em){
-        LOGGER.info("Creating operator service");
+        LOGGER.debug("Creating operator service");
         this.em = em;
     }
 
     @Override
     public void addClient(String name, String surname, Date birthday, String address, Long passport, String email,
                           String password, int roleId) {
-        LOGGER.info("Creating new client");
+        LOGGER.debug("Creating new client");
         Client client = new Client();
         client.setName(name);
         client.setSurname(surname);
@@ -41,7 +42,7 @@ public class OperatorServiceImpl implements OperatorService{
 
     @Override
     public void addRole(String desc) {
-        LOGGER.info("Adding new role");
+        LOGGER.debug("Adding new role");
         Role role = new Role();
         role.setRole(desc);
         em.persist(role);
@@ -49,7 +50,7 @@ public class OperatorServiceImpl implements OperatorService{
 
     @Override
     public void concludeContract(Client client, int tariffId, long number) {
-        LOGGER.info("Concluding contract");
+        LOGGER.debug("Concluding contract");
         Contract contract = new Contract();
         contract.setClient(client);
         em.persist(contract);
@@ -60,7 +61,7 @@ public class OperatorServiceImpl implements OperatorService{
 
     @Override
     public Number generateUniqueNumber() {
-        LOGGER.info("Generating unique number");
+        LOGGER.debug("Generating unique number");
         Number number = new Number();
         Random random = new Random(47);
 
@@ -80,7 +81,7 @@ public class OperatorServiceImpl implements OperatorService{
 
     @Override
     public void setNumber(long num, Contract contract) {
-        LOGGER.info("Setting number to contract");
+        LOGGER.debug("Setting number to contract");
         Number number = em.find(Number.class, num);
         contract.setNumber(number);
         number.setContract(contract);
@@ -90,7 +91,7 @@ public class OperatorServiceImpl implements OperatorService{
 
     @Override
     public void setTariff(Contract contract, int tariffId) {
-        LOGGER.info("Setting tariff");
+        LOGGER.debug("Setting tariff");
         Tariff tariff = em.find(Tariff.class, tariffId);
         contract.setTariff(tariff);
         contract.setOptions(tariff.getOptions());
@@ -99,7 +100,7 @@ public class OperatorServiceImpl implements OperatorService{
 
     @Override
     public void setOptions(int contractId, Integer... optionsId) {
-        LOGGER.info("Setting options");
+        LOGGER.debug("Setting options");
         Contract contract = em.find(Contract.class, contractId);
         List<Option> options = new ArrayList<Option>();
         List<Option> contractOptions;
@@ -124,7 +125,7 @@ public class OperatorServiceImpl implements OperatorService{
 
     @Override
     public void shutDownContractOption(int contractId, int optionId) {
-        LOGGER.info("Removing option");
+        LOGGER.debug("Removing option");
         Contract contract = em.find(Contract.class, contractId);
         Option option = em.find(Option.class, optionId);
         List<Option> options = contract.getOptions();
@@ -159,7 +160,7 @@ public class OperatorServiceImpl implements OperatorService{
 
     @Override
     public void blockClient(int clientId) {
-        LOGGER.info("Blocking client");
+        LOGGER.debug("Blocking client");
         Contract contract = em.createQuery(
                 "SELECT c FROM Client cl JOIN cl.numbers c" +
                         " WHERE cl.id = :clientId", Contract.class).
@@ -170,7 +171,7 @@ public class OperatorServiceImpl implements OperatorService{
 
     @Override
     public void deployClient(int clientId) {
-        LOGGER.info("Deploying client");
+        LOGGER.debug("Deploying client");
         Contract contract = em.createQuery(
                 "SELECT c FROM Client cl JOIN cl.numbers c" +
                         " WHERE cl.id = :clientId", Contract.class).
@@ -181,7 +182,7 @@ public class OperatorServiceImpl implements OperatorService{
 
     @Override
     public Client find(int number) {
-        LOGGER.info("Searching client");
+        LOGGER.debug("Searching client");
         return em.createQuery("SELECT c.client FROM Contract c " +
                 " WHERE c.number = :number", Client.class).
                 setParameter("number", number).getSingleResult();
@@ -189,7 +190,7 @@ public class OperatorServiceImpl implements OperatorService{
 
     @Override
     public void changeTariff(int contractId, int tariffId) {
-        LOGGER.info("Changing tariff");
+        LOGGER.debug("Changing tariff");
         Contract contract = em.find(Contract.class, contractId);
         Tariff tariff = em.find(Tariff.class, tariffId);
         contract.setTariff(tariff);
@@ -199,7 +200,7 @@ public class OperatorServiceImpl implements OperatorService{
 
     @Override
     public void addTariff(String name, Integer...optionsId) {
-        LOGGER.info("Adding tariff");
+        LOGGER.debug("Adding tariff");
         Tariff tariff = new Tariff();
         tariff.setName(name);
 
@@ -220,14 +221,14 @@ public class OperatorServiceImpl implements OperatorService{
 
     @Override
     public void dropTariff(int tariffId) {
-        LOGGER.info("Deleting tariff");
+        LOGGER.debug("Deleting tariff");
         Tariff tariff = em.find(Tariff.class, tariffId);
         em.remove(tariff);
     }
 
     @Override
     public void addOption(String name, BigDecimal optionPrice, BigDecimal connectionPrice) {
-        LOGGER.info("Creating new option");
+        LOGGER.debug("Creating new option");
         Option option = new Option();
         option.setName(name);
         option.setOptionPrice(optionPrice);
@@ -237,7 +238,7 @@ public class OperatorServiceImpl implements OperatorService{
 
     @Override
     public void dropOption(int tariffId, int optionId) {
-        LOGGER.info("Drop option");
+        LOGGER.debug("Drop option");
         Tariff tariff = em.find(Tariff.class, tariffId);
         Option option = em.find(Option.class, optionId);
         tariff.getOptions().remove(option);
@@ -246,7 +247,7 @@ public class OperatorServiceImpl implements OperatorService{
 
     @Override
     public List<Option> setIncompatibleOptions(int optionId, Integer... optionsId) {
-        LOGGER.info("Setting incompatible options");
+        LOGGER.debug("Setting incompatible options");
         Option option = em.find(Option.class, optionId);
         List<Option> incOptions = new ArrayList<Option>();
         for (int id : optionsId){
@@ -264,7 +265,7 @@ public class OperatorServiceImpl implements OperatorService{
 
     @Override
     public List<Option> setRequiredOptions(int optionId, Integer... optionsId) {
-        LOGGER.info("Setting required options");
+        LOGGER.debug("Setting required options");
         Option option = em.find(Option.class, optionId);
         List<Option> reqOptions = new ArrayList<Option>();
         for (int id : optionsId){

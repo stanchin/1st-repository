@@ -11,7 +11,7 @@ public class Option {
     @Id
     @Column(name = "option_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer optionId;
+    private Long id;
     @Column(name = "option_name")
     private String name;
     @Column(name = "option_price")
@@ -29,12 +29,12 @@ public class Option {
                 inverseJoinColumns = @JoinColumn(name = "base_option_id"))
     private List<Option> reqOptions;
 
-    public Integer getOptionId() {
-        return optionId;
+    public Long getId() {
+        return id;
     }
 
-    public void setOptionId(Integer optionId) {
-        this.optionId = optionId;
+    public void setId(Long optionId) {
+        this.id = optionId;
     }
 
     public String getName() {
