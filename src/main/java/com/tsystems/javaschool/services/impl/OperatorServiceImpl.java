@@ -1,13 +1,16 @@
 package com.tsystems.javaschool.services.impl;
 
 
+import com.tsystems.javaschool.dao.impl.*;
 import com.tsystems.javaschool.entities.*;
 import com.tsystems.javaschool.entities.Number;
+import com.tsystems.javaschool.exceptions.IncompatibleOptionException;
+import com.tsystems.javaschool.exceptions.RequiredOptionException;
+import com.tsystems.javaschool.exceptions.WrongIdException;
 import com.tsystems.javaschool.services.OperatorService;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,14 +21,21 @@ public class OperatorServiceImpl implements OperatorService {
     private static final Logger LOGGER = Logger.getLogger(OperatorServiceImpl.class);
     EntityManager em;
 
+    private static ClientDao clientDao = new ClientDao();
+    private static RoleDao roleDao = new RoleDao();
+    private static ContractDao contractDao = new ContractDao();
+    private static NumberDao numberDao = new NumberDao();
+    private static TariffDao tariffDao = new TariffDao();
+    private static OptionDao optionDao = new OptionDao();
+
     public OperatorServiceImpl(EntityManager em){
         LOGGER.debug("Creating operator service");
         this.em = em;
     }
 
     @Override
-    public void addClient(String name, String surname, Date birthday, String address, Long passport, String email,
-                          String password, int roleId) {
+    public void addClient(String name, String surname, Date birthday, String address, long passport, String email,
+                          String password, long roleId) {
         LOGGER.debug("Creating new client");
         Client client = new Client();
         client.setName(name);
@@ -35,9 +45,9 @@ public class OperatorServiceImpl implements OperatorService {
         client.setPassport(passport);
         client.setEmail(email);
         client.setPassword(password);
-        Role role = em.find(Role.class, roleId);
+        Role role = roleDao.getById(roleId);
         client.setRole(role);
-        em.persist(client);
+        clientDao.create(client);
     }
 
     @Override
@@ -45,18 +55,17 @@ public class OperatorServiceImpl implements OperatorService {
         LOGGER.debug("Adding new role");
         Role role = new Role();
         role.setRole(desc);
-        em.persist(role);
+        roleDao.create(role);
     }
 
     @Override
-    public void concludeContract(Client client, int tariffId, long number) {
+    public void concludeContract(Client client, long tariffId, long number) throws WrongIdException {
         LOGGER.debug("Concluding contract");
         Contract contract = new Contract();
         contract.setClient(client);
-        em.persist(contract);
         setTariff(contract, tariffId);
         setNumber(number, contract);
-        em.merge(contract);
+        contractDao.create(contract);
     }
 
     @Override
@@ -69,10 +78,10 @@ public class OperatorServiceImpl implements OperatorService {
             int code = random.nextInt(9) + 900;
             int num = 1000000 + random.nextInt(9000000);
             long telNum = Long.parseLong(code + "" + num);
-            Number findNumber = em.find(Number.class, telNum);
+            Number findNumber = numberDao.getByNumber(telNum);
             if (findNumber == null){
                 number.setNumber(telNum);
-                em.persist(number);
+                numberDao.create(number);
                 break;
             }
         }
@@ -82,148 +91,153 @@ public class OperatorServiceImpl implements OperatorService {
     @Override
     public void setNumber(long num, Contract contract) {
         LOGGER.debug("Setting number to contract");
-        Number number = em.find(Number.class, num);
+        Number number = numberDao.getByNumber(num);
         contract.setNumber(number);
         number.setContract(contract);
-        em.merge(contract);
-        em.merge(number);
+        contractDao.update(contract);
+        numberDao.update(number);
     }
 
     @Override
-    public void setTariff(Contract contract, int tariffId) {
+    public void setTariff(Contract contract, long tariffId) throws WrongIdException {
         LOGGER.debug("Setting tariff");
-        Tariff tariff = em.find(Tariff.class, tariffId);
-        contract.setTariff(tariff);
-        contract.setOptions(tariff.getOptions());
-        em.merge(contract);
+        Tariff tariff = tariffDao.getById(tariffId);
+        if (tariff != null) {
+            contract.setTariff(tariff);
+            contract.setOptions(tariff.getOptions());
+            contractDao.update(contract);
+        } else {
+            throw new WrongIdException("Tariff with id = " + tariffId + " doesn't exist.");
+        }
     }
 
     @Override
-    public void setOptions(int contractId, Integer... optionsId) {
+    public void setOptions(long contractId, long... optionsId)
+            throws IncompatibleOptionException, WrongIdException {
+
         LOGGER.debug("Setting options");
-        Contract contract = em.find(Contract.class, contractId);
+        Contract contract = contractDao.getById(contractId);
+        if (contract == null) throw new WrongIdException("Contract with id = " + contractId + " doesn't exist.");
         List<Option> options = new ArrayList<Option>();
         List<Option> contractOptions;
 
         if (contract.getOptions() != null){
             contractOptions = contract.getOptions();
-            for (int id : optionsId){
-                Option option = em.find(Option.class, id);
+            for (long id : optionsId){
+                Option option = optionDao.getById(id);
 
                 for (Option o : contractOptions){
                     if (o.getIncOptions().contains(option)){
                         LOGGER.error("Option can't be merged with incompatible option");
-                        return;
+                        throw new IncompatibleOptionException("Option can't be merged with incompatible option");
                     } else
                         options.add(option);
                 }
             }
         }
         contract.setOptions(options);
-        em.merge(contract);
+        contractDao.update(contract);
     }
 
     @Override
-    public void shutDownContractOption(int contractId, int optionId) {
+    public void shutDownContractOption(long contractId, long optionId)
+            throws RequiredOptionException, WrongIdException {
         LOGGER.debug("Removing option");
-        Contract contract = em.find(Contract.class, contractId);
-        Option option = em.find(Option.class, optionId);
+        Contract contract = contractDao.getById(contractId);
+        if (contract == null) throw new WrongIdException("Contract with id = " + contractId + " doesn't exist.");
+        Option option = optionDao.getById(optionId);
+        if (option == null) throw new WrongIdException("Option with id = " + optionId + " doesn't exist.");
         List<Option> options = contract.getOptions();
         for (Option opt : options){
             if (opt.getReqOptions().contains(option)){
                 LOGGER.error("Can't drop required option");
-                break;
+                throw new RequiredOptionException("Can't drop required option");
             }
         }
         options.remove(option);
         contract.setOptions(options);
-        em.merge(contract);
+        contractDao.update(contract);
     }
 
     @Override
     public List<Client> getClients() {
-        TypedQuery<Client> query = em.createQuery("SELECT c FROM Client c", Client.class);
-        return query.getResultList();
+        return clientDao.getAll();
     }
 
     @Override
     public List<Contract> getContracts() {
-        TypedQuery<Contract> query = em.createQuery("SELECT c FROM Contract c", Contract.class);
-        return query.getResultList();
+        return contractDao.getAll();
     }
 
     @Override
     public List<Tariff> getTariffs() {
-        TypedQuery<Tariff> query = em.createQuery("SELECT t FROM Tariff t", Tariff.class);
-        return query.getResultList();
+        return tariffDao.getAll();
     }
 
     @Override
-    public void blockClient(int clientId) {
+    public void blockNumber(long number) throws WrongIdException {
         LOGGER.debug("Blocking client");
-        Contract contract = em.createQuery(
-                "SELECT c FROM Client cl JOIN cl.numbers c" +
-                        " WHERE cl.id = :clientId", Contract.class).
-                setParameter("clientId", clientId).getSingleResult();
+        Contract contract = contractDao.findByNumber(number);
+        if (contract == null) throw new WrongIdException(
+                "Contract with number = " + number + " doesn't exists.");
         contract.setBlockedByOperator(true);
-        em.merge(contract);
+        contractDao.update(contract);
     }
 
     @Override
-    public void deployClient(int clientId) {
+    public void deployNumber(long number) throws WrongIdException {
         LOGGER.debug("Deploying client");
-        Contract contract = em.createQuery(
-                "SELECT c FROM Client cl JOIN cl.numbers c" +
-                        " WHERE cl.id = :clientId", Contract.class).
-                setParameter("clientId", clientId).getSingleResult();
+        Contract contract = contractDao.findByNumber(number);
+        if (contract == null) throw new WrongIdException("Contract with number = " + number + " doesn't exists.");
         contract.setBlockedByOperator(false);
-        em.merge(contract);
+        contractDao.update(contract);
     }
 
     @Override
-    public Client find(int number) {
+    public Client find(long number) {
         LOGGER.debug("Searching client");
-        return em.createQuery("SELECT c.client FROM Contract c " +
-                " WHERE c.number = :number", Client.class).
-                setParameter("number", number).getSingleResult();
+        return clientDao.findByNumber(number);
     }
 
     @Override
-    public void changeTariff(int contractId, int tariffId) {
+    public void changeTariff(long contractId, long tariffId) throws WrongIdException {
         LOGGER.debug("Changing tariff");
-        Contract contract = em.find(Contract.class, contractId);
-        Tariff tariff = em.find(Tariff.class, tariffId);
+        Contract contract = contractDao.getById(contractId);
+        if (contract == null) throw new WrongIdException("Contract with id = " + contractId + " doesn't exist.");
+        Tariff tariff = tariffDao.getById(tariffId);
+        if (tariff == null) throw new WrongIdException("Tariff with id = " + tariffId + " doesn't exist.");
         contract.setTariff(tariff);
         contract.setOptions(tariff.getOptions());
-        em.merge(contract);
+        contractDao.update(contract);
     }
 
     @Override
-    public void addTariff(String name, Integer...optionsId) {
+    public void addTariff(String name, long...optionsId) throws WrongIdException {
         LOGGER.debug("Adding tariff");
         Tariff tariff = new Tariff();
         tariff.setName(name);
 
         Double price = 0d;
         List<Option> options = new ArrayList<Option>();
-        for (int id : optionsId){
-            Option option = em.find(Option.class, id);
+        for (long id : optionsId){
+            Option option = optionDao.getById(id);
             if (option != null) {
                 price += option.getConnectionPrice().doubleValue();
                 price += option.getOptionPrice().doubleValue();
                 options.add(option);
-            }
+            } else throw new WrongIdException("Option with id = " + id + " doesn't exist.");
         }
         tariff.setPrice(new BigDecimal(price));
         tariff.setOptions(options);
-        em.persist(tariff);
+        tariffDao.create(tariff);
     }
 
     @Override
-    public void dropTariff(int tariffId) {
+    public void dropTariff(long tariffId) throws WrongIdException {
         LOGGER.debug("Deleting tariff");
-        Tariff tariff = em.find(Tariff.class, tariffId);
-        em.remove(tariff);
+        Tariff tariff = tariffDao.getById(tariffId);
+        if (tariff == null) throw new WrongIdException("Tariff with id = " + tariffId + " doesn't exist.");
+        tariffDao.remove(tariff);
     }
 
     @Override
@@ -233,51 +247,53 @@ public class OperatorServiceImpl implements OperatorService {
         option.setName(name);
         option.setOptionPrice(optionPrice);
         option.setConnectionPrice(connectionPrice);
-        em.persist(option);
+        optionDao.create(option);
     }
 
     @Override
-    public void dropOption(int tariffId, int optionId) {
+    public void dropOption(long tariffId, long optionId) throws WrongIdException {
         LOGGER.debug("Drop option");
-        Tariff tariff = em.find(Tariff.class, tariffId);
-        Option option = em.find(Option.class, optionId);
+        Tariff tariff = tariffDao.getById(tariffId);
+        if (tariff == null) throw new WrongIdException("Tariff with id = " + tariffId + " doesn't exist.");
+        Option option = optionDao.getById(optionId);
+        if (option == null) throw new WrongIdException("Option with id = " + optionId + " doesn't exist.");
         tariff.getOptions().remove(option);
-        em.merge(tariff);
+        tariffDao.update(tariff);
     }
 
     @Override
-    public List<Option> setIncompatibleOptions(int optionId, Integer... optionsId) {
+    public List<Option> setIncompatibleOptions(long optionId, long... optionsId) throws IncompatibleOptionException {
         LOGGER.debug("Setting incompatible options");
-        Option option = em.find(Option.class, optionId);
+        Option option = optionDao.getById(optionId);
         List<Option> incOptions = new ArrayList<Option>();
-        for (int id : optionsId){
-            Option incOption = em.find(Option.class, id);
+        for (long id : optionsId){
+            Option incOption = optionDao.getById(id);
             if (option.getReqOptions().contains(incOption)){
                 LOGGER.error("Option can't be merged with required option");
-                return null;
+                throw new IncompatibleOptionException("Option can't be merged with required option");
             }
             if (incOption != null) incOptions.add(incOption);
         }
         option.setIncOptions(incOptions);
-        em.merge(option);
+        optionDao.update(option);
         return incOptions;
     }
 
     @Override
-    public List<Option> setRequiredOptions(int optionId, Integer... optionsId) {
+    public List<Option> setRequiredOptions(long optionId, long... optionsId) throws RequiredOptionException {
         LOGGER.debug("Setting required options");
-        Option option = em.find(Option.class, optionId);
+        Option option = optionDao.getById(optionId);
         List<Option> reqOptions = new ArrayList<Option>();
-        for (int id : optionsId){
-            Option reqOption = em.find(Option.class, id);
+        for (long id : optionsId){
+            Option reqOption = optionDao.getById(id);
             if (option.getIncOptions().contains(reqOption)){
                 LOGGER.error("Option can't be merged with incompatible option");
-                return null;
+                throw new RequiredOptionException("Option can't be merged with incompatible option");
             }
             if (reqOption != null) reqOptions.add(reqOption);
         }
         option.setReqOptions(reqOptions);
-        em.merge(option);
+        optionDao.update(option);
         return reqOptions;
     }
 }
