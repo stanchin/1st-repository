@@ -1,0 +1,57 @@
+body {
+    margin: 0;
+    min-width: 1000px;
+}
+#header{
+    position: relative;
+    width: 100%;
+    font-size: 25px;
+    text-align: center;
+    color: white;
+    background-color: black;
+    padding: 30px;
+}
+#nav{
+    font-size: 20px;
+    line-height:30px;
+    background-color:#eeeeee;
+    height: 75%;
+    width: 10%;
+    float:left;
+}
+#section {
+    background-image: url(../images/1.png);
+    opacity: 0.7;
+    font-size: 25px;
+    height: 75%;
+    width:90%;
+    float:left;
+}
+#login {
+    float: left;
+    position: absolute;
+    top: 40%;
+    left: 47%;
+    text-align: center;
+}
+.link {
+    text-align: center;
+}
+a {
+    color: #9ACD32;
+}
+a:visited {
+    color: #000;
+    text-decoration: none;
+}
+a:hover {
+    color: #9ACD32;
+    text-decoration: none;
+}
+#footer {
+    background-color:black;
+    color:white;
+    clear:both;
+    text-align:center;
+    padding:5px;
+}

@@ -1,6 +1,7 @@
 package com.tsystems.javaschool.services;
 
 
+import com.tsystems.javaschool.entities.Client;
 import com.tsystems.javaschool.entities.Contract;
 import com.tsystems.javaschool.entities.Tariff;
 import com.tsystems.javaschool.exceptions.IncompatibleOptionException;
@@ -9,6 +10,8 @@ import com.tsystems.javaschool.exceptions.WrongIdException;
 import java.util.List;
 
 public interface ClientService {
+
+    public Client getClient (String email, String password);
 
     public List<Contract> getContracts(long clientId) throws WrongIdException;
 

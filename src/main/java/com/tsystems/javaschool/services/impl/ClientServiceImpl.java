@@ -34,6 +34,11 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    public Client getClient(String email, String password) {
+        return clientDao.findByEmailPass(email, password);
+    }
+
+    @Override
     public List<Contract> getContracts(long clientId) throws WrongIdException {
         LOGGER.debug("Getting client contracts");
         Client client = clientDao.getById(clientId);
