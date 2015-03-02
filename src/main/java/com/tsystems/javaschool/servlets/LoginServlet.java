@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class LoginServlet extends HttpServlet {
-    private static HibernateUtil util = new HibernateUtil();
-    private static EntityManager entityManager = util.getEntityManager();
+
+    private static EntityManager entityManager = HibernateUtil.getEntityManager();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -26,7 +26,10 @@ public class LoginServlet extends HttpServlet {
         ClientService clientService = new ClientServiceImpl(entityManager);
         RequestDispatcher rd;
 
+        entityManager.getTransaction().begin();
         Client client = clientService.getClient(email, password);
+        entityManager.getTransaction().commit();
+
         if (client != null){
             String role = client.getRole().getRole();
             switch (role.toUpperCase()){
