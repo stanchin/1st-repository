@@ -9,7 +9,7 @@ body {
     text-align: center;
     color: white;
     background-color: black;
-    padding: 30px;
+    padding: 15px;
 }
 #nav{
     font-size: 20px;
@@ -25,7 +25,7 @@ body {
     font-size: 25px;
     height: 75%;
     width:90%;
-    float:left;
+    float:right;
 }
 #login {
     float: left;
@@ -34,24 +34,54 @@ body {
     left: 47%;
     text-align: center;
 }
+#topNav{
+    width: 70%;
+    float: left;
+    margin: 0 0 3em 0;
+    padding: 0;
+    list-style: none;
+}
+#topNav li {
+    float: left;
+}
+#topNav li a {
+    display: block;
+    padding: 8px 15px;
+    text-decoration: none;
+    font-weight: bold;
+    color: #069;
+}
+#topNav li a:hover {
+    color: #c00;
+    background-color: #fff;
+}
 .link {
     text-align: center;
 }
-a {
+#nav a {
     color: #9ACD32;
 }
-a:visited {
+#nav a:visited {
     color: #000;
     text-decoration: none;
 }
-a:hover {
+#nav a:hover {
     color: #9ACD32;
     text-decoration: none;
+}
+aside{
+    text-align: center;
+    float: right;
+    width: 25%;
+    height: inherit;
+    background: #fff;
+    opacity: 0.5;
+    padding: 40px;
 }
 #footer {
     background-color:black;
     color:white;
     clear:both;
     text-align:center;
-    padding:5px;
+    padding:15px;
 }

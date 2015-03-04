@@ -20,18 +20,9 @@
 </div>
 <div id = "section">
     <jsp:include page="navBar.jsp"/>
-    <section>
+    <div>
 
-    </section>
-    <aside>
-        Name: ${client.name}
-        ${client.surname}<br>
-        B-Day: ${client.birthday}
-        Tel. number:<br>
-        <c:forEach var="number" items="${client.numbers}"/>
-
-
-    </aside>
+    </div>
 </div>
 <div id = "footer">
     <p>

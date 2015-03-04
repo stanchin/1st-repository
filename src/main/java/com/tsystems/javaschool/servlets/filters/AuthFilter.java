@@ -10,38 +10,34 @@ import java.io.IOException;
 
 
 public class AuthFilter implements Filter {
-    private static final Logger LOGGER = Logger.getLogger(AuthFilter.class);
-    private String[] pathToBeIgnored = new String[2];
+    private ServletContext context;
 
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        pathToBeIgnored[0] = filterConfig.getInitParameter("pathToBeIgnored1");
-        pathToBeIgnored[1] = filterConfig.getInitParameter("pathToBeIgnored2");
+    public void init(FilterConfig fConfig) throws ServletException {
+        this.context = fConfig.getServletContext();
     }
 
-    @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
-            throws IOException, ServletException {
-        HttpServletRequest req = (HttpServletRequest) servletRequest;
-        HttpServletResponse res = (HttpServletResponse) servletResponse;
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse res = (HttpServletResponse) response;
 
         String uri = req.getRequestURI();
+
         HttpSession session = req.getSession(false);
 
-        if(session == null){
-            for (String path : pathToBeIgnored) {
-                if (!uri.contains(path)) {
-                    LOGGER.debug("Unauthorized access request");
-                    res.sendRedirect("login.jsp");
-                }
-            }
+        if(session == null && !(uri.endsWith("html") || uri.endsWith("LoginServlet"))){
+            res.sendRedirect("login.html");
         }else{
-            filterChain.doFilter(servletRequest, servletResponse);
+            chain.doFilter(request, response);
         }
+
+
     }
 
-    @Override
+
+
     public void destroy() {
-        this.pathToBeIgnored = null;
+        context = null;
     }
 }
+
