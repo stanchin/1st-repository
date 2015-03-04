@@ -1,7 +1,7 @@
 package com.tsystems.javaschool.dao;
 
 
-import com.tsystems.javaschool.persistence.HibernateUtil;
+import com.tsystems.javaschool.persistence.PersistenceUtil;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -10,7 +10,7 @@ import java.util.List;
 
 public abstract class GenericDaoImpl<T> implements GenericDao<T> {
     protected Class entityClass;
-    protected EntityManager em;
+    protected static final EntityManager em = PersistenceUtil.getEntityManager();
 
     public GenericDaoImpl(){
         ParameterizedType genericSuperclass = (ParameterizedType) getClass()

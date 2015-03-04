@@ -12,14 +12,15 @@
 </div>
 <div id = "nav">
     <div class = "link">
-        <a href = "login.jsp">Login</a>
+        <a href = "login.jsp">Login</a> <br>
+        <a href="client.jsp">Profile</a>
     </div>
 </div>
 <div id = "section">
 </div>
 <div id = "footer">
     <p>
-        Copyright © Stanchin Denis
+        CreatedBy © Stanchin Denis
     </p>
 </div>
 </body>

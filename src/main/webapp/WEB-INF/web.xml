@@ -1,27 +1,43 @@
-
-<web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+		  http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
   <display-name>Archetype Created Web Application</display-name>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
+
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
     
     <servlet>
-        <servlet-name>LoginServlet</servlet-name>
+        <servlet-name>loginServlet</servlet-name>
         <servlet-class>com.tsystems.javaschool.servlets.LoginServlet</servlet-class>
     </servlet>
     
     <servlet-mapping>
-        <servlet-name>LoginServlet</servlet-name>
-        <url-pattern>/log</url-pattern>
+        <servlet-name>loginServlet</servlet-name>
+        <url-pattern>/loginServlet</url-pattern>
     </servlet-mapping>
 
     <filter>
         <filter-name>AuthFilter</filter-name>
         <filter-class>com.tsystems.javaschool.servlets.filters.AuthFilter</filter-class>
+        <init-param>
+            <param-name>pathToBeIgnored1</param-name>
+            <param-value>/index.jsp</param-value>
+        </init-param>
+        <init-param>
+            <param-name>pathToBeIgnored2</param-name>
+            <param-value>/login.jsp</param-value>
+        </init-param>
     </filter>
     <filter-mapping>
         <filter-name>AuthFilter</filter-name>
-        <servlet-name>LoginServlet</servlet-name>
-        <url-pattern>/*</url-pattern>
+        <servlet-name>loginServlet</servlet-name>
+        <url-pattern>/loginServlet</url-pattern>
     </filter-mapping>
 </web-app>

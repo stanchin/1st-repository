@@ -21,17 +21,11 @@ import java.util.List;
 public class ClientServiceImpl implements ClientService {
 
     private static final Logger LOGGER = Logger.getLogger(ClientServiceImpl.class);
-    EntityManager em;
 
     private static ContractDao contractDao = new ContractDao();
     private static ClientDao clientDao = new ClientDao();
     private static TariffDao tariffDao = new TariffDao();
     private static OptionDao optionDao = new OptionDao();
-
-    public ClientServiceImpl(EntityManager em) {
-        LOGGER.debug("Creating client service");
-        this.em = em;
-    }
 
     @Override
     public Client getClient(String email, String password) {

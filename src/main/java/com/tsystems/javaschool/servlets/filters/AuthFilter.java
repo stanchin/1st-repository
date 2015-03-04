@@ -1,44 +1,47 @@
 package com.tsystems.javaschool.servlets.filters;
 
+import org.apache.log4j.Logger;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 
 public class AuthFilter implements Filter {
-    private FilterConfig config = null;
-    private boolean active = false;
+    private static final Logger LOGGER = Logger.getLogger(AuthFilter.class);
+    private String[] pathToBeIgnored = new String[2];
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        this.config = filterConfig;
-        String act = config.getInitParameter("active");
-        if (act != null)
-            active = (act.toUpperCase().equals("TRUE"));
+        pathToBeIgnored[0] = filterConfig.getInitParameter("pathToBeIgnored1");
+        pathToBeIgnored[1] = filterConfig.getInitParameter("pathToBeIgnored2");
     }
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
+            throws IOException, ServletException {
+        HttpServletRequest req = (HttpServletRequest) servletRequest;
+        HttpServletResponse res = (HttpServletResponse) servletResponse;
 
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
+        String uri = req.getRequestURI();
+        HttpSession session = req.getSession(false);
 
-        if (active){
-            String email = (String) servletRequest.getAttribute("email");
-            if (email == null) {
-                request.setAttribute("error", "Please, write your e-mail");
-                request.getRequestDispatcher("login.jsp").forward(request, servletResponse);
+        if(session == null){
+            for (String path : pathToBeIgnored) {
+                if (!uri.contains(path)) {
+                    LOGGER.debug("Unauthorized access request");
+                    res.sendRedirect("login.jsp");
+                }
             }
-            String password = (String) servletRequest.getAttribute("password");
-            if (password == null) {
-                request.setAttribute("error", "Please, write your password");
-                request.getRequestDispatcher("login.jsp").forward(request, servletResponse);
-            }
+        }else{
+            filterChain.doFilter(servletRequest, servletResponse);
         }
-        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override
     public void destroy() {
-        config = null;
+        this.pathToBeIgnored = null;
     }
 }
