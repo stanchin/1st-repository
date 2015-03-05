@@ -6,6 +6,8 @@
 <head>
     <title>Profile</title>
     <link rel="stylesheet" href="css/style.css" type="text/css">
+    <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+
 </head>
 <body>
 <div id = "header">
@@ -19,18 +21,24 @@
     </div>
 </div>
 <div id = "section">
-    <jsp:include page="navBar.jsp"/>
+    <div id="topNav">
+        <ul>
+            <li><input type="button" value="Contract" class="myButton"
+                    onclick="document.getElementById('form1').submit()"></li>
+            <li><input type="button" value="Tariffs" class="myButton"></li>
+            <li><input type="button" value="Options" class="myButton"></li>
+            <li><input type="button" value="Block" class="myButton"></li>
+        </ul>
+    </div>
     <section>
+        <div id="content">
 
+        </div>
     </section>
     <aside>
         Name: ${client.name}
         ${client.surname}<br>
         B-Day: ${client.birthday}
-        Tel. number:<br>
-        <c:forEach var="number" items="${client.numbers}"/>
-
-
     </aside>
 </div>
 <div id = "footer">
@@ -38,5 +46,25 @@
         CreatedBy © Stanchin Denis
     </p>
 </div>
+<form id="form1">
+    <input type="hidden" name="clientId" value=${client.id}>
+    <input type="hidden" name="action" value="getContract">
+    <input type="hidden" name="sessionStatus" value=${sessionScope.get("session").isOpened()}>
+</form>
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        $('#form1').submit(function(){
+            $.ajax({
+                type: "POST",
+                url: "localhost:8080/mobile/contractServlet",
+                success: function(jsp){
+                    $("#content").load("/contract.jsp");
+                }
+            });
+            return false;
+        });
+    });
+</script>
 </body>
 </html>

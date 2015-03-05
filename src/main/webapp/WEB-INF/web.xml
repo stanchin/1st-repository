@@ -17,9 +17,17 @@
         <servlet-name>loginServlet</servlet-name>
         <servlet-class>com.tsystems.javaschool.servlets.LoginServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>contractServlet</servlet-name>
+        <servlet-class>com.tsystems.javaschool.servlets.ContractServlet</servlet-class>
+    </servlet>
     
     <servlet-mapping>
         <servlet-name>loginServlet</servlet-name>
         <url-pattern>/loginServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>contractServlet</servlet-name>
+        <url-pattern>/contractServlet</url-pattern>
     </servlet-mapping>
 </web-app>
