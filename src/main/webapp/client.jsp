@@ -6,8 +6,6 @@
 <head>
     <title>Profile</title>
     <link rel="stylesheet" href="css/style.css" type="text/css">
-    <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
-
 </head>
 <body>
 <div id = "header">
@@ -36,9 +34,11 @@
         </div>
     </section>
     <aside>
-        Name: ${client.name}
-        ${client.surname}<br>
-        B-Day: ${client.birthday}
+        <p>Name: ${client.name}</p>
+        <p>Surname: ${client.surname}</p>
+        <p>B-Day: ${client.birthday}</p>
+        <p>Address: ${client.address}</p>
+        <p>Email: ${client.email}</p>
     </aside>
 </div>
 <div id = "footer">
@@ -46,25 +46,9 @@
         CreatedBy © Stanchin Denis
     </p>
 </div>
-<form id="form1">
-    <input type="hidden" name="clientId" value=${client.id}>
+<form id="form1" action="contractServlet" method="post">
     <input type="hidden" name="action" value="getContract">
     <input type="hidden" name="sessionStatus" value=${sessionScope.get("session").isOpened()}>
 </form>
-<script type="text/javascript">
-    $(document).ready(function(){
-
-        $('#form1').submit(function(){
-            $.ajax({
-                type: "POST",
-                url: "localhost:8080/mobile/contractServlet",
-                success: function(jsp){
-                    $("#content").load("/contract.jsp");
-                }
-            });
-            return false;
-        });
-    });
-</script>
 </body>
 </html>

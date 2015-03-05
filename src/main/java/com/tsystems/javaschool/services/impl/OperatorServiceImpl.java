@@ -19,7 +19,6 @@ import java.util.Random;
 
 public class OperatorServiceImpl implements OperatorService {
     private static final Logger LOGGER = Logger.getLogger(OperatorServiceImpl.class);
-    EntityManager em;
 
     private static ClientDao clientDao = new ClientDao();
     private static RoleDao roleDao = new RoleDao();
@@ -27,11 +26,6 @@ public class OperatorServiceImpl implements OperatorService {
     private static NumberDao numberDao = new NumberDao();
     private static TariffDao tariffDao = new TariffDao();
     private static OptionDao optionDao = new OptionDao();
-
-    public OperatorServiceImpl(EntityManager em){
-        LOGGER.debug("Creating operator service");
-        this.em = em;
-    }
 
     @Override
     public void addClient(String name, String surname, Date birthday, String address, long passport, String email,
@@ -118,7 +112,7 @@ public class OperatorServiceImpl implements OperatorService {
         LOGGER.debug("Setting options");
         Contract contract = contractDao.getById(contractId);
         if (contract == null) throw new WrongIdException("Contract with id = " + contractId + " doesn't exist.");
-        List<Option> options = new ArrayList<Option>();
+        List<Option> options = new ArrayList<>();
         List<Option> contractOptions;
 
         if (contract.getOptions() != null){

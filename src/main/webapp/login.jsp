@@ -15,6 +15,7 @@
         <a href = "login.jsp">Login</a>
         <br>
         <a href="client.jsp">Profile</a>
+        <br>
     </div>
 </div>
 <div id = "section">
@@ -25,7 +26,8 @@
     Password:<br>
     <input type="password" name="password" maxlength="30">
     <br><br>
-    <input type="SUBMIT" value="Submit">
+    <input type="SUBMIT" name="action" value="login" class="myButton">
+    <input type="SUBMIT" name="action" value="logout" class="myButton">
 </form>
 </div>
 <div id = "footer">

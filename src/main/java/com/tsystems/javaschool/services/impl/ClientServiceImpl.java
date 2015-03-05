@@ -29,7 +29,8 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client getClient(String email, String password) {
-        return clientDao.findByEmailPass(email, password);
+        String hash = String.valueOf(email.hashCode());
+        return clientDao.findByEmailPass(hash, password);
     }
 
     @Override
@@ -44,6 +45,29 @@ public class ClientServiceImpl implements ClientService {
     public List<Tariff> getTariffs() {
         LOGGER.debug("Getting tariffs");
         return tariffDao.getAll();
+    }
+
+    @Override
+    public Tariff getTariff(long tariffId) {
+        LOGGER.debug("Getting tariff");
+        return tariffDao.getById(tariffId);
+    }
+
+    @Override
+    public Contract getContract(long contractId) {
+        return contractDao.getById(contractId);
+    }
+
+    @Override
+    public Option getOption(long optionId) {
+        return optionDao.getById(optionId);
+    }
+
+    @Override
+    public List<Option> getTariffOptions(long tariffId) {
+        LOGGER.debug("Getting tariff's options");
+        Tariff tariff = tariffDao.getById(tariffId);
+        return tariff.getOptions();
     }
 
     @Override

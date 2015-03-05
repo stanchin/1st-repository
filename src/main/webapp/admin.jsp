@@ -21,8 +21,8 @@
 <div id = "section">
     <div id="topNav">
         <ul>
-            <li><input type="button" value="Contract" class="myButton"
-                       onclick=""></li>
+            <li><input type="button" value="Contracts" class="myButton"
+                       onclick="document.getElementById(/*TODO: feel*/).submit()"></li>
             <li><input type="button" value="Tariffs" class="myButton"></li>
             <li><input type="button" value="Options" class="myButton"></li>
             <li><input type="button" value="Block" class="myButton"></li>
