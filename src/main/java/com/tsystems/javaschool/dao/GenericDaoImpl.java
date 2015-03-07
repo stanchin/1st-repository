@@ -21,19 +21,26 @@ public abstract class GenericDaoImpl<T> implements GenericDao<T> {
 
     @Override
     public T create(T t) {
+        em.getTransaction().begin();
         em.persist(t);
+        em.getTransaction().commit();
         return t;
     }
 
     @Override
     public T update(T t) {
-        return em.merge(t);
+        em.getTransaction().begin();
+        em.merge(t);
+        em.getTransaction().commit();
+        return t;
     }
 
     @Override
     public void remove(T t) {
+        em.getTransaction().begin();
         t = em.merge(t);
         em.remove(t);
+        em.getTransaction().commit();
     }
 
     @Override

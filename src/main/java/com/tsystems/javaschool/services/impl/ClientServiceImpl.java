@@ -29,8 +29,8 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client getClient(String email, String password) {
-        String hash = String.valueOf(email.hashCode());
-        return clientDao.findByEmailPass(hash, password);
+        String hash = String.valueOf(password.hashCode());
+        return clientDao.findByEmailPass(email, hash);
     }
 
     @Override

@@ -1,14 +1,15 @@
 package com.tsystems.javaschool.servlets;
 
 import com.tsystems.javaschool.entities.Client;
-import com.tsystems.javaschool.persistence.Session;
 import com.tsystems.javaschool.services.impl.ClientServiceImpl;
+import com.tsystems.javaschool.servlets.filters.AuthFilter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import java.io.IOException;
 
 public class LoginServlet extends HttpServlet {
+    public static final String AUTHORIZATION_ATTRIBUTE = "ok";
 
     @Override
     protected void doGet(HttpServletRequest request,
@@ -29,11 +30,9 @@ public class LoginServlet extends HttpServlet {
                 }
 
                 if(client != null){
-                    Session session = Session.getInstance();
-                    session.setOpened(true);
                     HttpSession httpSession = request.getSession();
                     httpSession.setAttribute("client", client);
-                    httpSession.setAttribute("session", session);
+                    httpSession.setAttribute(AuthFilter.AUTHORISED_ATTRIBUTE, AUTHORIZATION_ATTRIBUTE);
                     if (client.getRole().getRole().equalsIgnoreCase("client")){
                         request.getRequestDispatcher("/client.jsp").forward(request, response);
                     } else
@@ -44,17 +43,14 @@ public class LoginServlet extends HttpServlet {
                 break;
             case "logout":
                 try {
-                    Session session = (Session) request.getSession().getAttribute("session");
-                    session.setOpened(false);
-                    request.getSession().setAttribute("session", session);
+                    HttpSession httpSession = request.getSession();
+                    httpSession.removeAttribute(AuthFilter.AUTHORISED_ATTRIBUTE);
                     request.getRequestDispatcher("/index.jsp").forward(request, response);
                 } catch (Exception e) {
                     response.sendError(300, "You're not logged in");
                 }
                 break;
         }
-        // get request parameters for userID and password
-
 
     }
 

@@ -53,11 +53,21 @@ public class OperatorServiceImpl implements OperatorService {
     }
 
     @Override
-    public void concludeContract(Client client, long tariffId, long number) throws WrongIdException {
+    public void concludeContract(long clientId, long tariffId, long number) throws WrongIdException {
         LOGGER.debug("Concluding contract");
         Contract contract = new Contract();
+        Client client = null;
+        try {
+            client = clientDao.getById(clientId);
+        } catch (Exception e) {
+            throw new WrongIdException("Can't find client.");
+        }
         contract.setClient(client);
-        setTariff(contract, tariffId);
+        try {
+            setTariff(contract, tariffId);
+        } catch (WrongIdException e) {
+            throw new WrongIdException("Can't find tariff.");
+        }
         setNumber(number, contract);
         contractDao.create(contract);
     }
@@ -241,7 +251,9 @@ public class OperatorServiceImpl implements OperatorService {
         option.setName(name);
         option.setOptionPrice(optionPrice);
         option.setConnectionPrice(connectionPrice);
-        optionDao.create(option);
+        Option option1 = optionDao.create(option);
+        System.out.println("created");
+        System.out.println(option1);
     }
 
     @Override

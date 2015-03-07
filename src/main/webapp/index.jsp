@@ -2,26 +2,26 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <html>
-<head>
-    <title>Mobile Operator</title>
-    <link rel="stylesheet" href="css/style.css" type="text/css">
-</head>
+    <head>
+        <title>Mobile Operator</title>
+        <link rel="stylesheet" href="css/style.css" type="text/css">
+    </head>
 <body>
-<div id = "header">
-    <h1> Welcome to Mobile Operator System</h1>
-</div>
-<div id = "nav">
-    <div class = "link">
-        <a href = "login.jsp">Login</a> <br>
-        <a href="client.jsp">Profile</a>
+    <div id="monitor">
+    <div id = "header">
+        Welcome to Mobile Operator System
     </div>
-</div>
-<div id = "section">
-</div>
-<div id = "footer">
-    <p>
+    <div id = "nav">
+        <div class = "link">
+            <p><a href="index.jsp">Home</a></p>
+            <p><a href = "login.jsp">Login</a></p>
+        </div>
+    </div>
+    <div id = "section">
+    </div>
+    </div>
+    <div id = "footer">
         CreatedBy © Stanchin Denis
-    </p>
-</div>
+    </div>
 </body>
 </html>

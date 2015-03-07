@@ -1,7 +1,5 @@
 package com.tsystems.javaschool.servlets;
 
-import com.tsystems.javaschool.dao.impl.ContractDao;
-import com.tsystems.javaschool.dao.impl.TariffDao;
 import com.tsystems.javaschool.entities.Client;
 import com.tsystems.javaschool.entities.Contract;
 import com.tsystems.javaschool.entities.Option;
@@ -9,7 +7,6 @@ import com.tsystems.javaschool.entities.Tariff;
 import com.tsystems.javaschool.exceptions.IncompatibleOptionException;
 import com.tsystems.javaschool.exceptions.WrongIdException;
 import com.tsystems.javaschool.persistence.PersistenceUtil;
-import com.tsystems.javaschool.persistence.Session;
 import com.tsystems.javaschool.services.ClientService;
 import com.tsystems.javaschool.services.impl.ClientServiceImpl;
 

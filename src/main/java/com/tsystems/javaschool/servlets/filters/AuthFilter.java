@@ -1,7 +1,5 @@
 package com.tsystems.javaschool.servlets.filters;
 
-import org.apache.log4j.Logger;
-
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,10 +8,9 @@ import java.io.IOException;
 
 
 public class AuthFilter implements Filter {
-    private ServletContext context;
+    public static final String AUTHORISED_ATTRIBUTE = "isAuthorised";
 
     public void init(FilterConfig fConfig) throws ServletException {
-        this.context = fConfig.getServletContext();
     }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -21,23 +18,18 @@ public class AuthFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
-        String uri = req.getRequestURI();
-
         HttpSession session = req.getSession(false);
-
-        if(session == null && !(uri.endsWith("html") || uri.endsWith("LoginServlet"))){
-            res.sendRedirect("login.html");
-        }else{
-            chain.doFilter(request, response);
+        Object attr = session.getAttribute(AUTHORISED_ATTRIBUTE);
+        if (attr == null) {
+            res.sendRedirect(req.getContextPath() + "/login.jsp");
+            return;
         }
 
+        chain.doFilter(request, response);
 
     }
 
-
-
     public void destroy() {
-        context = null;
     }
 }
 

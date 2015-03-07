@@ -17,9 +17,26 @@
         <servlet-name>loginServlet</servlet-name>
         <servlet-class>com.tsystems.javaschool.servlets.LoginServlet</servlet-class>
     </servlet>
-    
     <servlet-mapping>
         <servlet-name>loginServlet</servlet-name>
         <url-pattern>/loginServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>clientServlet</servlet-name>
+        <servlet-class>com.tsystems.javaschool.servlets.ClientServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>clientServlet</servlet-name>
+        <url-pattern>/clientServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>adminServlet</servlet-name>
+        <servlet-class>com.tsystems.javaschool.servlets.AdminServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>adminServlet</servlet-name>
+        <url-pattern>/adminServlet</url-pattern>
     </servlet-mapping>
 </web-app>
