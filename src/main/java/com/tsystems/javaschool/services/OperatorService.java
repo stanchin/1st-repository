@@ -55,4 +55,6 @@ public interface OperatorService {
     public List<Option> setIncompatibleOptions(long optionId, long...optionsId) throws IncompatibleOptionException;
 
     public List<Option> setRequiredOptions(long optionId, long...optionsId) throws RequiredOptionException;
+
+    public List<Option> getOptions();
 }

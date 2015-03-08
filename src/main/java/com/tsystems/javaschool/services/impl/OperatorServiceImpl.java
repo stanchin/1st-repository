@@ -302,4 +302,10 @@ public class OperatorServiceImpl implements OperatorService {
         optionDao.update(option);
         return reqOptions;
     }
+
+    @Override
+    public List<Option> getOptions() {
+        LOGGER.debug("Getting options");
+        return optionDao.getAll();
+    }
 }

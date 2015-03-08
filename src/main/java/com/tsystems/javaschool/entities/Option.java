@@ -18,12 +18,12 @@ public class Option {
     private BigDecimal optionPrice;
     @Column(name = "connection_price")
     private BigDecimal connectionPrice;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "options_incompatible",
                 joinColumns = @JoinColumn(name = "inc_option_id"),
                 inverseJoinColumns = @JoinColumn(name = "base_option_id"))
     private List<Option> incOptions;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "options_required",
                 joinColumns = @JoinColumn(name = "req_option_id"),
                 inverseJoinColumns = @JoinColumn(name = "base_option_id"))

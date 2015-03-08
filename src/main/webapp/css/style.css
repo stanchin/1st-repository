@@ -31,6 +31,9 @@ body {
     width:90%;
     float: left;
 }
+#section table tr td{
+    font-size: 20px;
+}
 #content{
     float: left;
     font-size: 20px;
@@ -46,7 +49,7 @@ body {
 #topNav{
     width: 70%;
     float: left;
-    margin: 0 0 3em 0;
+    margin: 0 0 15px 0;
     padding: 0;
     list-style: none;
 }
@@ -97,6 +100,11 @@ aside p{
     background-color:black;
     color:white;
     text-align:center;
+}
+#errorMsg{
+    font-size: 50px;
+    text-align: center;
+    color: #cc0000;
 }
 .myButton {
     -moz-box-shadow:inset 0 1px 0 0 #54a3f7;
