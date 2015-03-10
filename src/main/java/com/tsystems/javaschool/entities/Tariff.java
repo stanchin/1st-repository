@@ -16,10 +16,10 @@ public class Tariff {
     private String name;
     @Column(name = "tariff_price")
     private BigDecimal price;
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "tariffs_options",
-                joinColumns = @JoinColumn(name = "option_id"),
-                inverseJoinColumns = @JoinColumn(name = "tariff_id"))
+                joinColumns = @JoinColumn(name = "tariff_id"),
+                inverseJoinColumns = @JoinColumn(name = "option_id"))
     private List<Option> options;
 
     public Long getId() {

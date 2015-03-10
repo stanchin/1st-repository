@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script type="text/javascript" src="script/jquery-1.11.2.min.js"></script>
-<form id = "login" action="adminServlet" method="get">
+<form id = "added" action="adminServlet" method="get">
     Tariff name:<br>
     <input type="text" name="name" maxlength="30">
     <br>
@@ -10,7 +10,7 @@
             <td><c:out value="${option.getName()}"/></td>
             <td><c:out value="${option.getOptionPrice()}"/></td>
             <td><c:out value="${option.getConnectionPrice()}"/></td>
-            <td><input id="box${option.getId()}" type="checkbox" value="${option.getId()}"></td>
+            <td><input name="optionsId" id="box${option.getId()}" type="checkbox" value="${option.getId()}"></td>
         </tr>
         <script language="javascript">
             $(function(){
@@ -43,5 +43,6 @@
         </script>
     </c:forEach>
     </table>
-    <input type="SUBMIT" name="action" value="Add tariff" class="myButton">
+    <input type="SUBMIT" class="myButton">
+    <input type="hidden" name="action" value="addTariff">
 </form>

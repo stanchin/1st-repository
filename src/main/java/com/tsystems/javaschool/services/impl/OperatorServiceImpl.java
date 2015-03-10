@@ -53,12 +53,12 @@ public class OperatorServiceImpl implements OperatorService {
     }
 
     @Override
-    public void concludeContract(long clientId, long tariffId, long number) throws WrongIdException {
+    public void concludeContract(String name, String surname, long tariffId, long number) throws WrongIdException {
         LOGGER.debug("Concluding contract");
         Contract contract = new Contract();
         Client client = null;
         try {
-            client = clientDao.getById(clientId);
+            client = clientDao.findByNameSurname(name, surname);
         } catch (Exception e) {
             throw new WrongIdException("Can't find client.");
         }

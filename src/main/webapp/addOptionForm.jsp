@@ -1,4 +1,4 @@
-<form id = "login" action="adminServlet" method="get">
+<form id = "added" action="adminServlet" method="get">
     Option name:<br>
     <input type="text" name="name" maxlength="30">
     <br>

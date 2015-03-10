@@ -13,19 +13,37 @@ $(document).ready(function(){
         });
     });
     $('#3').click(function(){
-        $('content').load();
+        $.ajax('adminServlet', {
+            type: 'post',
+            data: {'action':'getTariffs'},
+            success: function(){
+                $('#content').load("addContractForm.jsp");
+            }
+        });
     });
     $('#4').click(function(){
         $('#content').load("addClientForm.jsp");
     });
     $('#5').click(function(){
-        $('content').load();
+        $.ajax('adminServlet', {
+            type: 'post',
+            data: {'action':'getClients'},
+            success: function(){
+                $('#content').load("showClients.jsp");
+            }
+        });
     });
     $('#6').click(function(){
-        $('content').load();
+        $.ajax('adminServlet', {
+            type:'post',
+            data: {'action':'getContracts'},
+            success: function(){
+                $('#content').load('showContracts.jsp');
+            }
+        });
     });
     $('#7').click(function(){
-        $('content').load();
+        $('#content').load('addRoleForm.jsp');
     });
     $('#8').click(function(){
         $.ajax('adminServlet', {
@@ -42,6 +60,15 @@ $(document).ready(function(){
             data: {'action':'showOptions'},
             success: function(){
                 $('#content').load("addReqOptionForm.jsp");
+            }
+        });
+    });
+    $('#10').click(function(){
+        $.ajax('adminServlet', {
+            type: 'post',
+            data: {'action':'showOptions'},
+            success: function(){
+                $('#content').load("showOptions.jsp");
             }
         });
     });

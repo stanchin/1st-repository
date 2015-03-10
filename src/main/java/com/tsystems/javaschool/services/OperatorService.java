@@ -18,7 +18,7 @@ public interface OperatorService {
 
     public void addRole(String desc);
 
-    public void concludeContract(long clientId, long tariffId, long number) throws WrongIdException;
+    public void concludeContract(String name, String surname, long tariffId, long number) throws WrongIdException;
 
     public Number generateUniqueNumber();
 

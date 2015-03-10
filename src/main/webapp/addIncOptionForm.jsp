@@ -1,10 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<form id = "login" action="adminServlet" method="post">
+<script type="text/javascript" src="script/jquery-1.11.2.min.js"></script>
+<form id = "added" action="adminServlet" method="post">
     <table>
         <tr>
             <td>Base option:</td>
             <td>
-                <select id="1" required>
+                <select required="" name="baseOptionId" form="added">
                     <c:forEach var="option" items="${sessionScope.get('options')}">
                         <option value="${option.getId()}">${option.getName()}</option>
                     </c:forEach>
@@ -14,7 +15,8 @@
         <tr>
             <td>Incompatible option:</td>
             <td>
-                <select id="2" required>
+                <select required="" name="incOptionsId" form="added" size="${sessionScope.get('options').size()}"
+                        multiple="multiple">
                     <c:forEach var="option" items="${sessionScope.get('options')}">
                         <option value="${option.getId()}">${option.getName()}</option>
                     </c:forEach>
@@ -23,16 +25,7 @@
         </tr>
     </table>
     <input type="SUBMIT" value="Set" class="myButton">
-    <input type="hidden" id="bo" name="baseOptionId">
-    <input type="hidden" id="io" name="incOptionId">
     <input type="hidden" name="action" value="setIncompatibleOptions">
 </form>
-<script>
-    $('#select').selected(function(){
-        var x = $('#1').find('option').val();
-        document.getElementById('bo').setAttribute('value', x);
-        var y = $('#2').find('option').val();
-        document.getElementById('bo').setAttribute('value', y);
-    })
-</script>
+
 

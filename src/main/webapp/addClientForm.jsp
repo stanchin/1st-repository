@@ -1,5 +1,5 @@
 
-<form id = "login" action="adminServlet" method="get">
+<form id = "added" action="adminServlet" method="get">
     <table>
         <tr>
             <td>Name:</td>

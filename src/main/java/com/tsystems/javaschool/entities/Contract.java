@@ -26,8 +26,8 @@ public class Contract {
     private Tariff tariff;
     @ManyToMany
     @JoinTable(name = "contract_options",
-                joinColumns = @JoinColumn(name = "option_id"),
-                inverseJoinColumns = @JoinColumn(name = "contract_id"))
+                joinColumns = @JoinColumn(name = "contract_id"),
+                inverseJoinColumns = @JoinColumn(name = "option_id"))
     private List<Option> options;
 
     public boolean getBlockedByOperator() {

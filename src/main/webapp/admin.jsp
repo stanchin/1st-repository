@@ -28,11 +28,15 @@
                 <li><input id="2" type="button" value="Add tariff" class="myButton"></li>
                 <li><input id="3" type="button" value="Add contract" class="myButton"></li>
                 <li><input id="4" type="button" value="Add client" class="myButton"></li>
-                <li><input id="5" type="button" value="Show clients" class="myButton"></li>
-                <li><input id="6" type="button" value="Show contracts" class="myButton"></li>
                 <li><input id="7" type="button" value="Add role" class="myButton"></li>
                 <li><input id="8" type="button" value="Add IncOption" class="myButton"></li>
                 <li><input id="9" type="button" value="Add ReqOption" class="myButton"></li>
+            </ul>
+            <br>
+            <ul>
+                <li><input id="5" type="button" value="Show clients" class="myButton"></li>
+                <li><input id="6" type="button" value="Show contracts" class="myButton"></li>
+                <li><input id="10" type="button" value="Show options" class="myButton"></li>
             </ul>
         </div>
         <div id="content">

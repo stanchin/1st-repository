@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -52,7 +51,7 @@ public class AdminServlet extends HttpServlet {
                     operatorService.addClient(name, surname, birthday, address, passport, email, password,  roleId);
                 } catch (Exception e) {
                     req.setAttribute("error", e.getMessage());
-                    req.getRequestDispatcher("/error.jsp").forward(req, resp);
+                    req.getRequestDispatcher("error.jsp").forward(req, resp);
                 }
                 req.getRequestDispatcher("admin.jsp").forward(req, resp);
                 break;
@@ -64,24 +63,25 @@ public class AdminServlet extends HttpServlet {
                 } catch (Exception e) {
                     resp.sendError(404, "Can't add role");
                 }
-                req.getRequestDispatcher("/admin.jsp").forward(req, resp);
+                req.getRequestDispatcher("admin.jsp").forward(req, resp);
                 break;
-            case "concludeContact":
-                long clientId = Long.valueOf(req.getParameter("clientId"));
+            case "concludeContract":
+                String name2 = req.getParameter("name");
+                String surname1 = req.getParameter("surname");
                 long tariffId = Long.valueOf(req.getParameter("tariffId"));
                 long number = Long.valueOf(req.getParameter("number"));
                 try {
-                    operatorService.concludeContract(clientId, tariffId, number);
+                    operatorService.concludeContract(name2, surname1, tariffId, number);
                 } catch (WrongIdException e) {
                     req.setAttribute("error", e.getMessage());
-                    req.getRequestDispatcher("/error.jsp").forward(req, resp);
+                    req.getRequestDispatcher("error.jsp").forward(req, resp);
                 }
-                req.getRequestDispatcher("/admin.jsp").forward(req, resp);
+                req.getRequestDispatcher("admin.jsp").forward(req, resp);
                 break;
             case "generateNumber":
                 Number number1 = operatorService.generateUniqueNumber();
-                req.getSession().setAttribute("number", number1);
-                req.getRequestDispatcher("/admin.jsp").forward(req, resp);
+                req.getSession().setAttribute("number", number1.getNumber());
+                req.getRequestDispatcher("admin.jsp").forward(req, resp);
                 break;
             case "dropContractOption":
                 long contractId = Long.valueOf(req.getParameter("contractId"));
@@ -90,27 +90,27 @@ public class AdminServlet extends HttpServlet {
                     operatorService.shutDownContractOption(contractId, optionId);
                 } catch (RequiredOptionException e) {
                     req.setAttribute("error", e.getMessage());
-                    req.getRequestDispatcher("/error.jsp").forward(req, resp);
+                    req.getRequestDispatcher("error.jsp").forward(req, resp);
                 } catch (WrongIdException e) {
                     req.setAttribute("error", e.getMessage());
-                    req.getRequestDispatcher("/error.jsp").forward(req, resp);
+                    req.getRequestDispatcher("error.jsp").forward(req, resp);
                 }
-                resp.sendRedirect("/admin.jsp");
+                resp.sendRedirect("admin.jsp");
                 break;
             case "getClients":
                 List<Client> clients = operatorService.getClients();
                 req.getSession().setAttribute("clients", clients);
-                req.getRequestDispatcher("/admin.jsp").forward(req, resp);
+                req.getRequestDispatcher("admin.jsp").forward(req, resp);
                 break;
             case "getContracts":
                 List<Contract> contracts = operatorService.getContracts();
                 req.getSession().setAttribute("contracts", contracts);
-                req.getRequestDispatcher("/admin.jsp").forward(req, resp);
+                req.getRequestDispatcher("admin.jsp").forward(req, resp);
                 break;
             case "getTariffs":
                 List<Tariff> tariffs = operatorService.getTariffs();
                 req.getSession().setAttribute("tariffs", tariffs);
-                req.getRequestDispatcher("/admin.jsp").forward(req, resp);
+                req.getRequestDispatcher("admin.jsp").forward(req, resp);
                 break;
             case "blockContract":
                 long number2 = Long.valueOf(req.getParameter("number"));
@@ -118,9 +118,9 @@ public class AdminServlet extends HttpServlet {
                     operatorService.blockNumber(number2);
                 } catch (WrongIdException e) {
                     req.setAttribute("error", e.getMessage());
-                    req.getRequestDispatcher("/error.jsp").forward(req, resp);
+                    req.getRequestDispatcher("error.jsp").forward(req, resp);
                 }
-                req.getRequestDispatcher("/admin.jsp").forward(req, resp);
+                req.getRequestDispatcher("admin.jsp").forward(req, resp);
                 break;
             case "deployContract":
                 long number3 = Long.valueOf(req.getParameter("number"));
@@ -128,9 +128,9 @@ public class AdminServlet extends HttpServlet {
                     operatorService.blockNumber(number3);
                 } catch (WrongIdException e) {
                     req.setAttribute("error", e.getMessage());
-                    req.getRequestDispatcher("/error.jsp").forward(req, resp);
+                    req.getRequestDispatcher("error.jsp").forward(req, resp);
                 }
-                req.getRequestDispatcher("/admin.jsp").forward(req, resp);
+                req.getRequestDispatcher("admin.jsp").forward(req, resp);
                 break;
             case "findClient":
                 long number4 = Long.valueOf(req.getParameter("number"));
@@ -139,10 +139,10 @@ public class AdminServlet extends HttpServlet {
                     client1 = operatorService.find(number4);
                 } catch (Exception e) {
                     req.setAttribute("error", e.getMessage());
-                    req.getRequestDispatcher("/error.jsp").forward(req, resp);
+                    req.getRequestDispatcher("error.jsp").forward(req, resp);
                 }
                 req.getSession().setAttribute("foundedClient", client1);
-                req.getRequestDispatcher("/admin.jsp").forward(req, resp);
+                req.getRequestDispatcher("admin.jsp").forward(req, resp);
                 break;
             case "changeTariff":
                 long contractId1 = Long.valueOf(req.getParameter("contractId"));
@@ -151,9 +151,9 @@ public class AdminServlet extends HttpServlet {
                     operatorService.changeTariff(contractId1, tariffId1);
                 } catch (WrongIdException e) {
                     req.setAttribute("error", e.getMessage());
-                    req.getRequestDispatcher("/error.jsp").forward(req, resp);
+                    req.getRequestDispatcher("error.jsp").forward(req, resp);
                 }
-                resp.sendRedirect("/admin.jsp");
+                resp.sendRedirect("admin.jsp");
                 break;
             case "addTariff":
                 String name1 = req.getParameter("name");
@@ -168,8 +168,8 @@ public class AdminServlet extends HttpServlet {
                     req.setAttribute("error", e.getMessage());
                     req.getRequestDispatcher("/error.jsp").forward(req, resp);
                 }
-                resp.sendRedirect("/admin.jsp");
-
+                resp.sendRedirect("admin.jsp");
+                break;
             case "dropTariff":
                 long tariffId3 = Long.valueOf(req.getParameter("tariffId"));
                 try {
@@ -178,7 +178,8 @@ public class AdminServlet extends HttpServlet {
                     req.setAttribute("error", e.getMessage());
                     req.getRequestDispatcher("/error.jsp").forward(req, resp);
                 }
-                resp.sendRedirect("/admin.jsp");
+                resp.sendRedirect("admin.jsp");
+                break;
             case "addOption":
                 String optionName = req.getParameter("name");
                 double val1 = Double.valueOf(req.getParameter("optionPrice"));
@@ -189,9 +190,9 @@ public class AdminServlet extends HttpServlet {
                     operatorService.addOption(optionName, optionPrice, connectionPrice);
                 } catch (Exception e) {
                     req.setAttribute("error", e.getMessage());
-                    req.getRequestDispatcher("/error.jsp").forward(req, resp);
+                    req.getRequestDispatcher("error.jsp").forward(req, resp);
                 }
-                resp.sendRedirect("/admin.jsp");
+                resp.sendRedirect("admin.jsp");
                 break;
             case "dropTariffOption":
                 long tariffId2 = Long.valueOf(req.getParameter("tariffId"));
@@ -200,37 +201,44 @@ public class AdminServlet extends HttpServlet {
                     operatorService.dropOption(tariffId2, optionId1);
                 } catch (WrongIdException e) {
                     req.setAttribute("error", e.getMessage());
-                    req.getRequestDispatcher("/error.jsp").forward(req, resp);
+                    req.getRequestDispatcher("error.jsp").forward(req, resp);
                 }
-                resp.sendRedirect("/admin.jsp");
+                resp.sendRedirect("admin.jsp");
                 break;
             case "setIncompatibleOptions":
                 long baseOptionId = Long.valueOf(req.getParameter("baseOptionId"));
-                long incOptionId = Long.valueOf(req.getParameter("incOptionId"));
+                String[] params = req.getParameterValues("incOptionsId");
+                long[] incOptionsId = new long[params.length];
+                for (int i = 0; i< params.length; i++){
+                    incOptionsId[i] = Long.valueOf(params[i]);
+                }
                 try {
-                    operatorService.setIncompatibleOptions(baseOptionId, incOptionId);
+                    operatorService.setIncompatibleOptions(baseOptionId, incOptionsId);
                 } catch (IncompatibleOptionException e) {
                     req.setAttribute("error", e.getMessage());
-                    req.getRequestDispatcher("/error.jsp").forward(req, resp);
+                    req.getRequestDispatcher("error.jsp").forward(req, resp);
                 }
-                resp.sendRedirect("/admin.jsp");
+                resp.sendRedirect("admin.jsp");
                 break;
             case "setRequiredOptions":
                 long baseOptionId1 = Long.valueOf(req.getParameter("baseOptionId"));
-                long incOptionId1 = Long.valueOf(req.getParameter("incOptionId"));
-
+                String[] params1 = req.getParameterValues("reqOptionsId");
+                long[] reqOptionsId = new long[params1.length];
+                for (int i = 0; i< params1.length; i++){
+                    reqOptionsId[i] = Long.valueOf(params1[i]);
+                }
                 try {
-                    operatorService.setIncompatibleOptions(baseOptionId1, incOptionId1);
+                    operatorService.setIncompatibleOptions(baseOptionId1, reqOptionsId);
                 } catch (IncompatibleOptionException e) {
                     req.setAttribute("error", e.getMessage());
-                    req.getRequestDispatcher("/error.jsp").forward(req, resp);
+                    req.getRequestDispatcher("error.jsp").forward(req, resp);
                 }
-                resp.sendRedirect("/admin.jsp");
+                resp.sendRedirect("admin.jsp");
                 break;
             case "showOptions":
                 List<Option> options = operatorService.getOptions();
                 req.getSession().setAttribute("options", options);
-                req.getRequestDispatcher("/admin.jsp").forward(req, resp);
+                req.getRequestDispatcher("admin.jsp").forward(req, resp);
                 break;
         }
     }

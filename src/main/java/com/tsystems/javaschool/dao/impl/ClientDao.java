@@ -19,4 +19,11 @@ public class ClientDao extends GenericDaoImpl<Client>{
                 .setParameter("email", email).setParameter("password", password)
                 .getSingleResult();
     }
+
+    public Client findByNameSurname (String name, String surname){
+        return em.createQuery("SELECT c from Client c WHERE " +
+                "c.name = :name AND c.surname = :surname", Client.class)
+                .setParameter("name", name).setParameter("surname", surname)
+                .getSingleResult();
+    }
 }
