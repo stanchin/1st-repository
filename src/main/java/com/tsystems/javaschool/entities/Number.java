@@ -26,4 +26,24 @@ public class Number {
     public void setContract(Contract contract) {
         this.contract = contract;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Number)) return false;
+
+        Number number1 = (Number) o;
+
+        if (!contract.equals(number1.contract)) return false;
+        if (!number.equals(number1.number)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = number.hashCode();
+        result = 31 * result + contract.hashCode();
+        return result;
+    }
 }

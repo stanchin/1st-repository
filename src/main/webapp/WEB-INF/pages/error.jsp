@@ -3,7 +3,6 @@
 <html>
 <head>
     <title>Mobile Operator</title>
-    <link rel="stylesheet" href="css/style.css" type="text/css">
 </head>
 <body>
 <div id="monitor">
@@ -18,7 +17,7 @@
     </div>
     <div id = "section">
         <div id="errorMsg">
-            ${sessionScope.get("error")}
+            ${sessionScope.get("errorMsg")}
         </div>
     </div>
 </div>

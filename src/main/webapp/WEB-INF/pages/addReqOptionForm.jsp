@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<script type="text/javascript" src="script/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" src="../../script/jquery-1.11.2.min.js"></script>
 <form id = "added" action="adminServlet" method="post">
     <table>
         <tr>

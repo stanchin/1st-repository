@@ -76,4 +76,26 @@ public class Option {
     public void setIncOptions(List<Option> incompatible) {
         this.incOptions = incompatible;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Option)) return false;
+
+        Option option = (Option) o;
+
+        if (!connectionPrice.equals(option.connectionPrice)) return false;
+        if (!name.equals(option.name)) return false;
+        if (!optionPrice.equals(option.optionPrice)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + optionPrice.hashCode();
+        result = 31 * result + connectionPrice.hashCode();
+        return result;
+    }
 }

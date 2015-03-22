@@ -85,4 +85,24 @@ public class Contract {
     public void setOptions(List<Option> options) {
         this.options = options;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Contract)) return false;
+
+        Contract contract = (Contract) o;
+
+        if (!client.equals(contract.client)) return false;
+        if (!number.equals(contract.number)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = number.hashCode();
+        result = 31 * result + client.hashCode();
+        return result;
+    }
 }

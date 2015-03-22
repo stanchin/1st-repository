@@ -5,9 +5,9 @@
 <html>
 <head>
     <title>Profile</title>
-    <link rel="stylesheet" href="css/style.css" type="text/css">
-    <script type="text/javascript" src="script/jquery-1.11.2.min.js"></script>
-    <script type="text/javascript" src="script/javascript.js"></script>
+    <link rel="stylesheet" href="../../../css/style.css" type="text/css">
+    <script type="text/javascript" src="../../../script/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="../../../script/javascript.js"></script>
 </head>
 <body>
 <div id="monitor">
@@ -16,9 +16,9 @@
     </div>
     <div id = "nav">
         <div class = "link">
-            <p><a href="index.jsp">Home</a></p>
-            <p><a href = "login.jsp">Login</a></p>
-            <p><a href="admin.jsp">Profile</a></p>
+            <p><a href="../index.jsp">Home</a></p>
+            <p><a href = "../login.jsp">Login</a></p>
+            <p><a href="operator.jsp">Profile</a></p>
         </div>
     </div>
     <div id = "section">

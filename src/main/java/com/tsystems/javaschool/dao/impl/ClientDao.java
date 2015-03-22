@@ -3,8 +3,9 @@ package com.tsystems.javaschool.dao.impl;
 
 import com.tsystems.javaschool.dao.GenericDaoImpl;
 import com.tsystems.javaschool.entities.Client;
-import com.tsystems.javaschool.persistence.PersistenceUtil;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class ClientDao extends GenericDaoImpl<Client>{
 
     public Client findByNumber (long num){

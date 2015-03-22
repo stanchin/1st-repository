@@ -9,13 +9,5 @@
         <class>com.tsystems.javaschool.entities.Tariff</class>
         <class>com.tsystems.javaschool.entities.Number</class>
         <class>com.tsystems.javaschool.entities.Role</class>
-        <properties>
-            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
-            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/mobile_operator"/>
-            <property name="hibernate.connection.username" value="root"/>
-            <property name="hibernate.connection.password" value="root"/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
-            <property name="hibernate.show_sql" value="true"/>
-        </properties>
     </persistence-unit>
     </persistence>

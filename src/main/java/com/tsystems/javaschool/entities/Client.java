@@ -110,4 +110,31 @@ public class Client {
     public void setRole(Role role) {
         this.role = role;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Client)) return false;
+
+        Client client = (Client) o;
+
+        if (!address.equals(client.address)) return false;
+        if (!birthday.equals(client.birthday)) return false;
+        if (!email.equals(client.email)) return false;
+        if (!name.equals(client.name)) return false;
+        if (!passport.equals(client.passport)) return false;
+        return surname.equals(client.surname);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + surname.hashCode();
+        result = 31 * result + birthday.hashCode();
+        result = 31 * result + passport.hashCode();
+        result = 31 * result + address.hashCode();
+        result = 31 * result + email.hashCode();
+        return result;
+    }
 }

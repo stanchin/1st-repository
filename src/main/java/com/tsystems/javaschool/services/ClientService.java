@@ -32,8 +32,8 @@ public interface ClientService {
 
     public void removeOptions(long contractId, long... optionsId) throws WrongIdException;
 
-    public void blockNumber(long contractId) throws WrongIdException;
+    public void lockNumber(long contractId) throws WrongIdException;
 
-    public void deployNumber(long contractId) throws WrongIdException;
+    public void unlockNumber(long contractId) throws WrongIdException;
 
 }

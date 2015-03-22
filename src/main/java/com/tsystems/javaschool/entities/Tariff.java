@@ -53,4 +53,26 @@ public class Tariff {
     public void setOptions(List<Option> options) {
         this.options = options;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Tariff)) return false;
+
+        Tariff tariff = (Tariff) o;
+
+        if (!name.equals(tariff.name)) return false;
+        if (!options.equals(tariff.options)) return false;
+        if (!price.equals(tariff.price)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + price.hashCode();
+        result = 31 * result + options.hashCode();
+        return result;
+    }
 }

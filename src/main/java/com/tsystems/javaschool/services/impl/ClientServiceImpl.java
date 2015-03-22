@@ -13,19 +13,27 @@ import com.tsystems.javaschool.exceptions.IncompatibleOptionException;
 import com.tsystems.javaschool.exceptions.WrongIdException;
 import com.tsystems.javaschool.services.ClientService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service("clientServiceImpl")
+@Transactional
 public class ClientServiceImpl implements ClientService {
 
     private static final Logger LOGGER = Logger.getLogger(ClientServiceImpl.class);
 
-    private static ContractDao contractDao = new ContractDao();
-    private static ClientDao clientDao = new ClientDao();
-    private static TariffDao tariffDao = new TariffDao();
-    private static OptionDao optionDao = new OptionDao();
+    @Autowired
+    private ContractDao contractDao;
+    @Autowired
+    private ClientDao clientDao;
+    @Autowired
+    private TariffDao tariffDao;
+    @Autowired
+    private OptionDao optionDao;
 
     @Override
     public Client getClient(String email, String password) {
@@ -37,7 +45,9 @@ public class ClientServiceImpl implements ClientService {
     public List<Contract> getContracts(long clientId) throws WrongIdException {
         LOGGER.debug("Getting client contracts");
         Client client = clientDao.getById(clientId);
-        if (client == null) throw new WrongIdException("Client with id = " + clientId + " doesn't exist.");
+        if (client == null) {
+            throw new WrongIdException("Client with id = " + clientId + " doesn't exist.");
+        }
         return client.getNumbers();
     }
 
@@ -128,7 +138,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void blockNumber(long contractId) throws WrongIdException {
+    public void lockNumber(long contractId) throws WrongIdException {
         LOGGER.debug("Blocking users contract");
         Contract contract = contractDao.getById(contractId);
         if (contract == null) throw new WrongIdException("Contract with id = " + contractId + " doesn't exist.");
@@ -137,7 +147,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void deployNumber(long contractId) throws WrongIdException {
+    public void unlockNumber(long contractId) throws WrongIdException {
         LOGGER.debug("Deploying users contract");
         Contract contract = contractDao.getById(contractId);
         if (contract == null) throw new WrongIdException("Contract with id = " + contractId + " doesn't exist.");

@@ -5,7 +5,7 @@
 <html>
     <head>
         <title>Profile</title>
-        <link rel="stylesheet" href="css/style.css" type="text/css">
+        <link rel="stylesheet" href="../../../css/style.css" type="text/css">
     </head>
 <body>
     <div id="monitor">
@@ -14,8 +14,8 @@
         </div>
         <div id = "nav">
             <div class = "link">
-                <p><a href="index.jsp">Home</a></p>
-                <p><a href = "login.jsp">Login</a></p>
+                <p><a href="../index.jsp">Home</a></p>
+                <p><a href = "../login.jsp">Login</a></p>
                 <p><a href="client.jsp">Profile</a></p>
             </div>
         </div>

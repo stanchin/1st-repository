@@ -9,23 +9,34 @@ import com.tsystems.javaschool.exceptions.RequiredOptionException;
 import com.tsystems.javaschool.exceptions.WrongIdException;
 import com.tsystems.javaschool.services.OperatorService;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+@Service("operatorServiceImpl")
+@Transactional
 public class OperatorServiceImpl implements OperatorService {
+
     private static final Logger LOGGER = Logger.getLogger(OperatorServiceImpl.class);
 
-    private static ClientDao clientDao = new ClientDao();
-    private static RoleDao roleDao = new RoleDao();
-    private static ContractDao contractDao = new ContractDao();
-    private static NumberDao numberDao = new NumberDao();
-    private static TariffDao tariffDao = new TariffDao();
-    private static OptionDao optionDao = new OptionDao();
+    @Autowired
+    private ClientDao clientDao;
+    @Autowired
+    private RoleDao roleDao;
+    @Autowired
+    private ContractDao contractDao;
+    @Autowired
+    private NumberDao numberDao;
+    @Autowired
+    private TariffDao tariffDao;
+    @Autowired
+    private OptionDao optionDao;
 
     @Override
     public void addClient(String name, String surname, Date birthday, String address, long passport, String email,
@@ -179,7 +190,7 @@ public class OperatorServiceImpl implements OperatorService {
     }
 
     @Override
-    public void blockNumber(long number) throws WrongIdException {
+    public void lockNumber(long number) throws WrongIdException {
         LOGGER.debug("Blocking client");
         Contract contract = contractDao.findByNumber(number);
         if (contract == null) throw new WrongIdException(
@@ -189,7 +200,7 @@ public class OperatorServiceImpl implements OperatorService {
     }
 
     @Override
-    public void deployNumber(long number) throws WrongIdException {
+    public void unlockNumber(long number) throws WrongIdException {
         LOGGER.debug("Deploying client");
         Contract contract = contractDao.findByNumber(number);
         if (contract == null) throw new WrongIdException("Contract with number = " + number + " doesn't exists.");
@@ -216,7 +227,7 @@ public class OperatorServiceImpl implements OperatorService {
     }
 
     @Override
-    public void addTariff(String name, long...optionsId) throws WrongIdException {
+    public void addTariff(String name, Long[] optionsId) throws WrongIdException {
         LOGGER.debug("Adding tariff");
         Tariff tariff = new Tariff();
         tariff.setName(name);
@@ -268,7 +279,7 @@ public class OperatorServiceImpl implements OperatorService {
     }
 
     @Override
-    public List<Option> setIncompatibleOptions(long optionId, long... optionsId) throws IncompatibleOptionException {
+    public List<Option> setIncompatibleOptions(long optionId, Long[] optionsId) throws IncompatibleOptionException {
         LOGGER.debug("Setting incompatible options");
         Option option = optionDao.getById(optionId);
         List<Option> incOptions = new ArrayList<Option>();
@@ -286,7 +297,7 @@ public class OperatorServiceImpl implements OperatorService {
     }
 
     @Override
-    public List<Option> setRequiredOptions(long optionId, long... optionsId) throws RequiredOptionException {
+    public List<Option> setRequiredOptions(long optionId, Long[] optionsId) throws RequiredOptionException {
         LOGGER.debug("Setting required options");
         Option option = optionDao.getById(optionId);
         List<Option> reqOptions = new ArrayList<Option>();

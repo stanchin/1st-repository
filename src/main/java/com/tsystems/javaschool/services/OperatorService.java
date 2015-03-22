@@ -36,15 +36,15 @@ public interface OperatorService {
 
     public List<Tariff> getTariffs();
 
-    public void blockNumber(long clientId) throws WrongIdException;
+    public void lockNumber(long clientId) throws WrongIdException;
 
-    public void deployNumber(long clientId) throws WrongIdException;
+    public void unlockNumber(long clientId) throws WrongIdException;
 
     public Client find(long number);
 
     public void changeTariff(long contractId, long tariffId) throws WrongIdException;
 
-    public void addTariff(String name, long...optionsId) throws WrongIdException;
+    public void addTariff(String name, Long[] optionsId) throws WrongIdException;
 
     public void dropTariff(long tariffId) throws WrongIdException;
 
@@ -52,9 +52,9 @@ public interface OperatorService {
 
     public void dropOption(long tariffId, long optionId) throws WrongIdException;
 
-    public List<Option> setIncompatibleOptions(long optionId, long...optionsId) throws IncompatibleOptionException;
+    public List<Option> setIncompatibleOptions(long optionId, Long[] optionsId) throws IncompatibleOptionException;
 
-    public List<Option> setRequiredOptions(long optionId, long...optionsId) throws RequiredOptionException;
+    public List<Option> setRequiredOptions(long optionId, Long[] optionsId) throws RequiredOptionException;
 
     public List<Option> getOptions();
 }
