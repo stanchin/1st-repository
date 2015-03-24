@@ -5,24 +5,8 @@
     <title>Mobile Operator</title>
 </head>
 <body>
-<div id="monitor">
-    <div id = "header">
-        Welcome to Mobile Operator System
-    </div>
-    <div id = "nav">
-        <div class = "link">
-            <p><a href="index.jsp">Home</a></p>
-            <p><a href = "login.jsp">Login</a></p>
-        </div>
-    </div>
-    <div id = "section">
         <div id="errorMsg">
-            ${sessionScope.get("errorMsg")}
+            ${errorMsg}
         </div>
-    </div>
-</div>
-<div id = "footer">
-    CreatedBy © Stanchin Denis
-</div>
 </body>
 </html>

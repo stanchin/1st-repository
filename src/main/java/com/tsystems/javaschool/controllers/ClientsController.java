@@ -3,9 +3,8 @@ package com.tsystems.javaschool.controllers;
 import com.tsystems.javaschool.entities.Tariff;
 import com.tsystems.javaschool.exceptions.IncompatibleOptionException;
 import com.tsystems.javaschool.exceptions.WrongIdException;
-import com.tsystems.javaschool.services.impl.ClientServiceImpl;
+import com.tsystems.javaschool.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,11 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
-@Scope("session")
-public class ClientsBean {
+public class ClientsController {
 
     @Autowired
-    private ClientServiceImpl clientService;
+    private ClientService clientService;
 
     @RequestMapping(value = "/getClientContracts", method = RequestMethod.POST)
     public String getContracts(@RequestParam Long clientId, Model model)

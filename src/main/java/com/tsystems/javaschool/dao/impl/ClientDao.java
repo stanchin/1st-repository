@@ -3,9 +3,9 @@ package com.tsystems.javaschool.dao.impl;
 
 import com.tsystems.javaschool.dao.GenericDaoImpl;
 import com.tsystems.javaschool.entities.Client;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
-@Repository
+@Component
 public class ClientDao extends GenericDaoImpl<Client>{
 
     public Client findByNumber (long num){

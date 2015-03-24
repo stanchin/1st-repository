@@ -26,5 +26,8 @@
         <module name="MobileOperatorSystem" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="MobileOperatorSystem" target="1.7" />
+    </bytecodeTargetLevel>
   </component>
 </project>

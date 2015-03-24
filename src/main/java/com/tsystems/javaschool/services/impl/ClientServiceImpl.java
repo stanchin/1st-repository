@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service("clientServiceImpl")
+@Service
 @Transactional
 public class ClientServiceImpl implements ClientService {
 

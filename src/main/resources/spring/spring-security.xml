@@ -50,10 +50,10 @@
 
         <form-login
                 login-page="/login"
-                default-target-url="/login"
+                default-target-url="/welcome"
                 always-use-default-target="true"
-                authentication-failure-url="/error"
-                username-parameter="username"
+                authentication-failure-url="/goLogin?error"
+                username-parameter="email"
                 password-parameter="password"/>
         <logout logout-success-url="/logoutUser" />
         <csrf/>
@@ -66,7 +66,7 @@
                                users-by-username-query=
                                        "SELECT email, password, TRUE FROM clients WHERE email=?"
                                authorities-by-username-query=
-                                       "SELECT email, roles.role FROM clients JOIN roles WHERE email=?
+                                       "SELECT emai, roles.role FROM clients JOIN roles WHERE email=?
                                        AND clients.role_id=roles.role_id" />
         </authentication-provider>
     </authentication-manager>

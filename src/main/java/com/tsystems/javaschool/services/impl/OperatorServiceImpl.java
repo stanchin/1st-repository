@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-@Service("operatorServiceImpl")
+@Service
 @Transactional
 public class OperatorServiceImpl implements OperatorService {
 

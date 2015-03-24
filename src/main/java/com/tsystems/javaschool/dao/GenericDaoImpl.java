@@ -11,8 +11,6 @@ import javax.persistence.TypedQuery;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
-@Repository
-@Transactional
 public abstract class GenericDaoImpl<T> implements GenericDao<T> {
 
     protected Class entityClass;

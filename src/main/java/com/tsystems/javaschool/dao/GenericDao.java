@@ -8,7 +8,6 @@ import java.util.List;
 * Generic interface with CRUD-methods.
 */
 
-@Transactional
 public interface GenericDao<T> {
 
     /*

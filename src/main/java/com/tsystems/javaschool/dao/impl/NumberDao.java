@@ -3,10 +3,10 @@ package com.tsystems.javaschool.dao.impl;
 
 import com.tsystems.javaschool.dao.GenericDaoImpl;
 import com.tsystems.javaschool.entities.Number;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 
-@Repository
+@Component
 public class NumberDao extends GenericDaoImpl<Number>{
     @Override
     public Number getById(Long id) {

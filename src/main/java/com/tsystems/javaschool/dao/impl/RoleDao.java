@@ -2,9 +2,9 @@ package com.tsystems.javaschool.dao.impl;
 
 import com.tsystems.javaschool.dao.GenericDaoImpl;
 import com.tsystems.javaschool.entities.Role;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 
-@Repository
+@Component
 public class RoleDao extends GenericDaoImpl<Role> {
 }

@@ -4,9 +4,8 @@ import com.tsystems.javaschool.entities.Number;
 import com.tsystems.javaschool.exceptions.IncompatibleOptionException;
 import com.tsystems.javaschool.exceptions.RequiredOptionException;
 import com.tsystems.javaschool.exceptions.WrongIdException;
-import com.tsystems.javaschool.services.impl.OperatorServiceImpl;
+import com.tsystems.javaschool.services.OperatorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,12 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Controller("operatorsBean")
-@Scope("session")
-public class OperatorsBean {
+@Controller
+public class OperatorsController {
 
     @Autowired
-    private OperatorServiceImpl operatorService;
+    private OperatorService operatorService;
 
     @RequestMapping(value = "/addClient", method = RequestMethod.POST)
     public String addClient(@RequestParam String name, @RequestParam String surname,
