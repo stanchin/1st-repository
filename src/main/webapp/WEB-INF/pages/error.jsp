@@ -7,6 +7,7 @@
 <body>
         <div id="errorMsg">
             ${errorMsg}
+            ${cause}
         </div>
 </body>
 </html>

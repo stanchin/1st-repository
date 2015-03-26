@@ -38,6 +38,7 @@ public class GlobalExceptionController {
     public ModelAndView handleOtherException(Exception e){
         ModelAndView mav = new ModelAndView("error");
         mav.addObject("errorMsg", e.getMessage());
+        mav.addObject("cause", e.getCause());
 
         return mav;
     }

@@ -15,20 +15,16 @@
 
 <jsp:include page="parts/header.jsp"></jsp:include>
 
-        <div class="container">
-
-            <form name = "loginForm" class="form-signin" action="<c:url value='/j_spring_security_check' />" method="POST">
-                <h2 class="form-signin-heading">Please sign in</h2>
-                <label for="inputEmail" class="sr-only">Email address</label>
-                <input name ="email" type="email" id="inputEmail"
-                       class="form-control" placeholder="Email address" required autofocus>
-                <label for="inputPassword" class="sr-only">Password</label>
-                <input name="password" type="password" id="inputPassword"
-                       class="form-control" placeholder="Password" required>
-                <button class="btn btn-lg btn-default" type="submit">Sign in</button>
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            </form>
-        </div>
+<form name = "loginForm" class="form-signin" action="<c:url value='/j_spring_security_check' />" method="POST">
+    <h2 class="form-signin-heading">Please sign in</h2>
+    <label for="inputEmail" class="sr-only">Email address</label>
+    <input name ="email" type="email" id="inputEmail"
+           class="form-control" placeholder="Email address" required autofocus>
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input name="password" type="password" id="inputPassword"
+           class="form-control" placeholder="Password" required>
+    <button class="btn btn-lg btn-default" type="submit">Sign in</button>
+</form>
 
 <jsp:include page="parts/footer.jsp"></jsp:include>
 

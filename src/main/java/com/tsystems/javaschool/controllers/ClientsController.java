@@ -78,4 +78,9 @@ public class ClientsController {
         clientService.unlockNumber(contractId);
         return "contracts";
     }
+
+    @RequestMapping(value = "/goToClientPage", method = RequestMethod.GET)
+    public String goToClientPage(){
+        return "client/client";
+    }
 }

@@ -13,6 +13,7 @@
         <intercept-url pattern="/goLogin" access="hasAnyRole('anonymous', 'admin', 'client')" />
         <intercept-url pattern="/logout" access="hasAnyRole('admin','client')" />
         <intercept-url pattern="/home" access="hasAnyRole('admin','client', 'anonymous')" />
+        <intercept-url pattern="/addDetails" access="hasAnyRole('admin','client')" />
 
         <intercept-url pattern="/getClientContracts" access="hasRole('client')" />
         <intercept-url pattern="/getTariffsForClient" access="hasRole('client')" />
@@ -23,6 +24,7 @@
         <intercept-url pattern="/viewContract" access="hasRole('client')" />
         <intercept-url pattern="/lockContractByOperator" access="hasRole('client')" />
         <intercept-url pattern="/unlockContractByClient" access="hasRole('client')" />
+        <intercept-url pattern="/goToClientPage" access="hasRole('client')" />
 
         <intercept-url pattern="/addClient" access="hasRole('admin')" />
         <intercept-url pattern="/addRole" access="hasRole('admin')" />
@@ -45,6 +47,7 @@
         <intercept-url pattern="/viewOption" access="hasRole('admin')" />
         <intercept-url pattern="/setReqOpt" access="hasRole('admin')" />
         <intercept-url pattern="/getOptions" access="hasRole('admin')" />
+        <intercept-url pattern="/goToAdminPage" access="hasRole('admin')" />
 
         <access-denied-handler error-page="/goLogin" />
 
@@ -52,11 +55,10 @@
                 login-page="/login"
                 default-target-url="/welcome"
                 always-use-default-target="true"
-                authentication-failure-url="/goLogin?error"
+                authentication-failure-url="/error"
                 username-parameter="email"
                 password-parameter="password"/>
         <logout logout-success-url="/logoutUser" />
-        <csrf/>
         <anonymous username="guest" granted-authority="anonymous" />
     </http>
 
@@ -66,7 +68,7 @@
                                users-by-username-query=
                                        "SELECT email, password, TRUE FROM clients WHERE email=?"
                                authorities-by-username-query=
-                                       "SELECT emai, roles.role FROM clients JOIN roles WHERE email=?
+                                       "SELECT email, roles.role FROM clients JOIN roles WHERE email=?
                                        AND clients.role_id=roles.role_id" />
         </authentication-provider>
     </authentication-manager>

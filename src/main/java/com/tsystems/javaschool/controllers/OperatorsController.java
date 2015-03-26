@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -166,6 +167,11 @@ public class OperatorsController {
 
         model.addAttribute("options", operatorService.getOptions());
         return "options";
+    }
+
+    @RequestMapping(value = "/goToAdminPage", method = RequestMethod.GET)
+    public String goToAdminPage(){
+        return "operator/operator";
     }
 
 }

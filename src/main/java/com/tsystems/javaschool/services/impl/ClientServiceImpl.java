@@ -1,14 +1,8 @@
 package com.tsystems.javaschool.services.impl;
 
 
-import com.tsystems.javaschool.dao.impl.ClientDao;
-import com.tsystems.javaschool.dao.impl.ContractDao;
-import com.tsystems.javaschool.dao.impl.OptionDao;
-import com.tsystems.javaschool.dao.impl.TariffDao;
-import com.tsystems.javaschool.entities.Client;
-import com.tsystems.javaschool.entities.Contract;
-import com.tsystems.javaschool.entities.Option;
-import com.tsystems.javaschool.entities.Tariff;
+import com.tsystems.javaschool.dao.impl.*;
+import com.tsystems.javaschool.entities.*;
 import com.tsystems.javaschool.exceptions.IncompatibleOptionException;
 import com.tsystems.javaschool.exceptions.WrongIdException;
 import com.tsystems.javaschool.services.ClientService;
@@ -34,6 +28,8 @@ public class ClientServiceImpl implements ClientService {
     private TariffDao tariffDao;
     @Autowired
     private OptionDao optionDao;
+    @Autowired
+    private RoleDao roleDao;
 
     @Override
     public Client getClient(String email, String password) {
@@ -153,5 +149,10 @@ public class ClientServiceImpl implements ClientService {
         if (contract == null) throw new WrongIdException("Contract with id = " + contractId + " doesn't exist.");
         contract.setBlockedByUser(false);
         contractDao.update(contract);
+    }
+
+    @Override
+    public Role getRole(String authority) {
+        return roleDao.getByDescription(authority);
     }
 }

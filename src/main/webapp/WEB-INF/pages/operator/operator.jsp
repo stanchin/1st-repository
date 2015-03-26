@@ -4,13 +4,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Profile</title>
-    <link rel="stylesheet" href="../../../css/style.css" type="text/css">
-    <script type="text/javascript" src="../../../script/jquery-1.11.2.min.js"></script>
-    <script type="text/javascript" src="../../../script/javascript.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="<c:url value="/resources/bootstrap/js/jquery-1.11.2.min.js"/>"></script>
+    <link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/bootstrap.min.css"/> "/>
+    <link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/cover.css"/>">
+    <script src="<c:url value="/resources/bootstrap/js/bootstrap.min.js"/> "></script>
 </head>
 <body>
-<div id="monitor">
+This is a page of admin.
+<%--<div id="monitor">
     <div id = "header">
         Profile page of ${client.name}
     </div>
@@ -53,6 +55,6 @@
 </div>
 <div id = "footer">
     CreatedBy © Stanchin Denis
-</div>
+</div>--%>
 </body>
 </html>

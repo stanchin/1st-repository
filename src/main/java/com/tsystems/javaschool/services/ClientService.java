@@ -1,10 +1,7 @@
 package com.tsystems.javaschool.services;
 
 
-import com.tsystems.javaschool.entities.Client;
-import com.tsystems.javaschool.entities.Contract;
-import com.tsystems.javaschool.entities.Option;
-import com.tsystems.javaschool.entities.Tariff;
+import com.tsystems.javaschool.entities.*;
 import com.tsystems.javaschool.exceptions.IncompatibleOptionException;
 import com.tsystems.javaschool.exceptions.WrongIdException;
 
@@ -36,4 +33,5 @@ public interface ClientService {
 
     public void unlockNumber(long contractId) throws WrongIdException;
 
+    public Role getRole(String authority);
 }
