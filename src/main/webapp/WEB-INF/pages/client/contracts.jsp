@@ -1,73 +1,71 @@
-<jsp:useBean id="client" scope="session" type="com.tsystems.javaschool.entities.Client"/>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <html>
-<head>
-    <title>Profile</title>
-    <link rel="stylesheet" href="../../../css/style.css" type="text/css">
-</head>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script type="text/javascript" src="<c:url value="/resources/bootstrap/js/jquery-1.11.2.min.js"/>"></script>
+        <link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/bootstrap.min.css"/> "/>
+        <link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/cover.css"/>">
+        <script src="<c:url value="/resources/bootstrap/js/bootstrap.min.js"/> "></script>
+    </head>
 <body>
-<div id="monitor">
-    <div id = "header">
-        Profile page of ${client.name}
-    </div>
-    <div id = "nav">
-        <div class = "link">
-            <p><a href="../index.jsp">Home</a></p>
-            <p><a href = "../login.jsp">Login</a></p>
-            <p><a href="client.jsp">Profile</a></p>
-        </div>
-    </div>
-    <div id = "section">
-        <div id="topNav">
-            <ul>
-                <li><input type="button" value="Contract" class="myButton"
-                           onclick="document.getElementById('form1').submit()"></li>
-                <li><input type="button" value="Tariffs" class="myButton"
-                           onclick="document.getElementById('form2').submit()"></li>
-                <li><input type="button" value="Options" class="myButton"></li>
-                <li><input type="button" value="Block" class="myButton"></li>
-            </ul>
-        </div>
-        <section>
-            <div id="content">
-                <c:forEach var="contract" items="contracts">
-                    <p>${contract.getId()}</p>
+    <jsp:include page="../parts/header.jsp"/>
+
+    <div class="inner cover">
+        <h1 class="cover-heading">Contracts</h1>
+        <br/>
+        <p class="lead">Here, you can add options or change tariff in any of your numbers.</p>
+        <br/>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Number</th>
+                    <th>Tariff</th>
+                    <th>Options</th>
+                    <th>Add new options</th>
+                    <th>Change tariff</th>
+                </tr>
+                </thead>
+                <c:forEach var="contract" items="${requestScope.get('contracts')}">
+                    <tbody>
+                    <tr>
+                        <td>${contract.number.getNumber()}</td>
+                        <td>${contract.tariff.getName()}</td>
+                        <td>
+                            <form:form id="1" action="getTariffOptions" method="get">
+
+                                <button class="btn btn-lg btn-default"
+                                         onclick="document.getElementById('1').submit()">Options</button>
+
+                                <input type="hidden" name="tariffId" value="${contract.tariff.getId()}"/>
+                            </form:form>
+                        </td>
+                        <td>
+                            <form:form id="2" action="getAddOptionsForm" method="get">
+
+                                <button class="btn btn-lg btn-default"
+                                        onclick="document.getElementById('2').submit()">Add options</button>
+
+                                <input type="hidden" name="contractId" value="${contract.getId()}"/>
+                            </form:form>
+                        </td>
+                        <td>
+                            <form:form id="3" action="getChangeContractTariffForm" method="get">
+
+                                <button class="btn btn-lg btn-default"
+                                        onclick="document.getElementById('2').submit()">Change tariff</button>
+
+                                <input type="hidden" name="contractId" value="${contract.getId()}"/>
+                            </form:form>
+                        </td>
+                    </tr>
+                    </tbody>
                 </c:forEach>
-            </div>
-        </section>
-        <aside>
-            <p>Name: ${client.name}</p>
-            <p>Surname: ${client.surname}</p>
-            <p>B-Day: ${client.birthday}</p>
-            <p>Address: ${client.address}</p>
-            <p>Email: ${client.email}</p>
-        </aside>
+            </table>
     </div>
-</div>
-<div id = "footer">
-    CreatedBy © Stanchin Denis
-</div>
-<form id="form1" action="auth/clientServlet" method="post">
-    <input type="hidden" name="action" value="showContracts">
-    <input type="hidden" name="sessionStatus" value=${sessionScope.get("session").isOpened()}>
-</form>
-<form id="form2" action="auth/clientServlet" method="post">
-    <input type="hidden" name="action" value="showTariffs">
-    <input type="hidden" name="sessionStatus" value=${sessionScope.get("session").isOpened()}>
-</form>
-<form id="form3" action="auth/clientServlet" method="post">
-    <input type="hidden" name="action" value="showTariffOptions">
-    <input type="hidden" name="sessionStatus" value=${sessionScope.get("session").isOpened()}>
-</form>
-<form id="form4" action="auth/clientServlet" method="post">
-    <input type="hidden" name="action" value="blockContract">
-    <input type="hidden" name="sessionStatus" value=${sessionScope.get("session").isOpened()}>
-</form>
-<form id="form5" action="auth/clientServlet" method="post">
-    <input type="hidden" name="action" value="deployContract">
-    <input type="hidden" name="sessionStatus" value=${sessionScope.get("session").isOpened()}>
-</form>
+
+    <jsp:include page="../parts/footer.jsp"/>
 </body>
 </html>

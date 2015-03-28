@@ -16,7 +16,7 @@ public class Tariff {
     private String name;
     @Column(name = "tariff_price")
     private BigDecimal price;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "tariffs_options",
                 joinColumns = @JoinColumn(name = "tariff_id"),
                 inverseJoinColumns = @JoinColumn(name = "option_id"))

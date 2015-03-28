@@ -1,5 +1,8 @@
 package com.tsystems.javaschool.entities;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -25,6 +28,7 @@ public class Contract {
     @JoinColumn(name = "tariff_id")
     private Tariff tariff;
     @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "contract_options",
                 joinColumns = @JoinColumn(name = "contract_id"),
                 inverseJoinColumns = @JoinColumn(name = "option_id"))

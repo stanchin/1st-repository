@@ -9,9 +9,7 @@
                  http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
     <http auto-config="true" use-expressions="true">
-        <intercept-url pattern="/login" access="hasRole('anonymous')" />
         <intercept-url pattern="/goLogin" access="hasAnyRole('anonymous', 'admin', 'client')" />
-        <intercept-url pattern="/logout" access="hasAnyRole('admin','client')" />
         <intercept-url pattern="/home" access="hasAnyRole('admin','client', 'anonymous')" />
         <intercept-url pattern="/addDetails" access="hasAnyRole('admin','client')" />
 
@@ -25,6 +23,8 @@
         <intercept-url pattern="/lockContractByOperator" access="hasRole('client')" />
         <intercept-url pattern="/unlockContractByClient" access="hasRole('client')" />
         <intercept-url pattern="/goToClientPage" access="hasRole('client')" />
+        <intercept-url pattern="/getAddOptionsForm" access="hasRole('client')" />
+        <intercept-url pattern="/getChangeContractTariffForm" access="hasRole('client')" />
 
         <intercept-url pattern="/addClient" access="hasRole('admin')" />
         <intercept-url pattern="/addRole" access="hasRole('admin')" />
@@ -52,13 +52,13 @@
         <access-denied-handler error-page="/goLogin" />
 
         <form-login
-                login-page="/login"
-                default-target-url="/welcome"
+                login-page="/goLogin"
+                default-target-url="/addDetails"
                 always-use-default-target="true"
                 authentication-failure-url="/error"
                 username-parameter="email"
                 password-parameter="password"/>
-        <logout logout-success-url="/logoutUser" />
+        <logout logout-success-url="/home" />
         <anonymous username="guest" granted-authority="anonymous" />
     </http>
 

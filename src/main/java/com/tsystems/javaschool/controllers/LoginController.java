@@ -9,11 +9,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.Collection;
 
 @Controller
@@ -25,13 +25,19 @@ public class LoginController {
     private ClientService clientService;
 
     @RequestMapping(value = "/addDetails", method = RequestMethod.GET)
-    public ModelAndView addDetails(){
+    public ModelAndView addDetails(HttpSession session){
         Collection<GrantedAuthority> grantedAuthorities =
                 (Collection<GrantedAuthority>) SecurityContextHolder.getContext().getAuthentication()
                         .getAuthorities();
         String authority = null;
         for (GrantedAuthority ga : grantedAuthorities){
-            authority = ga.getAuthority();
+            if ("admin".equals(ga.getAuthority())) {
+                authority = ga.getAuthority();
+                break;
+            } else {
+                authority = ga.getAuthority();
+                break;
+            }
         }
         Role role = clientService.getRole(authority);
 
@@ -44,14 +50,8 @@ public class LoginController {
 
         ModelAndView mav = new ModelAndView("welcome");
         mav.addObject("userName", client.getName());
-        mav.addObject("role", role);
+        session.setAttribute("client", client);
         return mav;
-    }
-
-    @RequestMapping(value = "/logout", method = RequestMethod.POST)
-    public String logout(Model model){
-        //todo: add logout body
-        return "login";
     }
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)

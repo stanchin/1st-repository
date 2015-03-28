@@ -12,7 +12,7 @@
 </head>
 <body>
 This is a page of admin.
-<%--<div id="monitor">
+<div id="monitor">
     <div id = "header">
         Profile page of ${client.name}
     </div>
@@ -55,6 +55,6 @@ This is a page of admin.
 </div>
 <div id = "footer">
     CreatedBy © Stanchin Denis
-</div>--%>
+</div>
 </body>
 </html>

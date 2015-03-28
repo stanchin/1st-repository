@@ -12,10 +12,10 @@
 </head>
 <body>
 
-<jsp:include page="parts/header.jsp"></jsp:include>
+<jsp:include page="parts/header.jsp"/>
 
 <div class="inner cover">
-    <h1 class="cover-heading">Greetings, <sec:authentication property="username"/> !</h1>
+    <h1 class="cover-heading">Greetings, <sec:authentication property="principal.username"/> !</h1>
     <p class="lead">Now, you can go to your profile on the link below.</p>
     <p class="lead">
         <sec:authorize access="hasRole('client')">
@@ -27,7 +27,7 @@
     </p>
 </div>
 
-<jsp:include page="parts/footer.jsp"></jsp:include>
+<jsp:include page="parts/footer.jsp"/>
 
 </body>
 </html>

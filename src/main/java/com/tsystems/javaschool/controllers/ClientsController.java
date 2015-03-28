@@ -1,42 +1,55 @@
 package com.tsystems.javaschool.controllers;
 
+import com.tsystems.javaschool.entities.Client;
+import com.tsystems.javaschool.entities.Contract;
+import com.tsystems.javaschool.entities.Option;
 import com.tsystems.javaschool.entities.Tariff;
 import com.tsystems.javaschool.exceptions.IncompatibleOptionException;
 import com.tsystems.javaschool.exceptions.WrongIdException;
 import com.tsystems.javaschool.services.ClientService;
+import com.tsystems.javaschool.services.OperatorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
+import java.util.List;
 
 
 @Controller
+@SessionAttributes("client")
 public class ClientsController {
 
     @Autowired
     private ClientService clientService;
 
-    @RequestMapping(value = "/getClientContracts", method = RequestMethod.POST)
-    public String getContracts(@RequestParam Long clientId, Model model)
+    @Autowired
+    private OperatorService operatorService;
+
+    @RequestMapping(value = "/getClientContracts", method = RequestMethod.GET)
+    public String getContracts(@ModelAttribute Client client, Model model)
             throws WrongIdException {
 
-        model.addAttribute("contracts", clientService.getContracts(clientId));
-        return "contracts";
+        model.addAttribute("contracts", clientService.getContracts(client.getId()));
+        return "client/contracts";
     }
 
-    @RequestMapping(value = "/getTariffsForClient", method = RequestMethod.POST)
+    @RequestMapping(value = "/getTariffsForClient", method = RequestMethod.GET)
     public String getTariffs(Model model) {
         model.addAttribute("tariffs", clientService.getTariffs());
-        return "tariffs";
+        return "operator/tariffs";
     }
 
-    @RequestMapping(value = "/getTariffOptions", method = RequestMethod.POST)
+    @RequestMapping(value = "/getTariffOptions", method = RequestMethod.GET)
     public String getTariffOptions(@RequestParam Long tariffId, Model model){
         Tariff tariff = clientService.getTariff(tariffId);
         model.addAttribute("options", tariff.getOptions());
-        return "options";
+        model.addAttribute("tariffName", tariff.getName());
+        return "client/options";
     }
 
     @RequestMapping(value = "/changeContractTariff", method = RequestMethod.POST)
@@ -44,7 +57,7 @@ public class ClientsController {
             throws WrongIdException {
 
         clientService.changeTariff(contractId, tariffId);
-        return "contracts";
+        return "client/contracts";
     }
 
     @RequestMapping(value = "/addContractOption", method = RequestMethod.POST)
@@ -52,7 +65,7 @@ public class ClientsController {
             throws WrongIdException, IncompatibleOptionException {
 
         clientService.setOptions(contractId, optionId);
-        return "contracts";
+        return "client/contracts";
     }
 
     @RequestMapping(value = "/dropContractOptionByClient", method = RequestMethod.POST)
@@ -60,15 +73,15 @@ public class ClientsController {
             throws WrongIdException {
 
         clientService.removeOptions(contractId, optionId);
-        return "contracts";
+        return "client/contracts";
     }
 
-    @RequestMapping(value = "/lockContractByOperator", method = RequestMethod.POST)
+    @RequestMapping(value = "/lockContractByClient", method = RequestMethod.POST)
     public String lockContract(@RequestParam Long contractId)
             throws WrongIdException {
 
         clientService.lockNumber(contractId);
-        return "contracts";
+        return "client/contracts";
     }
 
     @RequestMapping(value = "/unlockContractByClient", method = RequestMethod.POST)
@@ -76,11 +89,26 @@ public class ClientsController {
             throws WrongIdException {
 
         clientService.unlockNumber(contractId);
-        return "contracts";
+        return "client/contracts";
     }
 
     @RequestMapping(value = "/goToClientPage", method = RequestMethod.GET)
     public String goToClientPage(){
         return "client/client";
+    }
+
+    @RequestMapping(value = "/getAddOptionsForm", method = RequestMethod.GET)
+    public String getAddOptionsForm(@RequestParam Long contractId, Model model){
+        List<Option> options = operatorService.getOptions();
+        model.addAttribute("contractId", contractId);
+        model.addAttribute("options", options);
+        return "client/addOptions";
+    }
+
+    @RequestMapping(value = "/getChangeContractTariffForm", method = RequestMethod.GET)
+    public String getChangeContractTariffForm(@RequestParam Long contractId, Model model){
+        Contract contract = clientService.getContract(contractId);
+        model.addAttribute("contract", contract);
+        return "client/changeContractTariff";
     }
 }

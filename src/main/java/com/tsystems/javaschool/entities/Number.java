@@ -34,7 +34,6 @@ public class Number {
 
         Number number1 = (Number) o;
 
-        if (!contract.equals(number1.contract)) return false;
         if (!number.equals(number1.number)) return false;
 
         return true;
@@ -42,8 +41,6 @@ public class Number {
 
     @Override
     public int hashCode() {
-        int result = number.hashCode();
-        result = 31 * result + contract.hashCode();
-        return result;
+        return number.hashCode();
     }
 }

@@ -28,7 +28,7 @@ public class Client {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
     private List<Contract> numbers;
 
     public Long getId() {

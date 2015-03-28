@@ -9,6 +9,7 @@ import com.tsystems.javaschool.services.ClientService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -33,8 +34,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client getClient(String email, String password) {
-        String hash = String.valueOf(password.hashCode());
-        return clientDao.findByEmailPass(email, hash);
+        return clientDao.findByEmailPass(email, password);
     }
 
     @Override
@@ -90,6 +90,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void setOptions(long contractId, long... optionsId) throws WrongIdException, IncompatibleOptionException {
         LOGGER.debug("Setting options");
         Contract contract = contractDao.getById(contractId);
