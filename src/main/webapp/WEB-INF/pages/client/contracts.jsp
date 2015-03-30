@@ -36,7 +36,7 @@
                         <td>
                             <form:form id="1" action="getTariffOptions" method="get">
 
-                                <button class="btn btn-lg btn-default"
+                                <button class="btn btn-sm btn-default"
                                          onclick="document.getElementById('1').submit()">Options</button>
 
                                 <input type="hidden" name="tariffId" value="${contract.tariff.getId()}"/>
@@ -45,7 +45,7 @@
                         <td>
                             <form:form id="2" action="getAddOptionsForm" method="get">
 
-                                <button class="btn btn-lg btn-default"
+                                <button class="btn btn-sm btn-default"
                                         onclick="document.getElementById('2').submit()">Add options</button>
 
                                 <input type="hidden" name="contractId" value="${contract.getId()}"/>
@@ -54,7 +54,7 @@
                         <td>
                             <form:form id="3" action="getChangeContractTariffForm" method="get">
 
-                                <button class="btn btn-lg btn-default"
+                                <button class="btn btn-sm btn-default"
                                         onclick="document.getElementById('2').submit()">Change tariff</button>
 
                                 <input type="hidden" name="contractId" value="${contract.getId()}"/>

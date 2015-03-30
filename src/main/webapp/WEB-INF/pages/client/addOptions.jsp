@@ -41,7 +41,7 @@
             <input type="hidden" name="contractId" value="${contractId}"/>
         </form:form>
         <tr>
-            <td><button class="btn btn-lg btn-default"
+            <td><button class="btn btn-sm btn-default"
                        onclick="document.getElementById('1').submit()">Add options</button></td>
         </tr>
         </tbody>

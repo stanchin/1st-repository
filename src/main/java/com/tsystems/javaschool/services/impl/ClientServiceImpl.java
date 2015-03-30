@@ -90,7 +90,6 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void setOptions(long contractId, long... optionsId) throws WrongIdException, IncompatibleOptionException {
         LOGGER.debug("Setting options");
         Contract contract = contractDao.getById(contractId);

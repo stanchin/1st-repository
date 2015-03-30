@@ -4,9 +4,10 @@ package com.tsystems.javaschool.dao.impl;
 import com.tsystems.javaschool.dao.GenericDaoImpl;
 import com.tsystems.javaschool.entities.Contract;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 
-@Component
+@Repository("contractDao")
 public class ContractDao extends GenericDaoImpl<Contract> {
 
     public Contract findByNumber(long number) {

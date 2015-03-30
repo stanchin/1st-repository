@@ -65,7 +65,7 @@ public class ClientsController {
             throws WrongIdException, IncompatibleOptionException {
 
         clientService.setOptions(contractId, optionId);
-        return "client/contracts";
+        return "client/client";
     }
 
     @RequestMapping(value = "/dropContractOptionByClient", method = RequestMethod.POST)

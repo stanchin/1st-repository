@@ -9,9 +9,13 @@
                  http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
     <http auto-config="true" use-expressions="true">
+
+        <!--URL patterns for several roles-->
         <intercept-url pattern="/goLogin" access="hasAnyRole('anonymous', 'admin', 'client')" />
         <intercept-url pattern="/home" access="hasAnyRole('admin','client', 'anonymous')" />
         <intercept-url pattern="/addDetails" access="hasAnyRole('admin','client')" />
+
+        <!--URL patterns for "client" role represented in database-->
 
         <intercept-url pattern="/getClientContracts" access="hasRole('client')" />
         <intercept-url pattern="/getTariffsForClient" access="hasRole('client')" />
@@ -25,6 +29,8 @@
         <intercept-url pattern="/goToClientPage" access="hasRole('client')" />
         <intercept-url pattern="/getAddOptionsForm" access="hasRole('client')" />
         <intercept-url pattern="/getChangeContractTariffForm" access="hasRole('client')" />
+
+        <!--URL patterns for "admin" role represented in database-->
 
         <intercept-url pattern="/addClient" access="hasRole('admin')" />
         <intercept-url pattern="/addRole" access="hasRole('admin')" />
@@ -48,6 +54,13 @@
         <intercept-url pattern="/setReqOpt" access="hasRole('admin')" />
         <intercept-url pattern="/getOptions" access="hasRole('admin')" />
         <intercept-url pattern="/goToAdminPage" access="hasRole('admin')" />
+        <intercept-url pattern="/getAddClientPage" access="hasRole('admin')" />
+        <intercept-url pattern="/getAddIncOptionsPage" access="hasRole('admin')" />
+        <intercept-url pattern="/getAddOptionPage" access="hasRole('admin')" />
+        <intercept-url pattern="/getAddReqOptionsPage" access="hasRole('admin')" />
+        <intercept-url pattern="/getAddRolePage" access="hasRole('admin')" />
+        <intercept-url pattern="/getAddTariffPage" access="hasRole('admin')" />
+        <intercept-url pattern="/getAddContractPage" access="hasRole('admin')" />
 
         <access-denied-handler error-page="/goLogin" />
 

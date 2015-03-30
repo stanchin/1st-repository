@@ -4,7 +4,7 @@
             <div class="mastfoot">
                 <div class="inner">
                     <p>Made and directed by <a href="http://vk.com/id146398036">
-                        Stanchin Denis</a>, using <a href="https://twitter.com/mdo">@mdo</a>.</p>
+                        Stanchin Denis</a>, using <a href="http://getbootstrap.com">bootstrap</a>.</p>
                 </div>
             </div>
         </div>

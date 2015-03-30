@@ -110,6 +110,8 @@ body {
  */
 
 .cover {
+    max-height: 750px;
+    overflow: auto;
     padding: 0 20px;
 }
 .cover .btn-lg {

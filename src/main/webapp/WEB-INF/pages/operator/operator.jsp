@@ -1,7 +1,8 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:useBean id="client" scope="session" type="com.tsystems.javaschool.entities.Client"/>
 
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,50 +12,69 @@
     <script src="<c:url value="/resources/bootstrap/js/bootstrap.min.js"/> "></script>
 </head>
 <body>
-This is a page of admin.
-<div id="monitor">
-    <div id = "header">
-        Profile page of ${client.name}
-    </div>
-    <div id = "nav">
-        <div class = "link">
-            <p><a href="../index.jsp">Home</a></p>
-            <p><a href = "../login.jsp">Login</a></p>
-            <p><a href="operator.jsp">Profile</a></p>
-        </div>
-    </div>
-    <div id = "section">
-        <div id="topNav">
-            <ul>
-                <li><input id="1" type="button" value="Add option" class="myButton"></li>
-                <li><input id="2" type="button" value="Add tariff" class="myButton"></li>
-                <li><input id="3" type="button" value="Add contract" class="myButton"></li>
-                <li><input id="4" type="button" value="Add client" class="myButton"></li>
-                <li><input id="7" type="button" value="Add role" class="myButton"></li>
-                <li><input id="8" type="button" value="Add IncOption" class="myButton"></li>
-                <li><input id="9" type="button" value="Add ReqOption" class="myButton"></li>
-            </ul>
-            <br>
-            <ul>
-                <li><input id="5" type="button" value="Show clients" class="myButton"></li>
-                <li><input id="6" type="button" value="Show contracts" class="myButton"></li>
-                <li><input id="10" type="button" value="Show options" class="myButton"></li>
-            </ul>
-        </div>
-        <div id="content">
+<jsp:include page="../parts/header.jsp"/>
 
-        </div>
-        <aside>
-            <p>Name: ${client.name}</p>
-            <p>Surname: ${client.surname}</p>
-            <p>B-Day: ${client.birthday}</p>
-            <p>Address: ${client.address}</p>
-            <p>Email: ${client.email}</p>
-        </aside>
-    </div>
+<div class="inner cover">
+    <h1 class="cover-heading">Information</h1>
+    <br/>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Address</th>
+            <th>Birthday</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>${client.name}</td>
+            <td>${client.surname}</td>
+            <td>${client.address}</td>
+            <td>${client.birthday}</td>
+        </tr>
+        </tbody>
+    </table>
+    <br/>
+    <h2 class="cover-heading">Control Administrator Panel<br/>
+        <small>It will redirect you to necessary pages.</small></h2>
+    <br/>
+    <p class="lead">Choose the operations and click buttons below.</p>
+    <table class="table">
+        <tbody>
+        <tr>
+            <td><a href="<c:url value="/getAddClientPage"/> "
+                   class="btn btn-sm btn-default btn-block">Add client</a></td>
+            <td><a href="<c:url value="/getAddRolePage"/> "
+                   class="btn btn-sm btn-default btn-block">Add role</a></td>
+            <td><a href="<c:url value="/getAddContractPage"/> "
+                   class="btn btn-sm btn-default btn-block">Add contract</a></td>
+            <td><a href="<c:url value="/getAddTariffPage"/> "
+                   class="btn btn-sm btn-default btn-block">Add tariff</a></td>
+        </tr>
+        <tr>
+            <td><a href="<c:url value="/getAddOptionPage"/> "
+                   class="btn btn-sm btn-default btn-block">Add option</a></td>
+            <td><a href="<c:url value="/getAddReqOptionsPage"/> "
+                   class="btn btn-sm btn-default btn-block">Add req options</a></td>
+            <td><a href="<c:url value="/getAddIncOptionsPage"/> "
+                   class="btn btn-sm btn-default btn-block">Add inc options</a></td>
+            <td><a href="<c:url value="/getClients"/> "
+                   class="btn btn-sm btn-default btn-block">Show clients</a></td>
+        </tr>
+        <tr>
+            <td><a href="<c:url value="/getTariffs"/> "
+                   class="btn btn-sm btn-default btn-block">Show tariffs</a></td>
+            <td><a href="<c:url value="/getContracts"/> "
+                   class="btn btn-sm btn-default btn-block">Show contracts</a></td>
+            <td><a href="<c:url value="/getOptions"/> "
+                   class="btn btn-sm btn-default btn-block">Show options</a></td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
-<div id = "footer">
-    CreatedBy © Stanchin Denis
-</div>
+
+<jsp:include page="../parts/footer.jsp"/>
 </body>
 </html>

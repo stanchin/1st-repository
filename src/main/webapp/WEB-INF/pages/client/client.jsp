@@ -2,6 +2,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:useBean id="client" scope="session" type="com.tsystems.javaschool.entities.Client"/>
+
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -32,7 +33,7 @@
                     <td>${client.surname}</td>
                     <td>${client.address}</td>
                     <td>${client.birthday}</td>
-                    <td><a href="<c:url value="/getClientContracts"/> " class="btn btn-lg btn-default">Contracts</a></td>
+                    <td><a href="<c:url value="/getClientContracts"/> " class="btn btn-sm btn-default">Contracts</a></td>
                 </tr>
             </tbody>
         </table>

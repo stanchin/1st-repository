@@ -1,8 +1,5 @@
 
 $(document).ready(function(){
-    $('#1').click(function(){
-        $('#content').load("addOptionForm.jsp");
-    });
     $('#2').click(function(){
         $.ajax('adminServlet', {
             type: 'post',
@@ -20,9 +17,6 @@ $(document).ready(function(){
                 $('#content').load("addContractForm.jsp");
             }
         });
-    });
-    $('#4').click(function(){
-        $('#content').load("addClientForm.jsp");
     });
     $('#5').click(function(){
         $.ajax('adminServlet', {
