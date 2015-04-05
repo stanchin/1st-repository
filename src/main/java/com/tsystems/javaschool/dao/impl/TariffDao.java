@@ -7,4 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TariffDao extends GenericDaoImpl<Tariff> {
+    /**
+     * Uses methods supported by GenericDaoImpl only.
+     */
 }

@@ -2,6 +2,7 @@ package com.tsystems.javaschool.services.impl;
 
 
 import com.tsystems.javaschool.dao.impl.*;
+import com.tsystems.javaschool.dto.ClientNumberDTO;
 import com.tsystems.javaschool.entities.*;
 import com.tsystems.javaschool.entities.Number;
 import com.tsystems.javaschool.exceptions.IncompatibleOptionException;
@@ -18,7 +19,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-
+/**
+ * Implementation of OperatorService interface. All methods transactional.
+ */
 @Service
 @Transactional
 public class OperatorServiceImpl implements OperatorService {
@@ -56,18 +59,10 @@ public class OperatorServiceImpl implements OperatorService {
     }
 
     @Override
-    public void addRole(String desc) {
-        LOGGER.debug("Adding new role");
-        Role role = new Role();
-        role.setRole(desc);
-        roleDao.create(role);
-    }
-
-    @Override
     public void concludeContract(String name, String surname, long tariffId, long number) throws WrongIdException {
         LOGGER.debug("Concluding contract");
         Contract contract = new Contract();
-        Client client = null;
+        Client client;
         try {
             client = clientDao.findByNameSurname(name, surname);
         } catch (Exception e) {
@@ -109,7 +104,6 @@ public class OperatorServiceImpl implements OperatorService {
         Number number = numberDao.getByNumber(num);
         contract.setNumber(number);
         number.setContract(contract);
-        contractDao.update(contract);
         numberDao.update(number);
     }
 
@@ -119,38 +113,28 @@ public class OperatorServiceImpl implements OperatorService {
         Tariff tariff = tariffDao.getById(tariffId);
         if (tariff != null) {
             contract.setTariff(tariff);
-            contract.setOptions(tariff.getOptions());
-            contractDao.update(contract);
         } else {
             throw new WrongIdException("Tariff with id = " + tariffId + " doesn't exist.");
         }
     }
 
     @Override
-    public void setOptions(long contractId, long... optionsId)
-            throws IncompatibleOptionException, WrongIdException {
+    public void setOptions(long contractId, long... optionsId) throws WrongIdException {
 
         LOGGER.debug("Setting options");
         Contract contract = contractDao.getById(contractId);
         if (contract == null) throw new WrongIdException("Contract with id = " + contractId + " doesn't exist.");
+
         List<Option> options = new ArrayList<>();
-        List<Option> contractOptions;
+        List<Option> contractOptions = contract.getOptions();
 
-        if (contract.getOptions() != null){
-            contractOptions = contract.getOptions();
-            for (long id : optionsId){
-                Option option = optionDao.getById(id);
-
-                for (Option o : contractOptions){
-                    if (o.getIncOptions().contains(option)){
-                        LOGGER.error("Option can't be merged with incompatible option");
-                        throw new IncompatibleOptionException("Option can't be merged with incompatible option");
-                    } else
-                        options.add(option);
-                }
-            }
+        for (long id : optionsId){
+            Option option = optionDao.getById(id);
+            options.add(option);
         }
-        contract.setOptions(options);
+
+        contractOptions.addAll(options);
+        contract.setOptions(contractOptions);
         contractDao.update(contract);
     }
 
@@ -160,17 +144,16 @@ public class OperatorServiceImpl implements OperatorService {
         LOGGER.debug("Removing option");
         Contract contract = contractDao.getById(contractId);
         if (contract == null) throw new WrongIdException("Contract with id = " + contractId + " doesn't exist.");
+
+        List<Option> contractOptions = contract.getOptions();
+
         Option option = optionDao.getById(optionId);
-        if (option == null) throw new WrongIdException("Option with id = " + optionId + " doesn't exist.");
-        List<Option> options = contract.getOptions();
-        for (Option opt : options){
-            if (opt.getReqOptions().contains(option)){
-                LOGGER.error("Can't drop required option");
-                throw new RequiredOptionException("Can't drop required option");
-            }
-        }
-        options.remove(option);
-        contract.setOptions(options);
+        List<Option> options = option.getReqOptions();
+
+        contractOptions.removeAll(options);
+        contractOptions.remove(option);
+
+        contract.setOptions(contractOptions);
         contractDao.update(contract);
     }
 
@@ -221,8 +204,8 @@ public class OperatorServiceImpl implements OperatorService {
         if (contract == null) throw new WrongIdException("Contract with id = " + contractId + " doesn't exist.");
         Tariff tariff = tariffDao.getById(tariffId);
         if (tariff == null) throw new WrongIdException("Tariff with id = " + tariffId + " doesn't exist.");
+
         contract.setTariff(tariff);
-        contract.setOptions(tariff.getOptions());
         contractDao.update(contract);
     }
 
@@ -274,12 +257,25 @@ public class OperatorServiceImpl implements OperatorService {
         if (tariff == null) throw new WrongIdException("Tariff with id = " + tariffId + " doesn't exist.");
         Option option = optionDao.getById(optionId);
         if (option == null) throw new WrongIdException("Option with id = " + optionId + " doesn't exist.");
+        List<Option> reqOptions = option.getReqOptions();
+
         tariff.getOptions().remove(option);
+        tariff.getOptions().removeAll(reqOptions);
+        List<Option> tariffOptions = tariff.getOptions();
+
+        double tariffPrice = 0d;
+
+        for (Option o : tariffOptions){
+            tariffPrice += o.getOptionPrice().doubleValue();
+            tariffPrice += o.getConnectionPrice().doubleValue();
+        }
+
+        tariff.setPrice(new BigDecimal(tariffPrice));
         tariffDao.update(tariff);
     }
 
     @Override
-    public List<Option> setIncompatibleOptions(long optionId, Long[] optionsId) throws IncompatibleOptionException {
+    public List<Option> setIncompatibleOptions(long optionId, long[] optionsId) throws IncompatibleOptionException {
         LOGGER.debug("Setting incompatible options");
         Option option = optionDao.getById(optionId);
         List<Option> incOptions = new ArrayList<Option>();
@@ -289,15 +285,19 @@ public class OperatorServiceImpl implements OperatorService {
                 LOGGER.error("Option can't be merged with required option");
                 throw new IncompatibleOptionException("Option can't be merged with required option");
             }
-            if (incOption != null) incOptions.add(incOption);
+            if (!option.getIncOptions().contains(incOption)) {
+                incOptions.add(incOption);
+                incOption.getIncOptions().add(option);
+                optionDao.update(incOption);
+            }
         }
-        option.setIncOptions(incOptions);
+        option.getIncOptions().addAll(incOptions);
         optionDao.update(option);
         return incOptions;
     }
 
     @Override
-    public List<Option> setRequiredOptions(long optionId, Long[] optionsId) throws RequiredOptionException {
+    public List<Option> setRequiredOptions(long optionId, long[] optionsId) throws RequiredOptionException {
         LOGGER.debug("Setting required options");
         Option option = optionDao.getById(optionId);
         List<Option> reqOptions = new ArrayList<Option>();
@@ -307,9 +307,13 @@ public class OperatorServiceImpl implements OperatorService {
                 LOGGER.error("Option can't be merged with incompatible option");
                 throw new RequiredOptionException("Option can't be merged with incompatible option");
             }
-            if (reqOption != null) reqOptions.add(reqOption);
+            if (!option.getReqOptions().contains(reqOption)){
+                reqOptions.add(reqOption);
+                reqOption.getReqOptions().add(option);
+                optionDao.update(reqOption);
+            }
         }
-        option.setReqOptions(reqOptions);
+        option.getReqOptions().addAll(reqOptions);
         optionDao.update(option);
         return reqOptions;
     }
@@ -318,5 +322,43 @@ public class OperatorServiceImpl implements OperatorService {
     public List<Option> getOptions() {
         LOGGER.debug("Getting options");
         return optionDao.getAll();
+    }
+
+    @Override
+    public Contract getContract(Long contractId) {
+        return contractDao.getById(contractId);
+    }
+
+    @Override
+    public Tariff getTariff(Long tariffId) {
+        return tariffDao.getById(tariffId);
+    }
+
+    @Override
+    public List<Option> getRequiredOptions(long optionId) {
+        Option option = optionDao.getById(optionId);
+        return option.getReqOptions();
+    }
+
+    @Override
+    public List<Option> getIncompatibleOptions(long optionId) {
+        Option option = optionDao.getById(optionId);
+        return option.getIncOptions();
+    }
+
+    @Override
+    public List<ClientNumberDTO> getClientsByTariff(long tariffId) {
+        List<Contract> contracts = contractDao.getClientsByTariff(tariffId);
+        List<ClientNumberDTO> clientNumbersDTOs = new ArrayList<>();
+        for (Contract c : contracts){
+            ClientNumberDTO clientNumberDTO = new ClientNumberDTO();
+            clientNumberDTO.setClientName(c.getClient().getName());
+            clientNumberDTO.setClientSurname(c.getClient().getSurname());
+            clientNumberDTO.setClientEmail(c.getClient().getEmail());
+            clientNumberDTO.setClientNumber(c.getNumber().getNumber());
+            clientNumberDTO.setClientPassport(c.getClient().getPassport());
+            clientNumbersDTOs.add(clientNumberDTO);
+        }
+        return clientNumbersDTOs;
     }
 }

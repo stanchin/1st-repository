@@ -22,7 +22,6 @@
       <exported-key name="contracts_ibfk_1" table="contracts" schema="" catalog="mobile_operator" columns="client_id"/>
       <index name="email_UNIQUE" unique="true" columns="email"/>
       <index name="unique_passport" unique="true" columns="passport"/>
-      <index name="unique_password" unique="true" columns="password"/>
     </table>
     <table name="contract_options" schema="" catalog="mobile_operator" type="TABLE">
       <column name="contract_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>

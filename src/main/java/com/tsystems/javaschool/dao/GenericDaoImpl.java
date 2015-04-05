@@ -3,13 +3,17 @@ package com.tsystems.javaschool.dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
 import javax.persistence.TypedQuery;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
-
+/*
+* Realization of GenericDao interface
+* */
 public abstract class GenericDaoImpl<T> implements GenericDao<T> {
 
+    /**
+     * Field that describes any entity, using in this class.
+     */
     protected Class entityClass;
     @PersistenceContext
     protected EntityManager em;

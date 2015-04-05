@@ -1,7 +1,5 @@
 package com.tsystems.javaschool.dao;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 /*

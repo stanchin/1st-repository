@@ -3,7 +3,10 @@ package com.tsystems.javaschool.entities;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
-
+/*
+* The tariff class that describes tariffs in Mobile Operator System. Connected with
+* database, using JPA.
+* */
 @Entity
 @Table(name = "tariffs")
 public class Tariff {

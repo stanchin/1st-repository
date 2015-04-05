@@ -10,7 +10,12 @@
 
     <http auto-config="true" use-expressions="true">
 
+        <!--Service URL for anonymous-->
+
+        <intercept-url pattern="/service" access="hasRole('anonymous')"/>
+
         <!--URL patterns for several roles-->
+
         <intercept-url pattern="/goLogin" access="hasAnyRole('anonymous', 'admin', 'client')" />
         <intercept-url pattern="/home" access="hasAnyRole('admin','client', 'anonymous')" />
         <intercept-url pattern="/addDetails" access="hasAnyRole('admin','client')" />
@@ -29,11 +34,11 @@
         <intercept-url pattern="/goToClientPage" access="hasRole('client')" />
         <intercept-url pattern="/getAddOptionsForm" access="hasRole('client')" />
         <intercept-url pattern="/getChangeContractTariffForm" access="hasRole('client')" />
+        <intercept-url pattern="/getContractOptionsPageByClient" access="hasRole('client')" />
 
         <!--URL patterns for "admin" role represented in database-->
 
         <intercept-url pattern="/addClient" access="hasRole('admin')" />
-        <intercept-url pattern="/addRole" access="hasRole('admin')" />
         <intercept-url pattern="/concludeContract" access="hasRole('admin')" />
         <intercept-url pattern="/generateNumber" access="hasRole('admin')" />
         <intercept-url pattern="/dropContractOption" access="hasRole('admin')" />
@@ -58,9 +63,13 @@
         <intercept-url pattern="/getAddIncOptionsPage" access="hasRole('admin')" />
         <intercept-url pattern="/getAddOptionPage" access="hasRole('admin')" />
         <intercept-url pattern="/getAddReqOptionsPage" access="hasRole('admin')" />
-        <intercept-url pattern="/getAddRolePage" access="hasRole('admin')" />
         <intercept-url pattern="/getAddTariffPage" access="hasRole('admin')" />
         <intercept-url pattern="/getAddContractPage" access="hasRole('admin')" />
+        <intercept-url pattern="/getAddExtraOptionsPage" access="hasRole('admin')" />
+        <intercept-url pattern="/getContractOptionsPage" access="hasRole('admin')" />
+        <intercept-url pattern="/getTariffOptionsByAdmin" access="hasRole('admin')" />
+        <intercept-url pattern="/getRequiredOptions" access="hasRole('admin')" />
+        <intercept-url pattern="/getIncompatibleOptions" access="hasRole('admin')" />
 
         <access-denied-handler error-page="/goLogin" />
 
@@ -68,7 +77,7 @@
                 login-page="/goLogin"
                 default-target-url="/addDetails"
                 always-use-default-target="true"
-                authentication-failure-url="/error"
+                authentication-failure-url="/goLogin?error=true"
                 username-parameter="email"
                 password-parameter="password"/>
         <logout logout-success-url="/home" />

@@ -4,19 +4,31 @@
 <jsp:useBean id="client" scope="session" type="com.tsystems.javaschool.entities.Client"/>
 
 <html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script type="text/javascript" src="<c:url value="/resources/bootstrap/js/jquery-1.11.2.min.js"/>"></script>
-    <link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/bootstrap.min.css"/> "/>
-    <link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/cover.css"/>">
-    <script src="<c:url value="/resources/bootstrap/js/bootstrap.min.js"/> "></script>
-</head>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script type="text/javascript" src="<c:url value="/resources/bootstrap/js/jquery-1.11.2.min.js"/>"></script>
+        <link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/bootstrap.css"/> "/>
+        <link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/cover.css"/>">
+        <script src="<c:url value="/resources/bootstrap/js/bootstrap.min.js"/> "></script>
+    </head>
 <body>
+
 <jsp:include page="../parts/header.jsp"/>
 
 <div class="inner cover">
-    <h1 class="cover-heading">Information</h1>
-    <br/>
+
+    <h1 class="cover-heading">Information</h1><br/>
+
+    <c:if test="${not empty success}">
+        <p class="bg-success" id="error">${success}</p>
+    </c:if>
+
+    <script>
+        setInterval(function() {
+            $("#error").attr("hidden", true);
+        }, 4000);
+    </script>
+
     <table class="table">
         <thead>
         <tr>
@@ -35,7 +47,9 @@
         </tr>
         </tbody>
     </table>
+
     <br/>
+
     <h2 class="cover-heading">Control Administrator Panel<br/>
         <small>It will redirect you to necessary pages.</small></h2>
     <br/>
@@ -45,12 +59,10 @@
         <tr>
             <td><a href="<c:url value="/getAddClientPage"/> "
                    class="btn btn-sm btn-default btn-block">Add client</a></td>
-            <td><a href="<c:url value="/getAddRolePage"/> "
-                   class="btn btn-sm btn-default btn-block">Add role</a></td>
-            <td><a href="<c:url value="/getAddContractPage"/> "
-                   class="btn btn-sm btn-default btn-block">Add contract</a></td>
             <td><a href="<c:url value="/getAddTariffPage"/> "
                    class="btn btn-sm btn-default btn-block">Add tariff</a></td>
+            <td><a href="<c:url value="/getClients"/> "
+                   class="btn btn-sm btn-default btn-block">Show clients</a></td>
         </tr>
         <tr>
             <td><a href="<c:url value="/getAddOptionPage"/> "
@@ -59,8 +71,6 @@
                    class="btn btn-sm btn-default btn-block">Add req options</a></td>
             <td><a href="<c:url value="/getAddIncOptionsPage"/> "
                    class="btn btn-sm btn-default btn-block">Add inc options</a></td>
-            <td><a href="<c:url value="/getClients"/> "
-                   class="btn btn-sm btn-default btn-block">Show clients</a></td>
         </tr>
         <tr>
             <td><a href="<c:url value="/getTariffs"/> "
@@ -69,6 +79,17 @@
                    class="btn btn-sm btn-default btn-block">Show contracts</a></td>
             <td><a href="<c:url value="/getOptions"/> "
                    class="btn btn-sm btn-default btn-block">Show options</a></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <form action="findClient" method="get">
+                    <div class="form-group">
+                        <input type="number" name="number" class="form-control" placeholder="Enter number" maxlength="10">
+                    </div>
+                    <button type="submit" class="btn btn-default">Find</button>
+                </form>
+            </td>
             <td></td>
         </tr>
         </tbody>
@@ -76,5 +97,6 @@
 </div>
 
 <jsp:include page="../parts/footer.jsp"/>
+
 </body>
 </html>

@@ -9,17 +9,18 @@ import com.tsystems.javaschool.exceptions.WrongIdException;
 import com.tsystems.javaschool.services.ClientService;
 import com.tsystems.javaschool.services.OperatorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-
+/**
+ * The client controller, which allows client to view information on pages,
+ * located in '/WEB-INF/pages/client' folder.
+ */
 @Controller
 @SessionAttributes("client")
 public class ClientsController {
@@ -57,39 +58,43 @@ public class ClientsController {
             throws WrongIdException {
 
         clientService.changeTariff(contractId, tariffId);
-        return "client/contracts";
+        return "client/client";
     }
 
-    @RequestMapping(value = "/addContractOption", method = RequestMethod.POST)
-    public String addContractOption(@RequestParam Long contractId, @RequestParam Long optionId)
+    @RequestMapping(value = "/addContractOptions", method = RequestMethod.POST)
+    public String addContractOption(Model model, @RequestParam long contractId, @RequestParam long... optionsId)
             throws WrongIdException, IncompatibleOptionException {
 
-        clientService.setOptions(contractId, optionId);
+        clientService.setOptions(contractId, optionsId);
+        model.addAttribute("success", "Options added on");
         return "client/client";
     }
 
     @RequestMapping(value = "/dropContractOptionByClient", method = RequestMethod.POST)
-    public String dropContractOption(@RequestParam Long contractId, @RequestParam Long optionId)
+    public String dropContractOption(Model model, @RequestParam Long contractId, @RequestParam Long optionId)
             throws WrongIdException {
 
-        clientService.removeOptions(contractId, optionId);
-        return "client/contracts";
+        clientService.removeOption(contractId, optionId);
+        model.addAttribute("success", "Option removed");
+        return "client/client";
     }
 
     @RequestMapping(value = "/lockContractByClient", method = RequestMethod.POST)
-    public String lockContract(@RequestParam Long contractId)
+    public String lockContract(@RequestParam long contractId, Model model)
             throws WrongIdException {
 
         clientService.lockNumber(contractId);
-        return "client/contracts";
+        model.addAttribute("success", "Contract locked");
+        return "client/client";
     }
 
     @RequestMapping(value = "/unlockContractByClient", method = RequestMethod.POST)
-    public String unlockContract(@RequestParam Long contractId)
+    public String unlockContract(@RequestParam long contractId, Model model)
             throws WrongIdException {
 
         clientService.unlockNumber(contractId);
-        return "client/contracts";
+        model.addAttribute("success", "Contract unlocked");
+        return "client/client";
     }
 
     @RequestMapping(value = "/goToClientPage", method = RequestMethod.GET)
@@ -98,17 +103,55 @@ public class ClientsController {
     }
 
     @RequestMapping(value = "/getAddOptionsForm", method = RequestMethod.GET)
-    public String getAddOptionsForm(@RequestParam Long contractId, Model model){
+    public String getAddOptionsForm(@RequestParam long contractId, @RequestParam long tariffId,
+                                    Model model){
+
+        Tariff tariff = clientService.getTariff(tariffId);
+        Contract contract = clientService.getContract(contractId);
+
         List<Option> options = operatorService.getOptions();
+        List<Option> tariffOptions = tariff.getOptions();
+        List<Option> contractOptions = contract.getOptions();
+        Set<Option> incTariffOptionsSet = new HashSet<>();
+        Set<Option> incContractOptionsSet = new HashSet<>();
+
+        for (Option o : tariffOptions){
+            incTariffOptionsSet.addAll(o.getIncOptions());
+        }
+
+        for (Option o : contractOptions){
+            incContractOptionsSet.addAll(o.getIncOptions());
+        }
+
+        options.removeAll(tariffOptions);
+        options.removeAll(incTariffOptionsSet);
+        options.removeAll(contractOptions);
+        options.removeAll(incContractOptionsSet);
+
         model.addAttribute("contractId", contractId);
         model.addAttribute("options", options);
+
         return "client/addOptions";
     }
 
     @RequestMapping(value = "/getChangeContractTariffForm", method = RequestMethod.GET)
     public String getChangeContractTariffForm(@RequestParam Long contractId, Model model){
+
         Contract contract = clientService.getContract(contractId);
+        List<Tariff> tariffList = clientService.getTariffs();
+
+        model.addAttribute("tariffs", tariffList);
         model.addAttribute("contract", contract);
+
         return "client/changeContractTariff";
+    }
+
+    @RequestMapping(value = "/getContractOptionsPageByClient", method = RequestMethod.GET)
+    public String getContractOptionsPage(@RequestParam long contractId, Model model){
+
+        Contract contract = operatorService.getContract(contractId);
+        model.addAttribute("contractOptions", contract.getOptions());
+        model.addAttribute("contractId", contractId);
+        return "client/contractOptionsPage";
     }
 }

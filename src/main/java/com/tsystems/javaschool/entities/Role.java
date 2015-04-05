@@ -1,7 +1,10 @@
 package com.tsystems.javaschool.entities;
 
 import javax.persistence.*;
-
+/*
+* The role class that describes any user's role when working with Mobile Operator System. Linked with
+* database, using JPA.
+* */
 @Entity
 @Table(name = "roles")
 public class Role {

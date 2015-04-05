@@ -5,7 +5,10 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.List;
-
+/*
+* The contract class that describes any contract concluded in Mobile Operator System.
+* Contract connected with database, using JPA.
+* */
 @Entity
 @Table(name = "contracts")
 public class Contract {
@@ -28,10 +31,10 @@ public class Contract {
     @JoinColumn(name = "tariff_id")
     private Tariff tariff;
     @ManyToMany
-    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "contract_options",
                 joinColumns = @JoinColumn(name = "contract_id"),
                 inverseJoinColumns = @JoinColumn(name = "option_id"))
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Option> options;
 
     public boolean getBlockedByOperator() {

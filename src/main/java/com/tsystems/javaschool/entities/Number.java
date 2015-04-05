@@ -1,7 +1,13 @@
 package com.tsystems.javaschool.entities;
 
-import javax.persistence.*;
-
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+/*
+* The number class that describes the telephone numbers in Mobile Operator System. Connected
+* with Contract class. Linked with database, using JPA.
+* */
 @Entity
 @Table(name = "tel_numbers")
 public class Number {

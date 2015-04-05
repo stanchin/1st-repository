@@ -24,7 +24,7 @@
                     <td>Name</td>
                     <td>
                         <div class="form-group">
-                        <input type="text" name="name" class="form-control" id="1" placeholder="Enter name">
+                        <input type="text" name="name" class="form-control" id="1" placeholder="Enter name" required>
                         </div>
                     </td>
                 </tr>
@@ -32,7 +32,8 @@
                     <td>Surname</td>
                     <td>
                         <div class="form-group">
-                        <input type="text" name="surname" class="form-control" id="2" placeholder="Enter surname">
+                        <input type="text" name="surname" class="form-control" id="2"
+                               placeholder="Enter surname" required>
                         </div>
                     </td>
                 </tr>
@@ -40,7 +41,7 @@
                     <td>Birthday</td>
                     <td>
                         <div class="form-group">
-                        <input type="date" name="birthday" class="form-control" id="3">
+                        <input type="date" name="birthday" class="form-control" id="3" required>
                         </div>
                     </td>
                 </tr>
@@ -49,7 +50,7 @@
                     <td>
                         <div class="form-group">
                         <input type="text" name="passport" class="form-control" id="4"
-                               placeholder="Enter serial and number without whitespaces" maxlength="10">
+                               placeholder="Enter serial and number without whitespaces" maxlength="10" required>
                         </div>
                     </td>
                 </tr>
@@ -57,7 +58,8 @@
                     <td>Address</td>
                     <td>
                         <div class="form-group">
-                        <input type="text" name="address" class="form-control" id="5" placeholder="Enter address">
+                        <input type="text" name="address" class="form-control" id="5"
+                               placeholder="Enter address" required>
                         </div>
                     </td>
                 </tr>
@@ -65,7 +67,7 @@
                     <td>Email</td>
                     <td>
                         <div class="form-group">
-                        <input type="email" name="email" class="form-control" id="6" placeholder="Enter email">
+                        <input type="email" name="email" class="form-control" id="6" placeholder="Enter email" required>
                         </div>
                     </td>
                 </tr>
@@ -73,7 +75,8 @@
                     <td>Password</td>
                     <td>
                         <div class="form-group">
-                        <input type="text" name="password" class="form-control" id="7" placeholder="Enter password">
+                            <input type="password" name="password" class="form-control" id="7"
+                                   placeholder="Enter password" required>
                         </div>
                     </td>
                 </tr>
@@ -86,7 +89,7 @@
                                 Admin
                             </label>
                             <label>
-                                <input type="radio" name="roleId" value="2">
+                                <input type="radio" name="roleId" value="2" required>
                                 Client
                             </label>
                         </div>

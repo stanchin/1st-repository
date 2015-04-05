@@ -15,7 +15,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.Collection;
-
+/**
+ * The controller, which allows user to view information on pages,
+ * located in '/WEB-INF/pages' folder and allows to get details
+ * about client from program.
+ */
 @Controller
 public class LoginController {
 

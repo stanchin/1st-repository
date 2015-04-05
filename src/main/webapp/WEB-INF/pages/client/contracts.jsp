@@ -23,9 +23,11 @@
                 <tr>
                     <th>Number</th>
                     <th>Tariff</th>
-                    <th>Options</th>
-                    <th>Add new options</th>
+                    <th>Tariff's options</th>
+                    <th>Contract options</th>
+                    <th>Add on new options</th>
                     <th>Change tariff</th>
+                    <th>Lock/Unlock</th>
                 </tr>
                 </thead>
                 <c:forEach var="contract" items="${requestScope.get('contracts')}">
@@ -36,29 +38,64 @@
                         <td>
                             <form:form id="1" action="getTariffOptions" method="get">
 
-                                <button class="btn btn-sm btn-default"
+                                <button class="btn btn-sm btn-default btn-block"
                                          onclick="document.getElementById('1').submit()">Options</button>
 
                                 <input type="hidden" name="tariffId" value="${contract.tariff.getId()}"/>
                             </form:form>
                         </td>
                         <td>
+                            <form id="4" action="<c:url value="/getContractOptionsPageByClient"/> " method="get">
+
+                                <button class="btn btn-sm btn-default btn-block"
+                                        onclick="document.getElementById('4').submit()">Options</button>
+
+                                <input type="hidden" name="contractId" value="${contract.id}"/>
+                            </form>
+                        </td>
+                        <td>
                             <form:form id="2" action="getAddOptionsForm" method="get">
 
-                                <button class="btn btn-sm btn-default"
+                                <button class="btn btn-sm btn-default btn-block"
                                         onclick="document.getElementById('2').submit()">Add options</button>
 
-                                <input type="hidden" name="contractId" value="${contract.getId()}"/>
+                                <input type="hidden" name="contractId" value="${contract.id}"/>
+                                <input type="hidden" name="tariffId" value="${contract.tariff.id}">
                             </form:form>
                         </td>
                         <td>
                             <form:form id="3" action="getChangeContractTariffForm" method="get">
 
-                                <button class="btn btn-sm btn-default"
-                                        onclick="document.getElementById('2').submit()">Change tariff</button>
+                                <button class="btn btn-sm btn-default btn-block"
+                                        onclick="document.getElementById('3').submit()">Change tariff</button>
 
                                 <input type="hidden" name="contractId" value="${contract.getId()}"/>
                             </form:form>
+                        </td>
+                        <td>
+                            <c:if test="${contract.blockedByOperator == false}">
+                                <c:if test="${contract.blockedByUser == false}">
+                                    <form action="<c:url value="/lockContractByClient"/>" method="post">
+                                        <button class="btn btn-sm btn-default btn-block" type="submit">Lock</button>
+                                        <input type="hidden" name="contractId" value="${contract.id}">
+                                    </form>
+                                </c:if>
+                            </c:if>
+                            <c:if test="${contract.blockedByOperator == false}">
+                                <c:if test="${contract.blockedByUser == true}">
+                                    <form action="<c:url value="/unlockContractByClient"/>" method="post">
+                                        <button class="btn btn-sm btn-default btn-block" type="submit">Unlock</button>
+                                        <input type="hidden" name="contractId" value="${contract.id}">
+                                    </form>
+                                </c:if>
+                            </c:if>
+                            <c:if test="${contract.blockedByOperator == true}">
+                                <form action="<c:url value="/unlockContractByClient"/>" method="post">
+                                    <button class="btn btn-sm btn-default btn-block"
+                                            type="submit" disabled>Unlock</button>
+                                    <input type="hidden" name="contractId" value="${contract.id}">
+                                </form>
+                            </c:if>
                         </td>
                     </tr>
                     </tbody>

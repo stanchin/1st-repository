@@ -6,32 +6,45 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="text/javascript" src="<c:url value="/resources/bootstrap/js/jquery-1.11.2.min.js"/>"></script>
-    <link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/bootstrap.min.css"/> "/>
+    <link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/bootstrap.css"/> "/>
     <link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/cover.css"/>">
     <link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/signin.css"/>">
     <script src="<c:url value="/resources/bootstrap/js/bootstrap.min.js"/> "></script>
 </head>
 <body onload='document.loginForm.email.focus();'>
 
-<jsp:include page="parts/header.jsp"></jsp:include>
+<jsp:include page="parts/header.jsp"/>
 
-<form name = "loginForm" class="form-signin" action="<c:url value='/j_spring_security_check' />" method="POST">
+<div class="inner-cover">
+    <c:if test="${param.error == 'true'}">
+        <p class="bg-danger" id="error">Invalid login or password</p>
+    </c:if>
 
-    <h2 class="form-signin-heading">Please sign in</h2>
+    <script>
+        setInterval(function() {
+            $("#error").attr("hidden", true);
+        }, 4000);
+    </script>
 
-    <label for="inputEmail" class="sr-only">Email address</label>
-    <input name ="email" type="email" id="inputEmail"
-           class="form-control" placeholder="Email address" required autofocus>
+    <form name = "loginForm" class="form-signin" action="<c:url value='/j_spring_security_check' />" method="POST">
 
-    <label for="inputPassword" class="sr-only">Password</label>
-    <input name="password" type="password" id="inputPassword"
-           class="form-control" placeholder="Password" required>
+        <h2 class="form-signin-heading">Please sign in</h2>
 
-    <button class="btn btn-lg btn-default" type="submit">Sign in</button>
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input name ="email" type="email" id="inputEmail"
+               class="form-control" placeholder="Email address" required autofocus>
+        <br/>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input name="password" type="password" id="inputPassword"
+               class="form-control" placeholder="Password" required>
 
-</form>
+        <button class="btn btn-lg btn-default" type="submit">Sign in</button>
 
-<jsp:include page="parts/footer.jsp"></jsp:include>
+    </form>
+
+</div>
+
+<jsp:include page="parts/footer.jsp"/>
 
 </body>
 </html>

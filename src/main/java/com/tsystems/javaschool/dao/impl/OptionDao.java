@@ -7,4 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class OptionDao extends GenericDaoImpl<Option> {
+    /**
+     * Uses methods supported by GenericDaoImpl only.
+     */
 }

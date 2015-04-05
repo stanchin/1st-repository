@@ -1,9 +1,15 @@
 package com.tsystems.javaschool.entities;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
-
+/*
+* The option class that describes any option of Mobile Operator System. Linked with
+* database, using JPA.
+* */
 @Entity
 @Table(name = "options")
 public class Option {
@@ -22,11 +28,13 @@ public class Option {
     @JoinTable(name = "options_incompatible",
                 joinColumns = @JoinColumn(name = "inc_option_id"),
                 inverseJoinColumns = @JoinColumn(name = "base_option_id"))
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Option> incOptions;
     @ManyToMany
     @JoinTable(name = "options_required",
                 joinColumns = @JoinColumn(name = "req_option_id"),
                 inverseJoinColumns = @JoinColumn(name = "base_option_id"))
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Option> reqOptions;
 
     public Long getId() {

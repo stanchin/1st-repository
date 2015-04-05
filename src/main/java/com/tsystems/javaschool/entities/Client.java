@@ -3,8 +3,12 @@ package com.tsystems.javaschool.entities;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+/*
+* The client class that describes any user of Mobile Operator System. Linked with
+* database, using JPA.
+* */
 
-@Entity
+ @Entity
 @Table(name = "clients")
 public class Client {
 
