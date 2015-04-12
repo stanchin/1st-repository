@@ -3,6 +3,7 @@ package com.tsystems.javaschool.services.impl;
 
 import com.tsystems.javaschool.dao.impl.*;
 import com.tsystems.javaschool.dto.ClientNumberDTO;
+import com.tsystems.javaschool.dto.TariffDTO;
 import com.tsystems.javaschool.entities.*;
 import com.tsystems.javaschool.entities.Number;
 import com.tsystems.javaschool.exceptions.IncompatibleOptionException;
@@ -11,6 +12,7 @@ import com.tsystems.javaschool.exceptions.WrongIdException;
 import com.tsystems.javaschool.services.OperatorService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,13 +48,15 @@ public class OperatorServiceImpl implements OperatorService {
                           String password, long roleId) {
         LOGGER.debug("Creating new client");
         Client client = new Client();
+        Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+
         client.setName(name);
         client.setSurname(surname);
         client.setBirthday(birthday);
         client.setAddress(address);
         client.setPassport(passport);
         client.setEmail(email);
-        client.setPassword(password);
+        client.setPassword(encoder.encodePassword(password, null));
         Role role = roleDao.getById(roleId);
         client.setRole(role);
         clientDao.create(client);
@@ -65,10 +69,10 @@ public class OperatorServiceImpl implements OperatorService {
         Client client;
         try {
             client = clientDao.findByNameSurname(name, surname);
+            contract.setClient(client);
         } catch (Exception e) {
             throw new WrongIdException("Can't find client.");
         }
-        contract.setClient(client);
         try {
             setTariff(contract, tariffId);
         } catch (WrongIdException e) {
@@ -119,7 +123,8 @@ public class OperatorServiceImpl implements OperatorService {
     }
 
     @Override
-    public void setOptions(long contractId, long... optionsId) throws WrongIdException {
+    public void setOptions(long contractId, long... optionsId)
+            throws WrongIdException, IncompatibleOptionException, RequiredOptionException {
 
         LOGGER.debug("Setting options");
         Contract contract = contractDao.getById(contractId);
@@ -128,9 +133,24 @@ public class OperatorServiceImpl implements OperatorService {
         List<Option> options = new ArrayList<>();
         List<Option> contractOptions = contract.getOptions();
 
+        Tariff tariff = contract.getTariff();
+        List<Option> tariffOptions = tariff.getOptions();
+
         for (long id : optionsId){
             Option option = optionDao.getById(id);
-            options.add(option);
+            if (option == null) throw new WrongIdException("Option with id = " + id + " doesn't exist.");
+            for (Option o : tariffOptions){
+                if (o.getIncOptions().contains(option)){
+                    throw new IncompatibleOptionException("Option with id = " + id + " is incompatible.");
+                } else options.add(option);
+            }
+        }
+
+        for(Option o : options){
+            List<Option> reqOptions = o.getReqOptions();
+            if (!options.containsAll(reqOptions)){
+                throw new RequiredOptionException("Option with id = " + o.getId() + " don't have any required one");
+            }
         }
 
         contractOptions.addAll(options);
@@ -148,6 +168,7 @@ public class OperatorServiceImpl implements OperatorService {
         List<Option> contractOptions = contract.getOptions();
 
         Option option = optionDao.getById(optionId);
+        if (option == null) throw new WrongIdException("Option with id = " + optionId + " doesn't exists");
         List<Option> options = option.getReqOptions();
 
         contractOptions.removeAll(options);
@@ -168,8 +189,20 @@ public class OperatorServiceImpl implements OperatorService {
     }
 
     @Override
-    public List<Tariff> getTariffs() {
-        return tariffDao.getAll();
+    public List<TariffDTO> getTariffDTOs() {
+
+        List<Tariff> tariffs = tariffDao.getAll();
+        List<TariffDTO> tariffDTOs = new ArrayList<>();
+
+        for (Tariff t : tariffs){
+            TariffDTO tariffDTO = new TariffDTO();
+            tariffDTO.setTariffId(t.getId());
+            tariffDTO.setTariffName(t.getName());
+            tariffDTO.setTariffPrice(t.getPrice());
+            tariffDTOs.add(tariffDTO);
+        }
+
+        return tariffDTOs;
     }
 
     @Override
@@ -210,7 +243,7 @@ public class OperatorServiceImpl implements OperatorService {
     }
 
     @Override
-    public void addTariff(String name, Long[] optionsId) throws WrongIdException {
+    public void addTariff(String name, long... optionsId) throws WrongIdException {
         LOGGER.debug("Adding tariff");
         Tariff tariff = new Tariff();
         tariff.setName(name);
@@ -352,7 +385,7 @@ public class OperatorServiceImpl implements OperatorService {
         List<ClientNumberDTO> clientNumbersDTOs = new ArrayList<>();
         for (Contract c : contracts){
             ClientNumberDTO clientNumberDTO = new ClientNumberDTO();
-            clientNumberDTO.setClientName(c.getClient().getName());
+            clientNumberDTO.setName(c.getClient().getName());
             clientNumberDTO.setClientSurname(c.getClient().getSurname());
             clientNumberDTO.setClientEmail(c.getClient().getEmail());
             clientNumberDTO.setClientNumber(c.getNumber().getNumber());
@@ -360,5 +393,10 @@ public class OperatorServiceImpl implements OperatorService {
             clientNumbersDTOs.add(clientNumberDTO);
         }
         return clientNumbersDTOs;
+    }
+
+    @Override
+    public List<Tariff> getTariffs() {
+        return tariffDao.getAll();
     }
 }

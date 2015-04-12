@@ -13,10 +13,11 @@ import org.springframework.web.servlet.ModelAndView;
 public class GlobalExceptionController {
 
     @ExceptionHandler(WrongIdException.class)
-    public @ResponseBody Model handleWrongIdException(Model model, WrongIdException e){
-        model.addAttribute("errorMsg", e.getMessage());
+    public ModelAndView handleWrongIdException(WrongIdException e){
+        ModelAndView mav = new ModelAndView("error");
+        mav.addObject("errorMsg", e.getMessage());
 
-        return model;
+        return mav;
     }
 
     @ExceptionHandler(IncompatibleOptionException.class)

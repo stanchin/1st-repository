@@ -30,20 +30,7 @@ public class LoginController {
 
     @RequestMapping(value = "/addDetails", method = RequestMethod.GET)
     public ModelAndView addDetails(HttpSession session){
-        Collection<GrantedAuthority> grantedAuthorities =
-                (Collection<GrantedAuthority>) SecurityContextHolder.getContext().getAuthentication()
-                        .getAuthorities();
-        String authority = null;
-        for (GrantedAuthority ga : grantedAuthorities){
-            if ("admin".equals(ga.getAuthority())) {
-                authority = ga.getAuthority();
-                break;
-            } else {
-                authority = ga.getAuthority();
-                break;
-            }
-        }
-        Role role = clientService.getRole(authority);
+        LOGGER.debug("Adding details to user");
 
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
@@ -60,16 +47,19 @@ public class LoginController {
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String goHome(){
+        LOGGER.debug("Returning index.jsp page");
         return "index";
     }
 
     @RequestMapping(value = "/goLogin", method = RequestMethod.GET)
     public String goLogin(){
+        LOGGER.debug("Returning login.jsp page");
         return "login";
     }
 
     @RequestMapping(value = "/welcome", method = RequestMethod.GET)
     public String welcome(){
+        LOGGER.debug("Returning welcome.jsp page");
         return "welcome";
     }
 }

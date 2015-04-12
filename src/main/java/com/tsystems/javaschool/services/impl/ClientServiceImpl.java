@@ -4,6 +4,7 @@ package com.tsystems.javaschool.services.impl;
 import com.tsystems.javaschool.dao.impl.*;
 import com.tsystems.javaschool.entities.*;
 import com.tsystems.javaschool.exceptions.IncompatibleOptionException;
+import com.tsystems.javaschool.exceptions.RequiredOptionException;
 import com.tsystems.javaschool.exceptions.WrongIdException;
 import com.tsystems.javaschool.services.ClientService;
 import org.apache.log4j.Logger;
@@ -71,9 +72,10 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public List<Option> getTariffOptions(long tariffId) {
+    public List<Option> getTariffOptions(long tariffId) throws WrongIdException {
         LOGGER.debug("Getting tariff's options");
         Tariff tariff = tariffDao.getById(tariffId);
+        if (tariff == null) throw new WrongIdException("Tariff with id = " + tariffId + " doesn't exist.");
         return tariff.getOptions();
     }
 
@@ -90,17 +92,33 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void setOptions(long contractId, long... optionsId) throws WrongIdException {
+    public void setOptions(long contractId, long... optionsId)
+            throws WrongIdException, IncompatibleOptionException, RequiredOptionException {
         LOGGER.debug("Setting options");
         Contract contract = contractDao.getById(contractId);
         if (contract == null) throw new WrongIdException("Contract with id = " + contractId + " doesn't exist.");
+
+        Tariff tariff = contract.getTariff();
+        List<Option> tariffOptions = tariff.getOptions();
 
         List<Option> options = new ArrayList<>();
         List<Option> contractOptions = contract.getOptions();
 
         for (long id : optionsId){
             Option option = optionDao.getById(id);
-            options.add(option);
+            if (option == null) throw new WrongIdException("Option with id = " + id + " doesn't exist.");
+            for (Option o : tariffOptions){
+                if (o.getIncOptions().contains(option)){
+                    throw new IncompatibleOptionException("Option with id = " + id + " is incompatible.");
+                } else options.add(option);
+            }
+        }
+
+        for(Option o : options){
+            List<Option> reqOptions = o.getReqOptions();
+            if (!options.containsAll(reqOptions)){
+                throw new RequiredOptionException("Option with id = " + o.getId() + " don't have any required one");
+            }
         }
 
         contractOptions.addAll(options);
@@ -117,6 +135,7 @@ public class ClientServiceImpl implements ClientService {
         List<Option> contractOptions = contract.getOptions();
 
         Option option = optionDao.getById(optionId);
+        if (option == null) throw new WrongIdException("Option with id = " + optionId + " doesn't exists");
         List<Option> options = option.getReqOptions();
 
         contractOptions.removeAll(options);

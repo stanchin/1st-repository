@@ -2,6 +2,7 @@ package com.tsystems.javaschool.services;
 
 
 import com.tsystems.javaschool.dto.ClientNumberDTO;
+import com.tsystems.javaschool.dto.TariffDTO;
 import com.tsystems.javaschool.entities.*;
 import com.tsystems.javaschool.entities.Number;
 import com.tsystems.javaschool.exceptions.IncompatibleOptionException;
@@ -57,6 +58,7 @@ public interface OperatorService {
      * Sets the tariff to contract
      * @param contract the contract for including tariff
      * @param tariffId the id of tariff to be included
+     *                 @throws com.tsystems.javaschool.exceptions.WrongIdException
      */
     void setTariff(Contract contract, long tariffId) throws WrongIdException;
 
@@ -64,13 +66,19 @@ public interface OperatorService {
      * Set the extra options to contract.
      * @param contractId the id of client's contract
      * @param optionsId an array of options to be included
+     *                  @throws com.tsystems.javaschool.exceptions.WrongIdException
+     *                  @throws com.tsystems.javaschool.exceptions.IncompatibleOptionException
+     *                  @throws com.tsystems.javaschool.exceptions.RequiredOptionException
      */
-    void setOptions(long contractId, long[] optionsId) throws IncompatibleOptionException, WrongIdException;
+    void setOptions(long contractId, long... optionsId)
+            throws IncompatibleOptionException, WrongIdException, RequiredOptionException;
 
     /**
      * Removes the contract's extra options.
      * @param contractId the contract id to make changes
      * @param optionId an array of options to be removed
+     *                 @throws com.tsystems.javaschool.exceptions.RequiredOptionException
+     *                 @throws com.tsystems.javaschool.exceptions.WrongIdException
      */
     void shutDownContractOption(long contractId, long optionId) throws RequiredOptionException, WrongIdException;
 
@@ -87,10 +95,10 @@ public interface OperatorService {
     List<Contract> getContracts();
 
     /**
-     * Returns all tariffs created in program.
-     * @return list of Tariff objects
+     * Returns all tariffs created in program without options.
+     * @return list of TariffDTO objects
      */
-    List<Tariff> getTariffs();
+    List<TariffDTO> getTariffDTOs();
 
     /**
      * Locks Client's contract.
@@ -127,7 +135,7 @@ public interface OperatorService {
      * @param optionsId an array of options to be included
      *                  @throws com.tsystems.javaschool.exceptions.WrongIdException
      */
-    void addTariff(String name, Long[] optionsId) throws WrongIdException;
+    void addTariff(String name, long... optionsId) throws WrongIdException;
 
     /**
      * Removes tariff from program.
@@ -159,7 +167,7 @@ public interface OperatorService {
      *                  @throws com.tsystems.javaschool.exceptions.IncompatibleOptionException
      *                  @return list of incompatible options
      */
-    List<Option> setIncompatibleOptions(long optionId, long[] optionsId) throws IncompatibleOptionException;
+    List<Option> setIncompatibleOptions(long optionId, long... optionsId) throws IncompatibleOptionException;
 
     /**
      * Sets incompatible options to base option.
@@ -168,7 +176,7 @@ public interface OperatorService {
      *                  @throws com.tsystems.javaschool.exceptions.RequiredOptionException
      *                  @return list of required options
      */
-    List<Option> setRequiredOptions(long optionId, long[] optionsId) throws RequiredOptionException;
+    List<Option> setRequiredOptions(long optionId, long... optionsId) throws RequiredOptionException;
 
     /**
      * Returns all options using in program.
@@ -204,5 +212,15 @@ public interface OperatorService {
      */
     List<Option> getIncompatibleOptions(long optionId);
 
+    /**
+     * Returns all clients from program with their contract numbers.
+     * @return list of Client objects
+     */
     List<ClientNumberDTO> getClientsByTariff(long tariffId);
+
+    /**
+     * Returns all tariffs created in program.
+     * @return list of Tariff objects
+     */
+    List<Tariff> getTariffs();
 }

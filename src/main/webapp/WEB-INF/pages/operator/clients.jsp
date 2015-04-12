@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
@@ -31,12 +32,14 @@
         <tbody>
         <c:forEach var="client" items="${clients}">
             <tr>
-                <td>${client.name}</td>
-                <td>${client.surname}</td>
-                <td>${client.passport}</td>
+                <td><spring:message text="${client.name}" javaScriptEscape="false"/></td>
+                <td><spring:message text="${client.surname}" javaScriptEscape="false"/></td>
+                <td><spring:message text="${client.passport}" javaScriptEscape="false"/></td>
                 <form id="${client.id}" action="<c:url value="/getAddContractPage"/>" method="get">
-                    <td><button class="btn btn-sm btn-default btn-block"
-                                onclick="document.getElementById('${client.id}').submit()">New contract</button></td>
+                    <td>
+                        <button class="btn btn-sm btn-default btn-block"
+                                onclick="document.getElementById('${client.id}').submit()">New contract</button>
+                    </td>
                     <input type="hidden" name="name" value="${client.name}">
                     <input type="hidden" name="surname" value="${client.surname}">
                 </form>

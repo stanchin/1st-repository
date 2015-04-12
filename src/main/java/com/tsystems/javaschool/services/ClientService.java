@@ -3,6 +3,7 @@ package com.tsystems.javaschool.services;
 
 import com.tsystems.javaschool.entities.*;
 import com.tsystems.javaschool.exceptions.IncompatibleOptionException;
+import com.tsystems.javaschool.exceptions.RequiredOptionException;
 import com.tsystems.javaschool.exceptions.WrongIdException;
 
 import java.util.List;
@@ -58,9 +59,10 @@ public interface ClientService {
     /**
      * Returns tariff included options.
      * @param tariffId the id of necessary tariff
+     *                 @throws com.tsystems.javaschool.exceptions.WrongIdException
      *                 @return list of all options
      */
-    public List<Option> getTariffOptions(long tariffId);
+    public List<Option> getTariffOptions(long tariffId) throws WrongIdException;
 
     /**
      * Changes the contract's tariff.
@@ -76,8 +78,9 @@ public interface ClientService {
      *                   @param optionsId array of options to include
      *                   @throws com.tsystems.javaschool.exceptions.WrongIdException
      *                   @throws com.tsystems.javaschool.exceptions.IncompatibleOptionException
+     *                   @throws com.tsystems.javaschool.exceptions.RequiredOptionException
      */
-    public void setOptions(long contractId, long... optionsId) throws WrongIdException, IncompatibleOptionException;
+    public void setOptions(long contractId, long... optionsId) throws WrongIdException, IncompatibleOptionException, RequiredOptionException;
 
     /**
      * Removes the extra contract option.

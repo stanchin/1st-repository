@@ -2,18 +2,18 @@ package com.tsystems.javaschool.dto;
 
 
 public class ClientNumberDTO {
-    private String clientName;
+    private String name;
     private String clientSurname;
     private Long clientPassport;
     private String clientEmail;
     private Long clientNumber;
 
-    public String getClientName() {
-        return clientName;
+    public String getName() {
+        return name;
     }
 
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getClientSurname() {

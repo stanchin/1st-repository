@@ -1,12 +1,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script type="text/javascript" src="<c:url value="/resources/bootstrap/js/jquery-1.11.2.min.js"/>"></script>
-        <link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/bootstrap.min.css"/> "/>
+        <link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/bootstrap.css"/> "/>
         <link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/cover.css"/>">
         <script src="<c:url value="/resources/bootstrap/js/bootstrap.min.js"/> "></script>
     </head>
@@ -30,9 +31,9 @@
         <tbody>
         <c:forEach var="option" items="${reqOptions}">
             <tr>
-                <td>${option.name}</td>
-                <td>${option.optionPrice}</td>
-                <td>${option.connectionPrice}</td>
+                <td><spring:message text="${option.name}" javaScriptEscape="false"/></td>
+                <td><spring:message text="${option.optionPrice}" javaScriptEscape="false"/></td>
+                <td><spring:message text="${option.connectionPrice}" javaScriptEscape="false"/></td>
             </tr>
         </c:forEach>
         </tbody>

@@ -1,7 +1,7 @@
 package com.tsystems.javaschool.controllers;
 
 import com.tsystems.javaschool.dto.ClientNumberDTO;
-import com.tsystems.javaschool.entities.Tariff;
+import com.tsystems.javaschool.dto.TariffDTO;
 import com.tsystems.javaschool.services.OperatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * RESTful controller. Provides web services of application.
+ */
+
 @RestController
 @RequestMapping("/service")
 public class ServiceController {
@@ -21,8 +25,9 @@ public class ServiceController {
     private OperatorService operatorService;
 
     @RequestMapping(value = "/tariffs", method = RequestMethod.GET)
-    public ResponseEntity<List<Tariff>> getTariffs(){
-        return new ResponseEntity<>(operatorService.getTariffs(), HttpStatus.OK);
+    public ResponseEntity<List<TariffDTO>> getTariffs(){
+
+        return new ResponseEntity<>(operatorService.getTariffDTOs(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/getClientsByTariff", method = RequestMethod.GET)

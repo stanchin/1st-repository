@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:useBean id="client" scope="session" type="com.tsystems.javaschool.entities.Client"/>
 
@@ -20,10 +21,6 @@
     <h1 class="cover-heading">Contracts</h1>
     <br/>
 
-    <c:if test="${not empty success}">
-        <p class="bg-success" id="error">${success}</p>
-    </c:if>
-
     <table class="table">
         <thead>
         <tr>
@@ -38,8 +35,8 @@
         <tbody>
         <c:forEach var="contract" items="${contracts}">
         <tr>
-            <td>${contract.number.number}</td>
-            <td>${contract.tariff.name}</td>
+            <td><spring:message text="${contract.number.number}" javaScriptEscape="false"/></td>
+            <td><spring:message text="${contract.tariff.name}" javaScriptEscape="false"/></td>
             <td>
                 <form id="change${contract.id}"
                       action="<c:url value="/getChangeContractTariffFormByAdmin"/>" method="get">

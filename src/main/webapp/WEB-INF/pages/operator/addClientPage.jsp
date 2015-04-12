@@ -7,7 +7,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="text/javascript" src="<c:url value="/resources/bootstrap/js/jquery-1.11.2.min.js"/>"></script>
-    <link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/bootstrap.min.css"/> "/>
+    <link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/bootstrap.css"/> "/>
     <link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/cover.css"/>">
     <script src="<c:url value="/resources/bootstrap/js/bootstrap.min.js"/> "></script>
 </head>
@@ -24,7 +24,8 @@
                     <td>Name</td>
                     <td>
                         <div class="form-group">
-                        <input type="text" name="name" class="form-control" id="1" placeholder="Enter name" required>
+                        <input type="text" name="name" class="form-control" id="1"
+                               placeholder="Enter name" required pattern="^[a-zA-Z]+$" maxlength="20">
                         </div>
                     </td>
                 </tr>
@@ -33,7 +34,7 @@
                     <td>
                         <div class="form-group">
                         <input type="text" name="surname" class="form-control" id="2"
-                               placeholder="Enter surname" required>
+                               placeholder="Enter surname" required pattern="^[a-zA-Z]+$" maxlength="25">
                         </div>
                     </td>
                 </tr>
@@ -50,7 +51,8 @@
                     <td>
                         <div class="form-group">
                         <input type="text" name="passport" class="form-control" id="4"
-                               placeholder="Enter serial and number without whitespaces" maxlength="10" required>
+                               placeholder="Enter serial and number without whitespaces" maxlength="10"
+                               required pattern="[0-9]{10}">
                         </div>
                     </td>
                 </tr>

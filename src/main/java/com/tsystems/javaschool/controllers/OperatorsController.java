@@ -90,7 +90,7 @@ public class OperatorsController {
     @RequestMapping(value = "/getTariffs", method = RequestMethod.GET)
     public String getTariffs(Model model){
 
-        model.addAttribute("tariffs", operatorService.getTariffs());
+        model.addAttribute("tariffs", operatorService.getTariffDTOs());
         return "operator/tariffs";
     }
 
@@ -130,7 +130,7 @@ public class OperatorsController {
     }
 
     @RequestMapping(value = "/addTariff", method = RequestMethod.POST)
-    public String addTariff(@RequestParam String name, @RequestParam Long[] optionsId, Model model)
+    public String addTariff(Model model, @RequestParam String name, @RequestParam long... optionsId )
             throws WrongIdException {
 
         operatorService.addTariff(name, optionsId);
@@ -285,7 +285,7 @@ public class OperatorsController {
 
     @RequestMapping(value = "/addContractOptionByAdmin", method = RequestMethod.POST)
     public String addContractOption(@RequestParam long contractId, @RequestParam long[] optionsId, Model model)
-            throws WrongIdException, IncompatibleOptionException {
+            throws WrongIdException, IncompatibleOptionException, RequiredOptionException {
 
         operatorService.setOptions(contractId, optionsId);
         model.addAttribute("success", "Option has been added on");

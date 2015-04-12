@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:useBean id="client" scope="session" type="com.tsystems.javaschool.entities.Client"/>
 
@@ -20,7 +21,7 @@
     <h1 class="cover-heading">Information</h1><br/>
 
     <c:if test="${not empty success}">
-        <p class="bg-success" id="error">${success}</p>
+        <p class="bg-success" id="error"><spring:message text="${success}" javaScriptEscape="false"/></p>
     </c:if>
 
     <script>
@@ -40,10 +41,10 @@
         </thead>
         <tbody>
         <tr>
-            <td>${client.name}</td>
-            <td>${client.surname}</td>
-            <td>${client.address}</td>
-            <td>${client.birthday}</td>
+            <td><spring:message text="${client.name}" javaScriptEscape="false"/></td>
+            <td><spring:message text="${client.surname}" javaScriptEscape="false"/></td>
+            <td><spring:message text="${client.address}" javaScriptEscape="false"/></td>
+            <td><spring:message text="${client.birthday}" javaScriptEscape="false"/></td>
         </tr>
         </tbody>
     </table>
@@ -85,7 +86,8 @@
             <td>
                 <form action="findClient" method="get">
                     <div class="form-group">
-                        <input type="number" name="number" class="form-control" placeholder="Enter number" maxlength="10">
+                        <input type="number" name="number"
+                               class="form-control" placeholder="Enter number" maxlength="10" pattern="[0-9]{10}">
                     </div>
                     <button type="submit" class="btn btn-default">Find</button>
                 </form>

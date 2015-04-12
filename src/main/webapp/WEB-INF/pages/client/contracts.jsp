@@ -1,12 +1,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script type="text/javascript" src="<c:url value="/resources/bootstrap/js/jquery-1.11.2.min.js"/>"></script>
-        <link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/bootstrap.min.css"/> "/>
+        <link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/bootstrap.css"/> "/>
         <link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/cover.css"/>">
         <script src="<c:url value="/resources/bootstrap/js/bootstrap.min.js"/> "></script>
     </head>
@@ -33,8 +34,8 @@
                 <c:forEach var="contract" items="${requestScope.get('contracts')}">
                     <tbody>
                     <tr>
-                        <td>${contract.number.getNumber()}</td>
-                        <td>${contract.tariff.getName()}</td>
+                        <td><spring:message text="${contract.number.getNumber()}" javaScriptEscape="false"/></td>
+                        <td><spring:message text="${contract.tariff.getName()}" javaScriptEscape="false"/></td>
                         <td>
                             <form:form id="1" action="getTariffOptions" method="get">
 

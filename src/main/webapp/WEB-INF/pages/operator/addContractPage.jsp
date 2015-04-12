@@ -1,12 +1,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="text/javascript" src="<c:url value="/resources/bootstrap/js/jquery-1.11.2.min.js"/>"></script>
-    <link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/bootstrap.min.css"/> "/>
+    <link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/bootstrap.css"/> "/>
     <link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/cover.css"/>">
     <script src="<c:url value="/resources/bootstrap/js/bootstrap.min.js"/> "></script>
 </head>
@@ -22,13 +23,13 @@
             <tbody>
             <tr>
                 <td>
-                    ${name}
+                    <spring:message text="${name}" javaScriptEscape="false"/>
                     <input type="hidden" name="name" value="${name}">
                 </td>
             </tr>
             <tr>
                 <td>
-                    ${surname}
+                    <spring:message text="${surname}" javaScriptEscape="false"/>
                     <input type="hidden" name="surname" value="${surname}">
                 </td>
             </tr>
@@ -37,7 +38,9 @@
                     <select class="form-control" form="1" required="required" name="tariffId"
                             size="${tariffs.size()}">
                         <c:forEach var="tariff" items="${tariffs}">
-                            <option value="${tariff.id}">${tariff.name}</option>
+                            <option value="${tariff.id}">
+                                <spring:message text="${tariff.name}" javaScriptEscape="false"/>
+                            </option>
                         </c:forEach>
                     </select>
                 </td>

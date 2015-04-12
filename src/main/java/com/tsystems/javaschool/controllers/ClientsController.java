@@ -5,6 +5,7 @@ import com.tsystems.javaschool.entities.Contract;
 import com.tsystems.javaschool.entities.Option;
 import com.tsystems.javaschool.entities.Tariff;
 import com.tsystems.javaschool.exceptions.IncompatibleOptionException;
+import com.tsystems.javaschool.exceptions.RequiredOptionException;
 import com.tsystems.javaschool.exceptions.WrongIdException;
 import com.tsystems.javaschool.services.ClientService;
 import com.tsystems.javaschool.services.OperatorService;
@@ -54,16 +55,17 @@ public class ClientsController {
     }
 
     @RequestMapping(value = "/changeContractTariff", method = RequestMethod.POST)
-    public String changeTariff(@RequestParam Long tariffId, @RequestParam Long contractId)
+    public String changeTariff(@RequestParam Long tariffId, @RequestParam Long contractId, Model model)
             throws WrongIdException {
 
         clientService.changeTariff(contractId, tariffId);
+        model.addAttribute("success", "Tariff changed");
         return "client/client";
     }
 
     @RequestMapping(value = "/addContractOptions", method = RequestMethod.POST)
     public String addContractOption(Model model, @RequestParam long contractId, @RequestParam long... optionsId)
-            throws WrongIdException, IncompatibleOptionException {
+            throws WrongIdException, IncompatibleOptionException, RequiredOptionException {
 
         clientService.setOptions(contractId, optionsId);
         model.addAttribute("success", "Options added on");
